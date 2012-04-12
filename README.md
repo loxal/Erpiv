@@ -1,3 +1,3 @@
-# Sem — Sem Entity Manager
+# Erpiv
 
 * A RESTful API.

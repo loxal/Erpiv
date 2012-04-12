@@ -6,7 +6,7 @@
   -->
 
 <messagebundle>
-    <msg name="gadget_title">Sem</msg>
+    <msg name="gadget_title">Erpiv</msg>
     <msg name="gadget_description">Demo / Showcase</msg>
     <msg name="gadget_thumbnail">http://module.loxal.net/resource/logo.png</msg>
     <msg name="gadget_screenshot">http://module.loxal.net/resource/logo.png</msg>
