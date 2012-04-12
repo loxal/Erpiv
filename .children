@@ -1,1 +1,3 @@
+src/loxal/tests/placeholder.dart
 src/static/client/symbol-lister.dart
+src/loxal/model/modelPlaceholder.dart

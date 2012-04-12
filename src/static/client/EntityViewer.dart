@@ -2,7 +2,7 @@
 // DO NOT EDIT.
 
 class EntityViewer {
-  final Map<String, Object> _scopes;
+  Map<String, Object> _scopes;
   Element _fragment;
 
   int number;
@@ -28,16 +28,22 @@ class EntityViewer {
     e0.elements.add(e6);
     var e7 = new Element.html('<input value="x274a" type="text" id="symbolId">&nbsp;</input>');
     e0.elements.add(e7);
-    var e8 = new Element.html('<p>E.g. "10046" in </p>');
+    var e8 = new Element.html('<p>E.g. "10046" in</p>');
     e0.elements.add(e8);
-    var e9 = new Element.html('<em>decimal</em> notation or "');
+    var e9 = new Element.html('<em>decimal</em>');
     e8.elements.add(e9);
-    var e10 = new Element.html('<strong>x</strong>27bd" in ');
+    var e10 = new Text('notation or "');
     e8.elements.add(e10);
-    var e11 = new Element.html('<em>hexadecimal</em> notation');
+    var e11 = new Element.html('<strong>x</strong>');
     e8.elements.add(e11);
-    var e12 = new Element.html('<button id="symbol-display" class="icon-list">Display Symbol</button>');
-    e0.elements.add(e12);
+    var e12 = new Text('27bd" in');
+    e8.elements.add(e12);
+    var e13 = new Element.html('<em>hexadecimal</em>');
+    e8.elements.add(e13);
+    var e14 = new Text('notation');
+    e8.elements.add(e14);
+    var e15 = new Element.html('<button id="symbol-display" class="icon-list">Display Symbol</button>');
+    e0.elements.add(e15);
   }
 
   Element get root() => _fragment;
@@ -62,8 +68,6 @@ class EntityViewer {
 }
 
   ''';
-
-  // Stylesheet class selectors:
 }
 
 

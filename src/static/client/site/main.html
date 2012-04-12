@@ -44,59 +44,7 @@
     })();
 </script>
 
-<script>
-    var navTo = function (hash) {
-        location.hash = hash;
-        var handlerMap = {
-            '':'/client/commander/main.html',
-            '#imprint':'/static/client/site/imprint.html',
-            '#symbol-lister':'/static/client/symbol-lister.html'
-        };
-        if (!handlerMap[location.hash] || location.pathname != '/') {
-            document.getElementById('main').innerHTML = '<div class="info warn">Page Not Found</div>';
-        } else {
-            var xhr = new XMLHttpRequest();
-            xhr.open('get', handlerMap[location.hash], false);
-            xhr.onload = function (e) {
-                { // TODO replace by non-jQuery method & remove the jQuery lib;
-                    $('#main').html(this.responseText);
-                }
-            };
-            xhr.send();
-        }
-    };
-
-    var applySiteProperties = function () {
-        var xhr = new XMLHttpRequest();
-        xhr.open('get', '/client/site/properties.json', false);
-        xhr.onload = function (e) {
-            var siteProperties = JSON.parse(this.responseText);
-            document.getElementById('signature').innerHTML = siteProperties.year + ' ' + siteProperties.copyright;
-            document.getElementById('header-description').innerHTML = siteProperties.titleDesc;
-        };
-        xhr.send();
-    };
-
-    function auth() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('get', '/cmd/auth.json', false);
-        xhr.onload = function (e) {
-            var user = JSON.parse(this.responseText);
-            document.getElementById("auth").href = user.url;
-            if (user.user == "") {
-                document.getElementById("auth").title = "Google account required";
-            } else {
-                document.getElementById("auth").innerHTML = "Logout:";
-                document.getElementById("auth").title = "Authentication powered by Google";
-                document.getElementById("user").innerHTML = user.user;
-                document.getElementById("user").title = user.isAdmin ? "Admin" : "";
-            }
-        };
-        xhr.send();
-    }
-</script>
 <script src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 
 
 <body onload="applySiteProperties(); auth(); navTo(location.hash);">

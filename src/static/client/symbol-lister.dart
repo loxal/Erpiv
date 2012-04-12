@@ -76,11 +76,13 @@ initContainer() {
     decimalRange = new Element.tag('td');
     footer.elements.add(totalSymbols);
     footer.elements.add(decimalRange);
-    TableElement thNum = new Element.tag('th');
+//    TableElement thNum = new Element.tag('th');
+    Element thNum = container.createTHead();
     thNum.innerHTML = '#';
-    TableElement thSymbol = new Element.tag('th');
+    Element thSymbol = container.createTHead();
+//    TableElement thSymbol = new Element.tag('th');
     thSymbol.innerHTML = 'Symbol';
-    TableElement thNotation = new Element.tag('th');
+    Element thNotation = container.createTHead();
     thNotation.innerHTML = 'Decimal Notation';
     header.elements.add(thNum);
     header.elements.add(thSymbol);
@@ -98,21 +100,21 @@ initContainer() {
 TableCellElement totalSymbols;
 TableCellElement decimalRange;
 refreshSymbolList() {
-     final int symbolFrom = Math.parseInt(symbolFrom.value);
-     final int symbolTo = Math.parseInt(symbolTo.value);
+     final int symbolFromNum = Math.parseInt(symbolFrom.value);
+     final int symbolToNum = Math.parseInt(symbolTo.value);
 
    tbody.nodes.clear();
-   int num = 1;
-   for (int idx = symbolFrom; idx < symbolTo; idx++) {
-      final symbol = new Element.html('<tr><td>' + num++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
+   int code = 1;
+   for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
+      final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
        idx
       + '</td></tr>');
 
      tbody.elements.add(symbol);
 
-     totalSymbols.innerHTML = (symbolTo - symbolFrom).toString();
+     totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
 
-     decimalRange.innerHTML = symbolFrom.toString() + ' - ' + symbolTo.toString();
+     decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
    }
 }
 
@@ -129,15 +131,16 @@ getStylesheet() {
     final LinkElement styleSheet = new Element.tag("link");
     styleSheet.rel = "stylesheet";
     styleSheet.type="text/css";
-    styleSheet.href="/static/theme/icon/css/font-awesome.css";
+    styleSheet.href="../theme/icon/css/font-awesome.css";
     return styleSheet;
 }
 
 displaySymbol() {
     final List<Element> a = document.queryAll('.viewBox');
-    final Element symbolId = document.query('#symbolId');
-    for(Element e in a) {
+    final InputElement symbolId = document.query('#symbolId');
+    for(final InputElement e in a) {
       e.innerHTML = '&#' + symbolId.value + ';';
+//      e.innerHTML = '&#' + symbolId.value + ';';
     }
 }
 
@@ -154,7 +157,7 @@ main() {
     my.initContainer();
 
   final List<String> fruits = ['APPLES', 'ORANGES', 'bananas'];
-  final Hello hello = new Hello("Bob", fruits);
+  Hello hello = new Hello("Bob", fruits);
   hello.p.on.click.add((e) => print('clicked on paragraph!'));
   document.body.elements.add(hello.root);
 
