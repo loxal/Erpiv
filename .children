@@ -1,3 +1,4 @@
+src/pager/main.dart
 src/loxal/tests/placeholder.dart
 src/static/client/EntityLister.dart
 src/test/test.dart

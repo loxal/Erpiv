@@ -33,7 +33,7 @@ class Test {
   void test1() {
     Connection conn = new Connection(); 
     conn.connect();
-    MongoQueryMessage queryMessage = new MongoQueryMessage("db.\$cmd", 0, 0, 1, {"ping":1}, null);
+    MongoQueryMessage queryMessage = new MongoQueryMessage("dddsadfsadfb.\$cmd", 0, 0, 1, {"ping":233}, null);
     Future<MongoReplyMessage> replyFuture = conn.query(queryMessage);
     replyFuture.then((msg) {
       Expect.mapEquals({'ok': 1.000000}, msg.documents[0]);
