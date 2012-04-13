@@ -15,6 +15,7 @@ InputElement symbolFrom;
 InputElement symbolTo;
 LabelElement symbolToLabel;
 DivElement app;
+BaseElement base;
 
 preinit() {
     final HeadingElement h1 = new Element.tag('h1');
@@ -129,7 +130,8 @@ getStylesheet() {
     final LinkElement styleSheet = new Element.tag("link");
     styleSheet.rel = "stylesheet";
     styleSheet.type="text/css";
-    styleSheet.href="../theme/icon/css/font-awesome.css";
+    styleSheet.href="css/font-awesome.css";
+//    styleSheet.href="../theme/icon/css/font-awesome.css";
     return styleSheet;
 }
 
@@ -144,23 +146,24 @@ displaySymbol() {
 
   EntityLister() {
       print('constructed');
+      base = new Element.tag('base');
+      base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
+      document.head.elements.add(base);
   }
 }
 
 main() {
+  final Dynamic c = new C();
+  if (c is C) print("C");
+  if (c is B) print("B");
+  if (c is A) print("A");
+  if (c is Dynamic) print("Dynamic!");
+   
     final EntityLister my = new EntityLister();
     my.app =  new Element.tag('div');
     document.body.elements.add(my.app);
     my.preinit();
     my.initContainer();
-
-//  final List<String> fruits = ['APPLES', 'ORANGES', 'bananas'];
-//  Hello hello = new Hello("Bob", fruits);
-//  hello.p.on.click.add((e) => print('clicked on paragraph!'));
-//  document.body.elements.add(hello.root);
-
-//  EntityViewer entityViewer = new EntityViewer(93);
-//  document.body.elements.add(entityViewer.root);
     
     Layout l = new Layout(42);
     document.body.elements.add(l.root);
@@ -168,3 +171,9 @@ main() {
     my.init();
     my.refreshSymbolList();
 }
+
+
+class A {}
+class B extends A {}
+class C extends B {}
+
