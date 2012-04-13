@@ -4,11 +4,9 @@
  * license that can be found in the LICENSE file.
  */
 
-#library('symbolLister');
+#library('EntityLister');
 #import('dart:html');
-#import('dart:dom', prefix:'dom');
-#source('hello.dart');
-#source('fruit.dart');
+#source('Layout.dart');
 #source('EntityViewer.dart');
 
 class EntityLister {
@@ -144,9 +142,9 @@ displaySymbol() {
     }
 }
 
-EntityLister() {
-    print('constructed');
-}
+  EntityLister() {
+      print('constructed');
+  }
 }
 
 main() {
@@ -156,13 +154,16 @@ main() {
     my.preinit();
     my.initContainer();
 
-  final List<String> fruits = ['APPLES', 'ORANGES', 'bananas'];
-  Hello hello = new Hello("Bob", fruits);
-  hello.p.on.click.add((e) => print('clicked on paragraph!'));
-  document.body.elements.add(hello.root);
+//  final List<String> fruits = ['APPLES', 'ORANGES', 'bananas'];
+//  Hello hello = new Hello("Bob", fruits);
+//  hello.p.on.click.add((e) => print('clicked on paragraph!'));
+//  document.body.elements.add(hello.root);
 
-  EntityViewer entityViewer = new EntityViewer(93);
-  document.body.elements.add(entityViewer.root);
+//  EntityViewer entityViewer = new EntityViewer(93);
+//  document.body.elements.add(entityViewer.root);
+    
+    Layout l = new Layout(42);
+    document.body.elements.add(l.root);
 
     my.init();
     my.refreshSymbolList();
