@@ -6,15 +6,14 @@
 
 #library('loxal:pager');
 #import('dart:html');
-#source('layout.dart');
 #source('pager.dart');
+#source('layout.dart');
 
-class EntityLister {
-
+class Main {
 }
 
 main() {
-    Layout layout = new Layout(42);
+    Layout layout = new Layout('42');
     document.body.elements.add(layout.root);
 }
 

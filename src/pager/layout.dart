@@ -5,13 +5,13 @@ class Layout {
   Map<String, Object> _scopes;
   Element _fragment;
 
-  var data;
+  var panel;
 
 
   // Elements bound to a variable:
   var hello;
 
-  Layout(this.data) : _scopes = new Map<String, Object>() {
+  Layout(this.panel) : _scopes = new Map<String, Object>() {
     // Insure stylesheet for template exist in the document.
     add_foo_templatesStyles();
 
@@ -19,8 +19,8 @@ class Layout {
     hello = new Element.html('<div>');
     _fragment.elements.add(hello);
 
-    // Call template EntityViewer.
-    var e0 = new pager(data);
+    // Call template Pager.
+    var e0 = new Pager(panel);
     hello.elements.add(e0.root);
   }
 
@@ -39,6 +39,7 @@ class Layout {
   }
 }
 
+
 // Inject all templates stylesheet once into the head.
 bool foo_stylesheet_added = false;
 void add_foo_templatesStyles() {
@@ -46,7 +47,7 @@ void add_foo_templatesStyles() {
     StringBuffer styles = new StringBuffer();
 
     // All templates stylesheet.
-    styles.add(pager.stylesheet);
+    styles.add(Layout.stylesheet);
 
     foo_stylesheet_added = true;
     document.head.elements.add(new Element.html('<style>${styles.toString()}</style>'));

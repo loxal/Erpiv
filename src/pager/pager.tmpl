@@ -1,11 +1,11 @@
-template pager(var data) {
+template Pager(var data) {
 	<div>
 		<table>
 		<caption>Caption</caption>
 		<thead>
 			<tr>
-				<th>Number</th>
-				<th>Entity</th>
+				<td>Number</td>
+				<td>Entity</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,7 +17,7 @@ template pager(var data) {
 		</tr>
 		</tbody>
 		<tfoot>
-				<tr>
+			<tr>
 			<td>
 			</td>
 			<td>
@@ -25,7 +25,6 @@ template pager(var data) {
 		</tr>
 		</tfoot>
 		</table>
-		
 		<p>${data}</p>
 	</div>
 }

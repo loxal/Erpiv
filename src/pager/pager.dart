@@ -1,13 +1,13 @@
 // Generated Dart class from HTML template.
 // DO NOT EDIT.
 
-class pager {
+class Pager {
   Map<String, Object> _scopes;
   Element _fragment;
 
   var data;
 
-  pager(this.data) : _scopes = new Map<String, Object>() {
+  Pager(this.data) : _scopes = new Map<String, Object>() {
     // Insure stylesheet for template exist in the document.
     add_foo_templatesStyles();
 
@@ -22,9 +22,9 @@ class pager {
     e1.elements.add(e3);
     var e4 = new Element.html('<tr></tr>');
     e3.elements.add(e4);
-    var e5 = new Element.html('<th>Number</th>');
+    var e5 = new Element.html('<td>Number</td>');
     e4.elements.add(e5);
-    var e6 = new Element.html('<th>Entity</th>');
+    var e6 = new Element.html('<td>Entity</td>');
     e4.elements.add(e6);
     var e7 = new Element.html('<tbody></tbody>');
     e1.elements.add(e7);
@@ -64,6 +64,3 @@ class pager {
     return html;
   }
 }
-
-
-
