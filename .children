@@ -1,6 +1,6 @@
 src/pager/main.dart
 src/loxal/tests/placeholder.dart
 src/static/client/EntityLister.dart
+src/model/main.dart
 src/test/test.dart
 src/poll/main.dart
-src/loxal/model/modelPlaceholder.dart
