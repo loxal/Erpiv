@@ -15,7 +15,7 @@ class Poll {
 
   Poll(this.data) : _scopes = new Map<String, Object>() {
     // Insure stylesheet for template exist in the document.
-    add_foo_templatesStyles();
+    add_poll_templatesStyles();
 
     _fragment = new DocumentFragment();
     var e0 = new Element.html('<h2>Create Poll</h2>');
@@ -85,15 +85,15 @@ class Poll {
 
 
 // Inject all templates stylesheet once into the head.
-bool foo_stylesheet_added = false;
-void add_foo_templatesStyles() {
-  if (!foo_stylesheet_added) {
+bool poll_stylesheet_added = false;
+void add_poll_templatesStyles() {
+  if (!poll_stylesheet_added) {
     StringBuffer styles = new StringBuffer();
 
     // All templates stylesheet.
     styles.add(Poll.stylesheet);
 
-    foo_stylesheet_added = true;
+    poll_stylesheet_added = true;
     document.head.elements.add(new Element.html('<style>${styles.toString()}</style>'));
   }
 }

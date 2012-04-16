@@ -6,9 +6,9 @@
 
 #library('loxal:poll');
 #import('dart:html');
-//#import('dart:io');
 #import('dart:isolate');
-//#import('/Users/alex/my/src/mongo-dart/lib/mongo.dart');
+//#import('../lib/mongo.dart');
+//#import("dart:builtin");
 #source('poll.dart');
 
 class Main {
