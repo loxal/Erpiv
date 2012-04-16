@@ -1,66 +1,6 @@
 // Generated Dart class from HTML template.
 // DO NOT EDIT.
 
-class NameEntry {
-  Map<String, Object> _scopes;
-  Element _fragment;
-
-  String name;
-  int age;
-
-
-  // Elements bound to a variable:
-  var topDiv;
-  var spanElem;
-
-  NameEntry(this.name, this.age) : _scopes = new Map<String, Object>() {
-    // Insure stylesheet for template exist in the document.
-    add_foo_templatesStyles();
-
-    _fragment = new DocumentFragment();
-    topDiv = new Element.html('<div attr2="test2" attr1="test1" attr3="test3" attr="test"></div>');
-    _fragment.elements.add(topDiv);
-    spanElem = new Element.html('<span>${inject_0()}</span>');
-    topDiv.elements.add(spanElem);
-    var e0 = new Element.html('<span>-</span>');
-    topDiv.elements.add(e0);
-    var e1 = new Element.html('<span>${inject_1()}</span>');
-    topDiv.elements.add(e1);
-  }
-
-  Element get root() => _fragment;
-
-  // CSS class selectors for this template.
-  static String get foo() => "foo";
-
-  // Injection functions:
-  String inject_0() {
-    return safeHTML('${name}');
-  }
-
-  String inject_1() {
-    return safeHTML('${age}');
-  }
-
-  // Each functions:
-
-  // With functions:
-
-  // CSS for this template.
-  static final String stylesheet = '''
-    
-.foo {
-  left: 10px;
-}
-
-  ''';
-
-  // Stylesheet class selectors:
-  String safeHTML(String html) {
-    // TODO(terry): Escaping for XSS vulnerabilities TBD.
-    return html;
-  }
-}
 class Poll {
   Map<String, Object> _scopes;
   Element _fragment;
@@ -69,8 +9,9 @@ class Poll {
 
 
   // Elements bound to a variable:
-  var namePoll;
+  var name;
   var question;
+  var act;
 
   Poll(this.data) : _scopes = new Map<String, Object>() {
     // Insure stylesheet for template exist in the document.
@@ -83,10 +24,12 @@ class Poll {
     _fragment.elements.add(e1);
     var e2 = new Element.html('<legend>Legend</legend>');
     e1.elements.add(e2);
-    namePoll = new Element.html('<input type="text">Name of the poll</input>');
-    e1.elements.add(namePoll);
+    name = new Element.html('<input type="text">Name of the poll</input>');
+    e1.elements.add(name);
     question = new Element.html('<input type="text">Question</input>');
     e1.elements.add(question);
+    act = new Element.html('<button>fest</button>');
+    e1.elements.add(act);
     var e3 = new Element.html('<div></div>');
     _fragment.elements.add(e3);
     var e4 = new Element.html('<table></table>');
@@ -137,5 +80,20 @@ class Poll {
   String safeHTML(String html) {
     // TODO(terry): Escaping for XSS vulnerabilities TBD.
     return html;
+  }
+}
+
+
+// Inject all templates stylesheet once into the head.
+bool foo_stylesheet_added = false;
+void add_foo_templatesStyles() {
+  if (!foo_stylesheet_added) {
+    StringBuffer styles = new StringBuffer();
+
+    // All templates stylesheet.
+    styles.add(Poll.stylesheet);
+
+    foo_stylesheet_added = true;
+    document.head.elements.add(new Element.html('<style>${styles.toString()}</style>'));
   }
 }

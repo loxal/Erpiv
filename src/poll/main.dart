@@ -7,16 +7,18 @@
 #library('loxal:poll');
 #import('dart:html');
 #source('poll.dart');
-#source('layout.dart');
 
 class Main {
 }
 
 main() {
-  Poll p = new Poll(43);
-  p.question = 'BLUB';
-    Layout layout = new Layout('42');
-    document.body.elements.add(layout.root);
-//    print(layout.pager);
+  Poll poll = new Poll('42');
+  poll.question.value = 'BLUB';
+  poll.name.value = 'myname';
+  poll.act.value ='best';
+  
+  poll.act.on.click.add((e) => poll.question.value = 'BLUB!!!!');
+  
+  document.body.elements.add(poll.root);
 }
 
