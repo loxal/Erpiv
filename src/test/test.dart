@@ -1,10 +1,8 @@
 #library('loxal:test');
 
 #import('/Users/alex/my/src/mongo-dart/lib/mongo.dart');
-//#import('/Users/alex/my/src/mongo-dart/lib/bson/bson.dart');
-//#import("dart:io");
-//#import('dart:builtin');
-#import('/Users/alex/my/src/dart/dart/lib/unittest/unittest_vm.dart');
+#import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
+#import('dart:isolate');
 
 class Test {
   void test() {
@@ -18,7 +16,7 @@ class Test {
     });
   }
   
-  void testStudent(){
+  void testStudent() {
     Connection conn = new Connection();
     conn.connect();
     MongoQueryMessage queryMessage = new MongoQueryMessage("test.student",0,0,10,{"name":"Daniil"},null);
@@ -40,10 +38,34 @@ class Test {
       conn.close();
     });
   }
-  
 }
 
-main() {
+runInIsolate() {
+  print("hello from an isolate!");
+}
+
+echo() {
+  print('blub');
+  port.receive((msg, SendPort reply) {
+    print("I receivedddddd: $msg");
+    reply.send("I received: $msg");
+  });
+}
+void main() {
+  SendPort sendPort = spawnFunction(echo);
+  Future<String> fut = sendPort.call("Hello from main!!!!");
+  
+  fut.then((reply) {
+    print(reply);    // I received: Hello from main
+  });
+  
+  spawnFunction(runInIsolate);
+  
+  final Test t1 = new Test();
+  group('My Tests',(){
+    test('Test ping', t1.test1);
+  });
+  
   print(111222);
   final Test t = new Test();
   t.test1();
