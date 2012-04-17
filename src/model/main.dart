@@ -6,8 +6,6 @@
 
 #library('loxal:model');
 #import('/Users/alex/my/src/mongo-dart/lib/mongo.dart');
-//#import("../lib/mongo.dart");
-#import("dart:builtin");
 
 class Main {
   
@@ -29,25 +27,29 @@ void myNew() {
   final Db db = new Db("vote");
   print("Connecting to ${db.serverConfig.host}:${db.serverConfig.port}");
   DbCollection vote;
-  Map<String, Map> users = new Map<String, Map>();
-  db.open().chain((o) {
-    print(">> Dropping mongo-dart-blog db");
+  final Map<String, Map> users = new Map<String, Map>();
+  final Future<bool> dbConnection = db.open();
+  
+  final Future insertData = dbConnection.chain((o) {
     db.drop();
-    print("===================================================================================");
-    print(">> Adding Authors");
     vote = db.collection('vote');
     vote.insertAll(
-      [{'name':'William Shakespeare', 'email':'william@shakespeare.com', 'age':587},
-      {'name':'Jorge Luis Borges', 'email':'jorge@borges.com', 'age':123}]
+      [
+       {'nameFirst': 'Alexander', 'nameLast': 'Orlov', 'email1': 'alexander.orlov@loxal.net', 'agee': 587},
+      {'nameFirst': 'Jorge Luis Borges', 'email1': 'jorge@borges.com', 'agee': 123}
+       ]
     );
-    return vote.find().each((v){users[v["name"]] = v;});
+    return vote.find().each((v) {users[v["nameFirst"]] = v;});
     
-  }).chain((v){
-    print("===================================================================================");
-    print(">> Authors ordered by age ascending");
-    return vote.find(orderBy:{'age':1}).each(
-      (auth)=>print("[${auth['name']}]:[${auth['email']}]:[${auth['age']}]"));
-  }).then((onComplete) => db.close());
+  });
+  
+  final Future readData = dbConnection.chain((v) {
+    return vote.find(orderBy:{'agee':1}).each(
+      (auth) => print("[${auth['nameFirst']}]:[${auth['email1']}]:[${auth['nameLast']}]:[${auth['agee']}]")
+      );
+  });
+  
+  readData.then((onComplete) => db.close());
     
   }
 void main() {
