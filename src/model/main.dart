@@ -23,20 +23,21 @@ void test() {
 }
 
 void myNew() {
-  setVerboseState();
+//  setVerboseState();
   final Db db = new Db("vote");
-  print("Connecting to ${db.serverConfig.host}:${db.serverConfig.port}");
   DbCollection vote;
+  print("Connecting to ${db.serverConfig.host}:${db.serverConfig.port}");
   final Map<String, Map> users = new Map<String, Map>();
   final Future<bool> dbConnection = db.open();
   
   final Future insertData = dbConnection.chain((o) {
-    db.drop();
+//    db.drop();
     vote = db.collection('vote');
+//    vote.remove();
     vote.insertAll(
       [
-       {'nameFirst': 'Alexander', 'nameLast': 'Orlov', 'email1': 'alexander.orlov@loxal.net', 'agee': 587},
-      {'nameFirst': 'Jorge Luis Borges', 'email1': 'jorge@borges.com', 'agee': 123}
+       {'nameFirst': 'Alexander', 'nameLast': 'Orlov', 'email': 'alexander.orlov@loxal.net'},
+       {'nameFirst': 'Seven.test', 'nameLast': 'of Nine', 'email': 'jorge@borges.com'}
        ]
     );
     return vote.find().each((v) {users[v["nameFirst"]] = v;});
@@ -45,7 +46,7 @@ void myNew() {
   
   final Future readData = dbConnection.chain((v) {
     return vote.find(orderBy:{'agee':1}).each(
-      (auth) => print("[${auth['nameFirst']}]:[${auth['email1']}]:[${auth['nameLast']}]:[${auth['agee']}]")
+      (auth) => print("[${auth['nameFirst']}]:[${auth['email']}]:[${auth['nameLast']}]:[${auth['agee']}]:[${auth['_id']}]")
       );
   });
   

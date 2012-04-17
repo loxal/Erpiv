@@ -3,10 +3,12 @@ src/test/test.dart
 src/blog_server.dart
 src/pager/main.dart
 src/lib/mongo.dart
+src/model/data.dart
 src/loxal/tests/placeholder.dart
 src/poll/main.dart
 src/third_party/log4dart/LogLib.dart
 src/lib/networking/logger.dart
 src/lib/bson/bson.dart
+src/test/populate_db.dart
 src/third_party/log4dart/test/TestRunner.dart
 src/model/main.dart
