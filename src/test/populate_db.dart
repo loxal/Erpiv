@@ -1,5 +1,6 @@
 #library('loxal:initDb');
 #import('/Users/alex/my/src/mongo-dart/lib/mongo.dart');
+#import('/Users/alex/my/src/mongo-dart/lib/bson/bson.dart');
 
 class PopulateDb {
   void create() {
@@ -33,17 +34,29 @@ class PopulateDb {
     print('Read...');
     var readData = dbConnection.chain((v) {
       return vote.find().each(
-        (o) => print(o)
+        (o) { print(o); }
         );
     });
     
-    readData.then((onComplete) => db.close());  
+    readData.then((onComplete) { db.close(); });  
+  }
+  
+  void update() {
+    print('Update...');
+    var update1 = dbConnection.chain((o) {
+      return vote.findOne({'nameFirst':'Alexander'});
+    });
+    update1.then((onComplete) {
+      print(onComplete);
+      print(onComplete['_id']);
+      print(onComplete["nameFirst"]);
+            db.close();
+      });  
   }
   
   void cleanup() {
     print('Remove...');
-//      vote.remove();
-    var clear = this.dbConnection.chain((o) {
+    var clear = dbConnection.chain((o) {
       return vote.findOne({'nameFirst':'Alexander'});
     });
     clear.then((onComplete) {
@@ -54,9 +67,15 @@ class PopulateDb {
 }
 
 void main() {
+  Map selector = {};
+  ObjectId o = new ObjectId.fromSeconds(222);
+  print(o);
+  
+  print(selector);
   final PopulateDb populateDb = new PopulateDb();
   populateDb.create();
-  populateDb.read();
+//  populateDb.read();
+  populateDb.update();
   populateDb.cleanup();
   print('End.');
 }
