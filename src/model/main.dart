@@ -42,6 +42,11 @@ void myNew() {
     );
     return vote.find().each((v){users[v["name"]] = v;});
     
+  }).chain((v){
+    print("===================================================================================");
+    print(">> Authors ordered by age ascending");
+    return vote.find(orderBy:{'age':1}).each(
+      (auth)=>print("[${auth['name']}]:[${auth['email']}]:[${auth['age']}]"));
   }).then((onComplete) => db.close());
     
   }
