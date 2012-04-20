@@ -1,5 +1,5 @@
-template EntityContainer() {
-		<table>
+template EntityContainer(List entities) {
+	<table>
 		<caption>Container</caption>
 		<thead>
 			<tr>
@@ -8,7 +8,13 @@ template EntityContainer() {
 				<td>Decimal Notation</td>
 			</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody var="tbodyl">
+				<tr>
+					<td>${entities}</td>
+					<td></td>
+					<td></td>
+				</tr>
+		</tbody>
 		<tfoot></tfoot>
 	</table>
 }

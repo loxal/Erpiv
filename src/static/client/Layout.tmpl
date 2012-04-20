@@ -1,6 +1,6 @@
-template Layout(var panel) {
-  <div var="container">
-  	${#EntityContainer()}
-  	${#EntityViewer(panel)}
+template Layout(var content, var entities) {
+	<div var="container">
+	  	${#EntityContainer(entities)}
+	  	${#EntityViewer(content)}
 	</div>
 }

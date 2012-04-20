@@ -76,11 +76,9 @@ initContainer() {
     decimalRange = new Element.tag('td');
     footer.elements.add(totalSymbols);
     footer.elements.add(decimalRange);
-//    TableElement thNum = new Element.tag('th');
     Element thNum = container.createTHead();
     thNum.innerHTML = '#';
     Element thSymbol = container.createTHead();
-//    TableElement thSymbol = new Element.tag('th');
     thSymbol.innerHTML = 'Symbol';
     Element thNotation = container.createTHead();
     thNotation.innerHTML = 'Decimal Notation';
@@ -94,7 +92,6 @@ initContainer() {
     container.elements.add(tfoot);
 
     app.elements.add(container);
-
 }
 
 TableCellElement totalSymbols;
@@ -160,7 +157,8 @@ main() {
     my.preinit();
     my.initContainer();
     
-    Layout l = new Layout(42);
+    List entities = ['apples', 'oranges', 'bananas'];
+    Layout l = new Layout(42, entities);
     document.body.elements.add(l.root);
 
     my.init();
