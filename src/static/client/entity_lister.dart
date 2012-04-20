@@ -6,8 +6,9 @@
 
 #library('EntityLister');
 #import('dart:html');
-#source('Layout.dart');
-#source('EntityViewer.dart');
+#source('layout.dart');
+#source('entity_viewer.dart');
+#source('entity_container.dart');
 
 class EntityLister {
 
@@ -153,12 +154,6 @@ displaySymbol() {
 }
 
 main() {
-  final Dynamic c = new C();
-  if (c is C) print("C");
-  if (c is B) print("B");
-  if (c is A) print("A");
-  if (c is Dynamic) print("Dynamic!");
-   
     final EntityLister my = new EntityLister();
     my.app =  new Element.tag('div');
     document.body.elements.add(my.app);
@@ -171,9 +166,4 @@ main() {
     my.init();
     my.refreshSymbolList();
 }
-
-
-class A {}
-class B extends A {}
-class C extends B {}
 

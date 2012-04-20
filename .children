@@ -1,8 +1,8 @@
-src/static/client/EntityLister.dart
 src/test/test.dart
 src/blog_server.dart
 src/pager/main.dart
 src/lib/mongo.dart
+src/static/client/entity_lister.dart
 src/model/data.dart
 src/loxal/tests/placeholder.dart
 src/poll/main.dart

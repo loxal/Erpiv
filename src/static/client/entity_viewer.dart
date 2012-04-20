@@ -9,7 +9,7 @@ class EntityViewer {
 
   EntityViewer(this.number) : _scopes = new Map<String, Object>() {
     // Insure stylesheet for template exist in the document.
-    add_foo_templatesStyles();
+    add_entity_viewer_templatesStyles();
 
     _fragment = new DocumentFragment();
     var e0 = new Element.html('<fieldset></fieldset>');
@@ -68,19 +68,25 @@ class EntityViewer {
 }
 
   ''';
+
+  // Stylesheet class selectors:
+  String safeHTML(String html) {
+    // TODO(terry): Escaping for XSS vulnerabilities TBD.
+    return html;
+  }
 }
 
 
 // Inject all templates stylesheet once into the head.
-bool foo_stylesheet_added = false;
-void add_foo_templatesStyles() {
-  if (!foo_stylesheet_added) {
+bool entity_viewer_stylesheet_added = false;
+void add_entity_viewer_templatesStyles() {
+  if (!entity_viewer_stylesheet_added) {
     StringBuffer styles = new StringBuffer();
 
     // All templates stylesheet.
     styles.add(EntityViewer.stylesheet);
 
-    foo_stylesheet_added = true;
+    entity_viewer_stylesheet_added = true;
     document.head.elements.add(new Element.html('<style>${styles.toString()}</style>'));
   }
 }
