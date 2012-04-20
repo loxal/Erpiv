@@ -14,7 +14,7 @@ class EntityViewer {
     _fragment = new DocumentFragment();
     var e0 = new Element.html('<fieldset></fieldset>');
     _fragment.elements.add(e0);
-    var e1 = new Element.html('<legend>Symbol Display</legend>');
+    var e1 = new Element.html('<legend id="my">Symbol Display</legend>');
     e0.elements.add(e1);
     var e2 = new Element.html('<span style="font-size: 1em;" class="viewBox">&#x2724;</span>');
     e0.elements.add(e2);

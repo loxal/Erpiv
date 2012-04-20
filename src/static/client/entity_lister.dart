@@ -6,6 +6,7 @@
 
 #library('EntityLister');
 #import('dart:html');
+//#import('test.dart');
 #source('layout.dart');
 #source('entity_viewer.dart');
 #source('entity_container.dart');
@@ -157,11 +158,17 @@ main() {
     my.preinit();
     my.initContainer();
     
+    
     List entities = ['apples', 'oranges', 'bananas'];
     Layout l = new Layout(42, entities);
     document.body.elements.add(l.root);
 
     my.init();
     my.refreshSymbolList();
+    my.symbolFrom.value = 'best';
+    
+    Expect.equals(my.symbolFrom.value, 'best');
+    Expect.equals(document.body.query('#fest').innerHTML, 'yeah');
+    
 }
 

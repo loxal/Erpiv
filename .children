@@ -1,3 +1,4 @@
+src/static/client/test.dart
 src/test/test.dart
 src/blog_server.dart
 src/pager/main.dart
