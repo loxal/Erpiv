@@ -130,7 +130,6 @@ getStylesheet() {
     styleSheet.rel = "stylesheet";
     styleSheet.type="text/css";
     styleSheet.href="css/font-awesome.css";
-//    styleSheet.href="../theme/icon/css/font-awesome.css";
     return styleSheet;
 }
 
@@ -139,7 +138,6 @@ displaySymbol() {
     final InputElement symbolId = document.query('#symbolId');
     for(final InputElement e in a) {
       e.innerHTML = '&#' + symbolId.value + ';';
-//      e.innerHTML = '&#' + symbolId.value + ';';
     }
 }
 
@@ -165,9 +163,7 @@ main() {
 
     my.init();
     my.refreshSymbolList();
-    my.symbolFrom.value = 'best';
-    
-    Expect.equals(my.symbolFrom.value, 'best');
+
     Expect.equals(document.body.query('#fest').innerHTML, 'yeah');
     
 }

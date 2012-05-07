@@ -12,38 +12,54 @@ class EntityViewer {
     add_entity_viewer_templatesStyles();
 
     _fragment = new DocumentFragment();
-    var e0 = new Element.html('<fieldset></fieldset>');
+    var e0 = new Element.html('''
+       	<fieldset>
+       	    <legend id="my">Symbol Display</legend>
+       	    <span class="viewBox" style="font-size: 1em;">&#x2724;</span>
+       	    <span class="viewBox" style="font-size: 2em;">&#x2658;</span>
+       	    <span class="viewBox" style="font-size: 3em;">&#x2620;</span>
+       	    <span class="viewBox" style="font-size: 6em;">&#x2624;</span>
+       	    <label for="symbolId">Symbol Id:</label>
+       	    <input type="text" id="symbolId" value="x274a">&nbsp;</input>
+
+       	    <p>E.g. "10046" in <em>decimal</em> notation or "<strong>x</strong>27bd" in <em>hexadecimal</em> notation</p>
+       	    <button id="symbol-display" class="icon-list">Display Symbol</button>
+       	</fieldset>
+    ''');
     _fragment.elements.add(e0);
-    var e1 = new Element.html('<legend id="my">Symbol Display</legend>');
-    e0.elements.add(e1);
-    var e2 = new Element.html('<span style="font-size: 1em;" class="viewBox">&#x2724;</span>');
-    e0.elements.add(e2);
-    var e3 = new Element.html('<span style="font-size: 2em;" class="viewBox">&#x2658;</span>');
-    e0.elements.add(e3);
-    var e4 = new Element.html('<span style="font-size: 3em;" class="viewBox">&#x2620;</span>');
-    e0.elements.add(e4);
-    var e5 = new Element.html('<span style="font-size: 6em;" class="viewBox">&#x2624;</span>');
-    e0.elements.add(e5);
-    var e6 = new Element.html('<label for="symbolId">Symbol Id:</label>');
-    e0.elements.add(e6);
-    var e7 = new Element.html('<input value="x274a" type="text" id="symbolId">&nbsp;</input>');
-    e0.elements.add(e7);
-    var e8 = new Element.html('<p>E.g. "10046" in</p>');
-    e0.elements.add(e8);
-    var e9 = new Element.html('<em>decimal</em>');
-    e8.elements.add(e9);
-    var e10 = new Text('notation or "');
-    e8.elements.add(e10);
-    var e11 = new Element.html('<strong>x</strong>');
-    e8.elements.add(e11);
-    var e12 = new Text('27bd" in');
-    e8.elements.add(e12);
-    var e13 = new Element.html('<em>hexadecimal</em>');
-    e8.elements.add(e13);
-    var e14 = new Text('notation');
-    e8.elements.add(e14);
-    var e15 = new Element.html('<button id="symbol-display" class="icon-list">Display Symbol</button>');
-    e0.elements.add(e15);
+
+//    var e0 = new Element.html('<fieldset></fieldset>');
+//    _fragment.elements.add(e0);
+//    var e1 = new Element.html('<legend id="my">Symbol Display</legend>');
+//    e0.elements.add(e1);
+//    var e2 = new Element.html('<span style="font-size: 1em;" class="viewBox">&#x2724;</span>');
+//    e0.elements.add(e2);
+//    var e3 = new Element.html('<span style="font-size: 2em;" class="viewBox">&#x2658;</span>');
+//    e0.elements.add(e3);
+//    var e4 = new Element.html('<span style="font-size: 3em;" class="viewBox">&#x2620;</span>');
+//    e0.elements.add(e4);
+//    var e5 = new Element.html('<span style="font-size: 6em;" class="viewBox">&#x2624;</span>');
+//    e0.elements.add(e5);
+//    var e6 = new Element.html('<label for="symbolId">Symbol Id:</label>');
+//    e0.elements.add(e6);
+//    var e7 = new Element.html('<input value="x274a" type="text" id="symbolId">&nbsp;</input>');
+//    e0.elements.add(e7);
+//    var e8 = new Element.html('<p>E.g. "10046" in</p>');
+//    e0.elements.add(e8);
+//    var e9 = new Element.html('<em>decimal</em>');
+//    e8.elements.add(e9);
+//    var e10 = new Text('notation or "');
+//    e8.elements.add(e10);
+//    var e11 = new Element.html('<strong>x</strong>');
+//    e8.elements.add(e11);
+//    var e12 = new Text('27bd" in');
+//    e8.elements.add(e12);
+//    var e13 = new Element.html('<em>hexadecimal</em>');
+//    e8.elements.add(e13);
+//    var e14 = new Text('notation');
+//    e8.elements.add(e14);
+//    var e15 = new Element.html('<button id="symbol-display" class="icon-list">Display Symbol</button>');
+//    e0.elements.add(e15);
   }
 
   Element get root() => _fragment;

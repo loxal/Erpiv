@@ -38,7 +38,7 @@ class PopulateDb {
         );
     });
     
-    readData.then((onComplete) { db.close(); });  
+        readData.then((onComplete) { db.close(); });
   }
   
   void update() {
