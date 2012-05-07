@@ -6,7 +6,6 @@
 
 #library('EntityLister');
 #import('dart:html');
-//#import('test.dart');
 #source('layout.dart');
 #source('entity_viewer.dart');
 #source('entity_container.dart');

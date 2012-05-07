@@ -5,7 +5,7 @@
  */
 
 class EntityViewer {
-  Map<String, Object> _scopes;
+  final Map<String, Object> _scopes;
   Element _fragment;
 
   int number;
@@ -22,7 +22,8 @@ class EntityViewer {
     </style>"""));
 
     _fragment = new DocumentFragment();
-    var e0 = new Element.html('''
+
+    Element viewer = new Element.html('''
        	<fieldset>
        	    <legend id="my">Symbol Display</legend>
        	    <span class="viewBox" style="font-size: 1em;">&#x2724;</span>
@@ -36,7 +37,7 @@ class EntityViewer {
        	    <button id="symbol-display" class="icon-list">Display Symbol</button>
        	</fieldset>
     ''');
-    _fragment.elements.add(e0);
+    _fragment.elements.add(viewer);
   }
 
   Element get root() => _fragment;

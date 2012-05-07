@@ -1,3 +1,9 @@
+/*
+ * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
 class Layout {
   Map<String, Object> _scopes;
   Element _fragment;
@@ -13,12 +19,12 @@ class Layout {
     _fragment.elements.add(container);
 
     // Call template EntityContainer.
-    var e0 = new EntityContainer(entities);
-    container.elements.add(e0.root);
+    EntityContainer entityContainer = new EntityContainer(entities);
+    container.elements.add(entityContainer.root);
 
     // Call template EntityViewer.
-    var e1 = new EntityViewer(content);
-    container.elements.add(e1.root);
+    EntityViewer entityViewer = new EntityViewer(content);
+    container.elements.add(entityViewer.root);
   }
 
   Element get root() => _fragment;
