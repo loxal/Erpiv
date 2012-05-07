@@ -164,7 +164,5 @@ main() {
     my.init();
     my.refreshSymbolList();
 
-    Expect.equals(document.body.query('#fest').innerHTML, 'yeah');
-    
 }
 
