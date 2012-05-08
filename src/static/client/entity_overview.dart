@@ -17,6 +17,7 @@ class EntityContainer {
 
   EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
     _fragment = new DocumentFragment();
+    
     var containerTable = new Element.html("""
         <table>
           <caption>Container</caption>
@@ -27,14 +28,16 @@ class EntityContainer {
               <td>Decimal Notation</td>
             </tr>
           </thead>
-          <tbody var="tbodyl">
+          <tbody id="tbody">
               <tr>
                 <td>${entities}</td>
                 <td></td>
                 <td></td>
               </tr>
           </tbody>
-          <tfoot></tfoot>
+          <tfoot>
+            <tr><td id="totalSymbols"></td><td id="decimalRange"></td></tr>
+          </tfoot>
         </table>
     """);
     _fragment.elements.add(containerTable);
@@ -134,31 +137,20 @@ preinit() {
 </fieldset>
 """);
     
+
+    
     app.nodes.add(controls);
 
     app.nodes.add(h1);
 }
 
 TableSectionElement tbody;
-initContainer() {
-  Element container = new Element.html("""
-<table>
-<caption>Container<caption>
-<thead><tr><td></td><td></td></tr></thead>
-<tbody id="tbody"></tbody>
-<tfoot><tr><td id="totalSymbols"></td><td id="decimalRange"></td></tr></tfoot>
-</table>
-""");
-
-    app.elements.add(container);
-}
-
 TableCellElement totalSymbols;
 TableCellElement decimalRange;
 
 void refreshSymbolList() {
-  InputElement symFrom = document.body.query('#symbolFrom');
-  InputElement symTo = document.body.query('#symbolTo');
+  final InputElement symFrom = document.body.query('#symbolFrom');
+  final InputElement symTo = document.body.query('#symbolTo');
   
      final int symbolFromNum = Math.parseInt(symFrom.value);
      final int symbolToNum = Math.parseInt(symTo.value);
@@ -220,13 +212,15 @@ main() {
     document.body.elements.add(layout.root);
     
     entityLister.preinit();
-    entityLister.initContainer();
     
     
+    final ButtonElement refresh = document.body.query('#refresh');
+    refresh.on.click.add((e) => entityLister.refreshSymbolList());
 
 
     entityLister.init();
     entityLister.refreshSymbolList();
+    
 
 }
 
