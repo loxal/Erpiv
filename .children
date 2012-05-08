@@ -1,4 +1,4 @@
-src/static/client/entity_lister.dart
 src/db/populate_db.dart
 src/db/data.dart
-src/static/client/test.dart
+src/static/client/entity_overview.dart
+src/static/client/ui_test.dart

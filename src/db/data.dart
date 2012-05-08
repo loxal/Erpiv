@@ -4,8 +4,6 @@
  * license that can be found in the LICENSE file.
  */
 
-#import('loxal:testData');
-
 class Data {
 
   Data() {
