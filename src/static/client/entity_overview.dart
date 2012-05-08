@@ -8,12 +8,36 @@
 #import('dart:html');
 
 class EntityContainer {
+  void preinit() {
+//    app =  new Element.tag('div');
+//    document.body.elements.add(app);
+    
+      final HeadingElement h1 = new Element.tag('h1');
+      h1.innerHTML = 'Entity Overview';
+      final TitleElement title = new Element.tag('title');
+      title.innerHTML = 'Entity Overview';
+      document.head.nodes.add(title);
+
+      Element controls = new Element.html("""
+  <fieldset>
+    <legend>Range</legend>
+    <label>From:</label>
+    <input type="text" value="9985" id="symbolFrom"/>
+    <label>To:</label>
+    <input type="text" value="10000" id="symbolTo"/>
+    <button class="icon-refresh" id="refresh">Refresh</button>
+  </fieldset>
+  """);
+      
+      _fragment.elements.add(controls);
+
+      _fragment.elements.add(h1);
+  }
+  
   Map<String, Object> _scopes;
   Element _fragment;
 
-  List entities;
-
-  var tbodyl;
+  final List entities;
 
   EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
     _fragment = new DocumentFragment();
@@ -40,6 +64,7 @@ class EntityContainer {
           </tfoot>
         </table>
     """);
+    preinit();
     _fragment.elements.add(containerTable);
   }
 
@@ -111,38 +136,13 @@ class Layout {
   Element get root() => _fragment;
 }
 
-class EntityLister {
+class EntityOverview {
 
 InputElement symbolFrom;
 InputElement symbolTo;
 LabelElement symbolToLabel;
 DivElement app;
 BaseElement base;
-
-preinit() {
-    final HeadingElement h1 = new Element.tag('h1');
-    h1.innerHTML = 'Entity Lister';
-    final TitleElement title = new Element.tag('title');
-    title.innerHTML = 'My Title';
-    document.head.nodes.add(title);
-
-    Element controls = new Element.html("""
-<fieldset>
-<legend>Rangee</legend>
-<label>From:</label>
-<input type="text" value="9985" id="symbolFrom"/>
-<label>To:</label>
-<input type="text" value="10000" id="symbolTo"/>
-<button class="icon-refresh" id="refresh">Refresh</button>
-</fieldset>
-""");
-    
-
-    
-    app.nodes.add(controls);
-
-    app.nodes.add(h1);
-}
 
 TableSectionElement tbody;
 TableCellElement totalSymbols;
@@ -173,23 +173,26 @@ void refreshSymbolList() {
    }
 }
 
-init() {
-  document.head.nodes.add(getStylesheet());
+void init() {
+  document.head.nodes.add(getCss());
 
     final ButtonElement display = document.body.query('#symbol-display');
     display.on.click.add((e) => displaySymbol());
-
+    
+    final ButtonElement refresh = document.body.query('#refresh');
+    refresh.on.click.add((e) => refreshSymbolList());    
 }
 
-getStylesheet() {
-    final LinkElement styleSheet = new Element.tag("link");
-    styleSheet.rel = "stylesheet";
-    styleSheet.type="text/css";
-    styleSheet.href="css/font-awesome.css";
-    return styleSheet;
+LinkElement getCss() {
+    final LinkElement css = new Element.tag("link");
+    css.rel = "stylesheet";
+    css.type="text/css";
+    css.href="css/font-awesome.css";
+    
+    return css;
 }
 
-displaySymbol() {
+void displaySymbol() {
     final List<Element> a = document.queryAll('.viewBox');
     final InputElement symbolId = document.query('#symbolId');
     for(final InputElement e in a) {
@@ -197,30 +200,20 @@ displaySymbol() {
     }
 }
 
-  EntityLister() {
+  EntityOverview() {
       base = new Element.tag('base');
       base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
       document.head.elements.add(base);
+      
+      init();
+      refreshSymbolList();
   }
 }
 
-main() {
-    final EntityLister entityLister = new EntityLister();
-    entityLister.app =  new Element.tag('div');
-    document.body.elements.add(entityLister.app);
-    Layout layout = new Layout(['apples', 'oranges', 'bananas']);
-    document.body.elements.add(layout.root);
+void main() {
+  final Layout layout = new Layout(null);
+  document.body.elements.add(layout.root);
     
-    entityLister.preinit();
-    
-    
-    final ButtonElement refresh = document.body.query('#refresh');
-    refresh.on.click.add((e) => entityLister.refreshSymbolList());
-
-
-    entityLister.init();
-    entityLister.refreshSymbolList();
-    
-
+  new EntityOverview();
 }
 

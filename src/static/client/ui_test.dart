@@ -13,7 +13,7 @@ class Test {
   }
 }
 
-testClickEvent() {
+void testClickEvent() {
   DivElement div = new Element.html('<div style="background-color: blue; width: 10em; height: 10em;"></div>');
   document.body.elements.add(div);
   div.on.click.add((MouseEvent e) {
@@ -29,7 +29,7 @@ testClickEvent() {
 }
 
 MouseEvent ev;
-fireClick() {
+void fireClick() {
   ev = new MouseEvent(
     "click", window, 1, 
     2020, 293,
@@ -48,7 +48,7 @@ fireClick() {
     
 }
 
-main() {
+void main() {
   Test t = new Test();
   final ButtonElement start = new Element.tag('button');
   start.text = "Start";
@@ -56,6 +56,4 @@ main() {
   document.body.elements.add(start);
   
   testClickEvent();
-  
-    fireClick();
 }
