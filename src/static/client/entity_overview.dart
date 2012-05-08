@@ -130,7 +130,7 @@ preinit() {
 <input type="text" value="9985" id="symbolFrom"/>
 <label>To:</label>
 <input type="text" value="10000" id="symbolTo"/>
-<button class="icon-refresh" id="refresh" onclick="refreshSymbolList()">Refresh</button>
+<button class="icon-refresh" id="refresh">Refresh</button>
 </fieldset>
 """);
     
@@ -146,22 +146,24 @@ initContainer() {
 <caption>Container<caption>
 <thead><tr><td></td><td></td></tr></thead>
 <tbody id="tbody"></tbody>
-<tfoot><tr><td></td><td></td></tr></tfoot>
+<tfoot><tr><td id="totalSymbols"></td><td id="decimalRange"></td></tr></tfoot>
 </table>
 """);
-  
-  tbody = document.body.query('#tbody');
-  
 
     app.elements.add(container);
 }
 
 TableCellElement totalSymbols;
 TableCellElement decimalRange;
-refreshSymbolList() {
-     final int symbolFromNum = Math.parseInt(document.body.query('#symbolFrom').value);
-     final int symbolToNum = Math.parseInt(document.body.query('#symbolTo').value);
 
+void refreshSymbolList() {
+  InputElement symFrom = document.body.query('#symbolFrom');
+  InputElement symTo = document.body.query('#symbolTo');
+  
+     final int symbolFromNum = Math.parseInt(symFrom.value);
+     final int symbolToNum = Math.parseInt(symTo.value);
+
+     tbody = document.body.query('#tbody');
    tbody.nodes.clear();
    int code = 1;
    for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
@@ -171,8 +173,10 @@ refreshSymbolList() {
 
      tbody.elements.add(symbol);
 
+     totalSymbols = document.body.query('#totalSymbols');
      totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
 
+     decimalRange = document.body.query('#decimalRange');
      decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
    }
 }
@@ -212,12 +216,14 @@ main() {
     final EntityLister entityLister = new EntityLister();
     entityLister.app =  new Element.tag('div');
     document.body.elements.add(entityLister.app);
+    Layout layout = new Layout(['apples', 'oranges', 'bananas']);
+    document.body.elements.add(layout.root);
+    
     entityLister.preinit();
     entityLister.initContainer();
     
     
-    Layout layout = new Layout(['apples', 'oranges', 'bananas']);
-    document.body.elements.add(layout.root);
+
 
     entityLister.init();
     entityLister.refreshSymbolList();
