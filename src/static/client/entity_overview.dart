@@ -8,10 +8,16 @@
 #import('dart:html');
 
 class EntityContainer {
+  
+  InputElement symbolFrom;
+  InputElement symbolTo;
+  LabelElement symbolToLabel;
+
+  TableSectionElement tbody;
+  TableCellElement totalSymbols;
+  TableCellElement decimalRange;
+  
   void preinit() {
-//    app =  new Element.tag('div');
-//    document.body.elements.add(app);
-    
       final HeadingElement h1 = new Element.tag('h1');
       h1.innerHTML = 'Entity Overview';
       final TitleElement title = new Element.tag('title');
@@ -32,6 +38,31 @@ class EntityContainer {
       _fragment.elements.add(controls);
 
       _fragment.elements.add(h1);
+  }
+  
+  void refreshSymbolList() {
+    final InputElement symFrom = document.body.query('#symbolFrom');
+    final InputElement symTo = document.body.query('#symbolTo');
+    
+       final int symbolFromNum = Math.parseInt(symFrom.value);
+       final int symbolToNum = Math.parseInt(symTo.value);
+
+       tbody = document.body.query('#tbody');
+     tbody.nodes.clear();
+     int code = 1;
+     for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
+        final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
+         idx
+        + '</td></tr>');
+
+       tbody.elements.add(symbol);
+
+       totalSymbols = document.body.query('#totalSymbols');
+       totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
+
+       decimalRange = document.body.query('#decimalRange');
+       decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
+     }
   }
   
   Map<String, Object> _scopes;
@@ -65,9 +96,16 @@ class EntityContainer {
         </table>
     """);
     preinit();
+    
     _fragment.elements.add(containerTable);
+    
+    
   }
 
+  void addUiHandler() {
+    final ButtonElement refresh = document.body.query('#refresh');
+    refresh.on.click.add((e) => refreshSymbolList());
+  }
   Element get root() => _fragment;
 }
 
@@ -106,13 +144,50 @@ class EntityViewer {
         </fieldset>
     ''');
     _fragment.elements.add(viewer);
+    
+
   }
+  
+  void addUiHandler() {
+    final ButtonElement display = document.body.query('#symbol-display');
+    display.on.click.add((e) => displaySymbol());
+  }
+  
+  void displaySymbol() {
+    final List<Element> a = document.queryAll('.viewBox');
+    final InputElement symbolId = document.query('#symbolId');
+    for(final InputElement e in a) {
+      e.innerHTML = '&#' + symbolId.value + ';';
+    }
+}
 
   Element get root() => _fragment;
 }
 
 
 class Layout {
+  LinkElement getCss() {
+    final LinkElement css = new Element.tag("link");
+    css.rel = "stylesheet";
+    css.type="text/css";
+    css.href="css/font-awesome.css";
+    
+    return css;
+}
+  
+  void declareBase() {
+    base = new Element.tag('base');
+    base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
+    document.head.elements.add(base);
+  }
+  
+  void init() {
+    declareBase();
+    
+    document.head.nodes.add(getCss());
+  }
+
+  BaseElement base;
   Map<String, Object> _scopes;
   Element _fragment;
 
@@ -122,6 +197,9 @@ class Layout {
   var container;
 
   Layout(this.entities) : _scopes = new Map<String, Object>() {
+    init();
+    
+    
     _fragment = new DocumentFragment();
     container = new Element.html('<div>');
     _fragment.elements.add(container);
@@ -131,6 +209,12 @@ class Layout {
 
     final EntityViewer entityViewer = new EntityViewer(entities);
     container.elements.add(entityViewer.root);
+    document.body.elements.add(_fragment);
+    
+    entityContainer.addUiHandler();
+    entityContainer.refreshSymbolList();
+    entityViewer.addUiHandler();    
+    
   }
 
   Element get root() => _fragment;
@@ -138,81 +222,64 @@ class Layout {
 
 class EntityOverview {
 
-InputElement symbolFrom;
-InputElement symbolTo;
-LabelElement symbolToLabel;
-DivElement app;
-BaseElement base;
+//InputElement symbolFrom;
+//InputElement symbolTo;
+//LabelElement symbolToLabel;
+//
+//TableSectionElement tbody;
+//TableCellElement totalSymbols;
+//TableCellElement decimalRange;
 
-TableSectionElement tbody;
-TableCellElement totalSymbols;
-TableCellElement decimalRange;
+//void refreshSymbolList() {
+//  final InputElement symFrom = document.body.query('#symbolFrom');
+//  final InputElement symTo = document.body.query('#symbolTo');
+//  
+//     final int symbolFromNum = Math.parseInt(symFrom.value);
+//     final int symbolToNum = Math.parseInt(symTo.value);
+//
+//     tbody = document.body.query('#tbody');
+//   tbody.nodes.clear();
+//   int code = 1;
+//   for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
+//      final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
+//       idx
+//      + '</td></tr>');
+//
+//     tbody.elements.add(symbol);
+//
+//     totalSymbols = document.body.query('#totalSymbols');
+//     totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
+//
+//     decimalRange = document.body.query('#decimalRange');
+//     decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
+//   }
+//}
 
-void refreshSymbolList() {
-  final InputElement symFrom = document.body.query('#symbolFrom');
-  final InputElement symTo = document.body.query('#symbolTo');
-  
-     final int symbolFromNum = Math.parseInt(symFrom.value);
-     final int symbolToNum = Math.parseInt(symTo.value);
+//void init() {
+//    final ButtonElement display = document.body.query('#symbol-display');
+//    display.on.click.add((e) => displaySymbol());
+//    
+//    final ButtonElement refresh = document.body.query('#refresh');
+//    refresh.on.click.add((e) => refreshSymbolList());    
+//}
 
-     tbody = document.body.query('#tbody');
-   tbody.nodes.clear();
-   int code = 1;
-   for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
-      final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
-       idx
-      + '</td></tr>');
-
-     tbody.elements.add(symbol);
-
-     totalSymbols = document.body.query('#totalSymbols');
-     totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
-
-     decimalRange = document.body.query('#decimalRange');
-     decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
-   }
-}
-
-void init() {
-  document.head.nodes.add(getCss());
-
-    final ButtonElement display = document.body.query('#symbol-display');
-    display.on.click.add((e) => displaySymbol());
-    
-    final ButtonElement refresh = document.body.query('#refresh');
-    refresh.on.click.add((e) => refreshSymbolList());    
-}
-
-LinkElement getCss() {
-    final LinkElement css = new Element.tag("link");
-    css.rel = "stylesheet";
-    css.type="text/css";
-    css.href="css/font-awesome.css";
-    
-    return css;
-}
-
-void displaySymbol() {
-    final List<Element> a = document.queryAll('.viewBox');
-    final InputElement symbolId = document.query('#symbolId');
-    for(final InputElement e in a) {
-      e.innerHTML = '&#' + symbolId.value + ';';
-    }
-}
+//void displaySymbol() {
+//    final List<Element> a = document.queryAll('.viewBox');
+//    final InputElement symbolId = document.query('#symbolId');
+//    for(final InputElement e in a) {
+//      e.innerHTML = '&#' + symbolId.value + ';';
+//    }
+//}
 
   EntityOverview() {
-      base = new Element.tag('base');
-      base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
-      document.head.elements.add(base);
-      
-      init();
-      refreshSymbolList();
+//      init();
+//      refreshSymbolList();
   }
 }
 
 void main() {
   final Layout layout = new Layout(null);
-  document.body.elements.add(layout.root);
+  
     
   new EntityOverview();
 }
