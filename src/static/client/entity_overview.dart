@@ -8,7 +8,6 @@
 #import('dart:html');
 
 class EntityContainer {
-  
   InputElement symbolFrom;
   InputElement symbolTo;
   LabelElement symbolToLabel;
@@ -16,29 +15,6 @@ class EntityContainer {
   TableSectionElement tbody;
   TableCellElement totalSymbols;
   TableCellElement decimalRange;
-  
-  void preinit() {
-      final HeadingElement h1 = new Element.tag('h1');
-      h1.innerHTML = 'Entity Overview';
-      final TitleElement title = new Element.tag('title');
-      title.innerHTML = 'Entity Overview';
-      document.head.nodes.add(title);
-
-      Element controls = new Element.html("""
-  <fieldset>
-    <legend>Range</legend>
-    <label>From:</label>
-    <input type="text" value="9985" id="symbolFrom"/>
-    <label>To:</label>
-    <input type="text" value="10000" id="symbolTo"/>
-    <button class="icon-refresh" id="refresh">Refresh</button>
-  </fieldset>
-  """);
-      
-      _fragment.elements.add(controls);
-
-      _fragment.elements.add(h1);
-  }
   
   void refreshSymbolList() {
     final InputElement symFrom = document.body.query('#symbolFrom');
@@ -65,17 +41,43 @@ class EntityContainer {
      }
   }
   
+  void createControlPanel() {
+    final HeadingElement h1 = new Element.tag('h1');
+    h1.innerHTML = 'Entity Overview';
+    final TitleElement title = new Element.tag('title');
+    title.innerHTML = 'Entity Overview';
+    document.head.nodes.add(title);
+
+    Element controls = new Element.html("""
+    <fieldset style="width: 22em; height: 19em;">
+      <legend>Range</legend>
+      <label>From:</label>
+      <input type="text" value="9985" id="symbolFrom"/>
+      <label>To:</label>
+      <input type="text" value="10000" id="symbolTo"/>
+      <button class="icon-refresh" id="refresh">Refresh</button>
+    </fieldset>
+    """);
+    
+    entityOverviewContainer.elements.add(h1);
+    entityOverviewContainer.elements.add(controls);
+}
+  
   Map<String, Object> _scopes;
-  Element _fragment;
+  DocumentFragment _fragment;
 
   final List entities;
-
+  DivElement entityOverviewContainer;
+  
   EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
     _fragment = new DocumentFragment();
+    entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
+//    entityOverviewContainer = new Element.html('<div style="display: block;">');
     
-    var containerTable = new Element.html("""
-        <table>
-          <caption>Container</caption>
+    Element containerTable = new Element.html("""
+<div>
+        <table style="float: right;">
+          <caption>Overview</caption>
           <thead>
             <tr>
               <td>#</td>
@@ -84,22 +86,17 @@ class EntityContainer {
             </tr>
           </thead>
           <tbody id="tbody">
-              <tr>
-                <td>${entities}</td>
-                <td></td>
-                <td></td>
-              </tr>
           </tbody>
           <tfoot>
             <tr><td id="totalSymbols"></td><td id="decimalRange"></td></tr>
           </tfoot>
         </table>
+</div>
     """);
-    preinit();
+    createControlPanel();
     
-    _fragment.elements.add(containerTable);
-    
-    
+    entityOverviewContainer.elements.add(containerTable);
+    _fragment.elements.add(entityOverviewContainer);
   }
 
   void addUiHandler() {
@@ -189,26 +186,23 @@ class Layout {
 
   BaseElement base;
   Map<String, Object> _scopes;
-  Element _fragment;
+  DocumentFragment _fragment;
 
   var content;
   var entities;
 
-  var container;
-
   Layout(this.entities) : _scopes = new Map<String, Object>() {
     init();
     
-    
     _fragment = new DocumentFragment();
-    container = new Element.html('<div>');
-    _fragment.elements.add(container);
-
+    
+    
     final EntityContainer entityContainer = new EntityContainer(entities);
-    container.elements.add(entityContainer.root);
+    _fragment.elements.add(entityContainer.root);
 
     final EntityViewer entityViewer = new EntityViewer(entities);
-    container.elements.add(entityViewer.root);
+    _fragment.elements.add(entityViewer.root);
+    
     document.body.elements.add(_fragment);
     
     entityContainer.addUiHandler();
@@ -221,65 +215,12 @@ class Layout {
 }
 
 class EntityOverview {
-
-//InputElement symbolFrom;
-//InputElement symbolTo;
-//LabelElement symbolToLabel;
-//
-//TableSectionElement tbody;
-//TableCellElement totalSymbols;
-//TableCellElement decimalRange;
-
-//void refreshSymbolList() {
-//  final InputElement symFrom = document.body.query('#symbolFrom');
-//  final InputElement symTo = document.body.query('#symbolTo');
-//  
-//     final int symbolFromNum = Math.parseInt(symFrom.value);
-//     final int symbolToNum = Math.parseInt(symTo.value);
-//
-//     tbody = document.body.query('#tbody');
-//   tbody.nodes.clear();
-//   int code = 1;
-//   for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
-//      final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx])+ '</td><td>' +
-//       idx
-//      + '</td></tr>');
-//
-//     tbody.elements.add(symbol);
-//
-//     totalSymbols = document.body.query('#totalSymbols');
-//     totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
-//
-//     decimalRange = document.body.query('#decimalRange');
-//     decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
-//   }
-//}
-
-//void init() {
-//    final ButtonElement display = document.body.query('#symbol-display');
-//    display.on.click.add((e) => displaySymbol());
-//    
-//    final ButtonElement refresh = document.body.query('#refresh');
-//    refresh.on.click.add((e) => refreshSymbolList());    
-//}
-
-//void displaySymbol() {
-//    final List<Element> a = document.queryAll('.viewBox');
-//    final InputElement symbolId = document.query('#symbolId');
-//    for(final InputElement e in a) {
-//      e.innerHTML = '&#' + symbolId.value + ';';
-//    }
-//}
-
   EntityOverview() {
-//      init();
-//      refreshSymbolList();
   }
 }
 
 void main() {
   final Layout layout = new Layout(null);
-  
     
   new EntityOverview();
 }
