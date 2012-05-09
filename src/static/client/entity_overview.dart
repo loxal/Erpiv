@@ -15,11 +15,11 @@ class EntityContainer {
   TableSectionElement tbody;
   TableCellElement totalSymbols;
   TableCellElement decimalRange;
-  
+
   void refreshSymbolList() {
     final InputElement symFrom = document.body.query('#symbolFrom');
     final InputElement symTo = document.body.query('#symbolTo');
-    
+
        final int symbolFromNum = Math.parseInt(symFrom.value);
        final int symbolToNum = Math.parseInt(symTo.value);
 
@@ -40,7 +40,7 @@ class EntityContainer {
        decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
      }
   }
-  
+
   void createControlPanel() {
     final HeadingElement h1 = new Element.tag('h1');
     h1.innerHTML = 'Entity Overview';
@@ -55,28 +55,39 @@ class EntityContainer {
       <input type="text" value="9985" id="symbolFrom"/>
       <label>To:</label>
       <input type="text" value="10000" id="symbolTo"/>
+      <select id="entityRangeSelector">
+        <option labe="b">Arrows</option>
+         <option labe="bs!">Stars</option>
+      </select>
       <button class="icon-refresh" id="refresh">Refresh</button>
     </fieldset>
     """);
-    
+
     entityOverviewContainer.elements.add(h1);
     entityOverviewContainer.elements.add(controls);
 }
-  
+
+  Map<String, List<int>> rangeMap;
+
+
   Map<String, Object> _scopes;
   DocumentFragment _fragment;
 
   final List entities;
   DivElement entityOverviewContainer;
-  
+
   EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
+    rangeMap = {
+      "arrow" : [9985, 10000],
+      "star" : [9900, 9985]
+     };
+
     _fragment = new DocumentFragment();
     entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
-//    entityOverviewContainer = new Element.html('<div style="display: block;">');
-    
+
     Element containerTable = new Element.html("""
 <div>
-        <table style="float: right;">
+        <table>
           <caption>Overview</caption>
           <thead>
             <tr>
@@ -93,8 +104,9 @@ class EntityContainer {
         </table>
 </div>
     """);
+
     createControlPanel();
-    
+
     entityOverviewContainer.elements.add(containerTable);
     _fragment.elements.add(entityOverviewContainer);
   }
@@ -141,15 +153,15 @@ class EntityViewer {
         </fieldset>
     ''');
     _fragment.elements.add(viewer);
-    
+
 
   }
-  
+
   void addUiHandler() {
     final ButtonElement display = document.body.query('#symbol-display');
     display.on.click.add((e) => displaySymbol());
   }
-  
+
   void displaySymbol() {
     final List<Element> a = document.queryAll('.viewBox');
     final InputElement symbolId = document.query('#symbolId');
@@ -168,19 +180,19 @@ class Layout {
     css.rel = "stylesheet";
     css.type="text/css";
     css.href="css/font-awesome.css";
-    
+
     return css;
 }
-  
+
   void declareBase() {
     base = new Element.tag('base');
     base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
     document.head.elements.add(base);
   }
-  
+
   void init() {
     declareBase();
-    
+
     document.head.nodes.add(getCss());
   }
 
@@ -193,22 +205,22 @@ class Layout {
 
   Layout(this.entities) : _scopes = new Map<String, Object>() {
     init();
-    
+
     _fragment = new DocumentFragment();
-    
-    
+
+
     final EntityContainer entityContainer = new EntityContainer(entities);
     _fragment.elements.add(entityContainer.root);
 
     final EntityViewer entityViewer = new EntityViewer(entities);
     _fragment.elements.add(entityViewer.root);
-    
+
     document.body.elements.add(_fragment);
-    
+
     entityContainer.addUiHandler();
     entityContainer.refreshSymbolList();
-    entityViewer.addUiHandler();    
-    
+    entityViewer.addUiHandler();
+
   }
 
   Element get root() => _fragment;
@@ -221,7 +233,7 @@ class EntityOverview {
 
 void main() {
   final Layout layout = new Layout(null);
-    
+
   new EntityOverview();
 }
 

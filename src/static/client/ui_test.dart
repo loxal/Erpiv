@@ -31,21 +31,21 @@ void testClickEvent() {
 MouseEvent ev;
 void fireClick() {
   ev = new MouseEvent(
-    "click", window, 1, 
+    "click", window, 1,
     2020, 293,
     100, 126,
     0
-    ); 
+    );
 
   document.body.queryAll('*').filter((e) => e.elements.isEmpty()).forEach((element){
     element.on.click.dispatch(new MouseEvent(
-      "click", window, 1, 
+      "click", window, 1,
       2020, 299,
       100, 126,
       0
       ));
   });
-    
+
 }
 
 void main() {
@@ -54,6 +54,6 @@ void main() {
   start.text = "Start";
   start.on.click.add((e) => testClickEvent());
   document.body.elements.add(start);
-  
+
   testClickEvent();
 }
