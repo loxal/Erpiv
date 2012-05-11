@@ -112,7 +112,17 @@ class EntityContainer {
     createControlPanel();
 
     entityOverviewContainer.elements.add(containerTable);
-    _fragment.elements.add(entityOverviewContainer);    
+    _fragment.elements.add(entityOverviewContainer);
+
+         selector() {
+         final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
+             entityRangeSelector.autofocus = true;
+             entityRangeSelector.on.change.add((e) { print(e);
+                 print(entityRangeSelector.item(entityRangeSelector.selectedIndex).value);
+             });
+         }
+
+  document.on.readyStateChange.add((e) => selector());
   }
 
   void addUiHandler() {
@@ -224,6 +234,9 @@ class Layout {
     entityContainer.addUiHandler();
     entityContainer.refreshSymbolList();
     entityViewer.addUiHandler();
+    
+    
+
 
   }
 
@@ -232,16 +245,13 @@ class Layout {
 
 class EntityOverview {
   EntityOverview() {
-    final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
-    entityRangeSelector.autofocus = true;
-    entityRangeSelector.on.change.add((e) { print(e);
-        print(entityRangeSelector.item(entityRangeSelector.selectedIndex).value);
-    });
+
   }
 }
 
 void main() {
   final Layout layout = new Layout(null);
+  
 
   new EntityOverview();
 }

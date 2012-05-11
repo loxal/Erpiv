@@ -1,5 +1,6 @@
 src/type_trainer/type_trainer.dart
 src/db/populate_db.dart
+src/dart_io/io1.dart
 src/db/data.dart
 src/dingbats/ui_test.dart
 src/websockets/server.dart
