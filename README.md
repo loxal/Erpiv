@@ -1,3 +1,3 @@
 # Erpiv
 
-* A RESTful API.
+* Dart UI concept project

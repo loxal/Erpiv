@@ -4,10 +4,10 @@
  * license that can be found in the LICENSE file.
  */
 
-#library('loxal:EntityOverview');
+#library('loxal:DingbatOverview');
 #import('dart:html');
 
-class EntityContainer {
+class DingbatContainer {
   InputElement symFrom;
   InputElement symTo;
   LabelElement symbolToLabel;
@@ -79,7 +79,7 @@ class EntityContainer {
 
 
 
-  EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
+  DingbatContainer(this.entities) : _scopes = new Map<String, Object>() {
     rangeMap = {
       "arrow" : [9985, 10000],
       "other" : [0, 1000],
@@ -227,7 +227,7 @@ class Layout {
     _fragment = new DocumentFragment();
 
 
-    final EntityContainer entityContainer = new EntityContainer(entities);
+    final DingbatContainer entityContainer = new DingbatContainer(entities);
     _fragment.elements.add(entityContainer.root);
 
     final EntityViewer entityViewer = new EntityViewer(entities);
