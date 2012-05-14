@@ -23,7 +23,7 @@ class DingbatContainer {
        final int symbolFromNum = Math.parseInt(symFrom.value);
        final int symbolToNum = Math.parseInt(symTo.value);
 
-       tbody = document.body.query('#tbody');
+   tbody = document.body.query('#tbody');
      tbody.nodes.clear();
      int code = 1;
      for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
@@ -43,7 +43,7 @@ class DingbatContainer {
 
   void createControlPanel() {
     final HeadingElement h1 = new Element.tag('h1');
-    h1.innerHTML = 'Entity Overview';
+    h1.innerHTML = 'Dingbats';
     final TitleElement title = new Element.tag('title');
     title.innerHTML = 'Entity Overview';
     document.head.nodes.add(title);
@@ -52,15 +52,15 @@ class DingbatContainer {
     <fieldset style="width: 22em; height: 19em;">
       <legend>Range</legend>
       <label>From:</label>
-      <input type="text" value="9985" id="symbolFrom"/>
+      <input type=text value="9985" id="symbolFrom"/>
       <label>To:</label>
-      <input type="text" value="10000" id="symbolTo"/>
+      <input type=text value="9999" id="symbolTo"/>
       <select id=entityRangeSelector>
         <option value=arrow>Arrows</option>
          <option value=star>Stars</option>
          <option value=other>Other</option>
       </select>
-      <button class="icon-refresh" id="refresh">Refresh</button>
+      <button class=icon-refresh id=refresh>Refresh</button>
     </fieldset>
     """);
 
@@ -81,9 +81,12 @@ class DingbatContainer {
 
   DingbatContainer(this.entities) : _scopes = new Map<String, Object>() {
     rangeMap = {
-      "arrow" : [9985, 10000],
-      "other" : [0, 1000],
+      "arrow" : [8582, 8705],
+      "equality" : [8764, 9193],
+      "corners" : [9472, 9908],
+      "other" : [0, 10000],
       "star" : [9900, 9985],
+      "ascii": [33, 128],
      };
     
     _fragment = new DocumentFragment();
@@ -100,10 +103,10 @@ class DingbatContainer {
               <td>Code</td>
             </tr>
           </thead>
-          <tbody id="tbody">
+          <tbody id='tbody'>
           </tbody>
           <tfoot>
-            <tr><td id="totalSymbols"></td><td id="decimalRange"></td></tr>
+            <tr><td id='totalSymbols'></td><td id='decimalRange'></td></tr>
           </tfoot>
         </table>
 </div>
@@ -121,6 +124,7 @@ class DingbatContainer {
                  final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
                  symFrom.value = rangeMap[rangeKey][0].toString();
                  symTo.value = rangeMap[rangeKey][1].toString();
+                 refreshSymbolList();
              });
 
              final ButtonElement refresh = document.body.query('#refresh');
