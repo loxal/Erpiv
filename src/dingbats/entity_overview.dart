@@ -8,8 +8,8 @@
 #import('dart:html');
 
 class EntityContainer {
-  InputElement symbolFrom;
-  InputElement symbolTo;
+  InputElement symFrom;
+  InputElement symTo;
   LabelElement symbolToLabel;
 
   TableSectionElement tbody;
@@ -17,8 +17,8 @@ class EntityContainer {
   TableCellElement decimalRange;
 
   void refreshSymbolList() {
-    final InputElement symFrom = document.body.query('#symbolFrom');
-    final InputElement symTo = document.body.query('#symbolTo');
+    symFrom = document.body.query('#symbolFrom');
+    symTo = document.body.query('#symbolTo');
 
        final int symbolFromNum = Math.parseInt(symFrom.value);
        final int symbolToNum = Math.parseInt(symTo.value);
@@ -55,9 +55,10 @@ class EntityContainer {
       <input type="text" value="9985" id="symbolFrom"/>
       <label>To:</label>
       <input type="text" value="10000" id="symbolTo"/>
-      <select id="entityRangeSelector">
-        <option labe="b">Arrows</option>
-         <option labe="bs!">Stars</option>
+      <select id=entityRangeSelector>
+        <option value=arrow>Arrows</option>
+         <option value=star>Stars</option>
+         <option value=other>Other</option>
       </select>
       <button class="icon-refresh" id="refresh">Refresh</button>
     </fieldset>
@@ -76,16 +77,15 @@ class EntityContainer {
   final List entities;
   DivElement entityOverviewContainer;
 
+
+
   EntityContainer(this.entities) : _scopes = new Map<String, Object>() {
     rangeMap = {
       "arrow" : [9985, 10000],
-      "star" : [9900, 9985]
+      "other" : [0, 1000],
+      "star" : [9900, 9985],
      };
     
-
-    
-    rangeMap.forEach((key, value) => print("$key: " + "${value}"));
-
     _fragment = new DocumentFragment();
     entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
 
@@ -96,8 +96,8 @@ class EntityContainer {
           <thead>
             <tr>
               <td>#</td>
-              <td>Symbol</td>
-              <td>Decimal Notation</td>
+              <td>Dingbat</td>
+              <td>Code</td>
             </tr>
           </thead>
           <tbody id="tbody">
@@ -114,15 +114,19 @@ class EntityContainer {
     entityOverviewContainer.elements.add(containerTable);
     _fragment.elements.add(entityOverviewContainer);
 
-         selector() {
-         final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
+         void selected() {
+          final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
              entityRangeSelector.autofocus = true;
-             entityRangeSelector.on.change.add((e) { print(e);
-                 print(entityRangeSelector.item(entityRangeSelector.selectedIndex).value);
+             entityRangeSelector.on.change.add((e) {
+                 final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
+                 symFrom.value = rangeMap[rangeKey][0].toString();
+                 symTo.value = rangeMap[rangeKey][1].toString();
              });
          }
 
-  document.on.readyStateChange.add((e) => selector());
+        document.on.readyStateChange.add((i) {
+          selected();
+        });
   }
 
   void addUiHandler() {
