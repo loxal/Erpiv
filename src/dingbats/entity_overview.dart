@@ -114,7 +114,7 @@ class EntityContainer {
     entityOverviewContainer.elements.add(containerTable);
     _fragment.elements.add(entityOverviewContainer);
 
-         void selected() {
+         void initWidget() {
           final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
              entityRangeSelector.autofocus = true;
              entityRangeSelector.on.change.add((e) {
@@ -122,17 +122,14 @@ class EntityContainer {
                  symFrom.value = rangeMap[rangeKey][0].toString();
                  symTo.value = rangeMap[rangeKey][1].toString();
              });
+
+             final ButtonElement refresh = document.body.query('#refresh');
+                 refresh.on.click.add((e) => refreshSymbolList());
          }
 
-        document.on.readyStateChange.add((i) {
-          selected();
-        });
+        document.on.readyStateChange.add((i) => initWidget());
   }
 
-  void addUiHandler() {
-    final ButtonElement refresh = document.body.query('#refresh');
-    refresh.on.click.add((e) => refreshSymbolList());
-  }
   Element get root() => _fragment;
 }
 
@@ -173,12 +170,15 @@ class EntityViewer {
     _fragment.elements.add(viewer);
 
 
+        void initWidget() {
+            final ButtonElement display = document.body.query('#symbol-display');
+            display.on.click.add((e) => displaySymbol());
+          }
+
+          document.on.readyStateChange.add((e) => initWidget());
   }
 
-  void addUiHandler() {
-    final ButtonElement display = document.body.query('#symbol-display');
-    display.on.click.add((e) => displaySymbol());
-  }
+
 
   void displaySymbol() {
     final List<Element> a = document.queryAll('.viewBox');
@@ -235,13 +235,7 @@ class Layout {
 
     document.body.elements.add(_fragment);
 
-    entityContainer.addUiHandler();
     entityContainer.refreshSymbolList();
-    entityViewer.addUiHandler();
-    
-    
-
-
   }
 
   Element get root() => _fragment;
