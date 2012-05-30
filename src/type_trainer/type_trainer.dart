@@ -85,9 +85,7 @@ class TypeTrainer {
         keyPressHandler = (final KeyboardEvent event) {
             if(event.keyIdentifier == 'Enter') {
                 restart();
-            }
-
-            if(active) {
+            }else if(active) {
                 final String char = new String.fromCharCodes([event.charCode]);
                 validateChar(char);
             }
