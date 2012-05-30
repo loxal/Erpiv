@@ -5,6 +5,9 @@
 
 class TypeTrainer {
     MarqueeElement marquee;
+    AudioElement accomponement;
+    //    http://upload.wikimedia.org/wikipedia/commons/b/b1/11_-_Vivaldi_Winter_mvt_2_Largo_-_John_Harrison_violin.ogg
+    //    http://upload.wikimedia.org/wikipedia/commons/2/21/12_-_Vivaldi_Winter_mvt_3_Allegro_-_John_Harrison_violin.ogg
 
     static final int spaceCharCode = 32;
     static final String cursor = '|';
@@ -37,7 +40,10 @@ class TypeTrainer {
         document.body.elements.add(restart);
     }
 
-    TypeTrainer(String scrollingText) : spaceChar = new String.fromCharCodes([spaceCharCode]) {
+//                                          accomponement = new AudioElement('http://upload.wikimedia.org/wikipedia/commons/6/68/10_-_Vivaldi_Winter_mvt_1_Allegro_non_molto_-_John_Harrison_violin.ogg') {
+//                                          accomponement = new AudioElement('http://ia600400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3') {
+    TypeTrainer(String scrollingText) : spaceChar = new String.fromCharCodes([spaceCharCode]),
+                                          accomponement = new AudioElement('http://www.archive.org/download/TheFourSeasonsWinter/USAFB_Winter.ogg') {
         bindHandlers();
         scrollingText = generateText();
 
@@ -54,6 +60,7 @@ class TypeTrainer {
         marquee.width = '100%';
 
         buildControls();
+        accomponement.play();
     }
 
     void bindHandlers() {
@@ -114,6 +121,10 @@ class TypeTrainer {
     void calculateStats() {
         final float mistakeRate = mistakeCount / totalChars;
         print('mistakeRate: ${mistakeRate * 100}%');
+    }
+
+    void initWidget() {
+        document.body.elements.add(accomponement);
     }
 }
 
