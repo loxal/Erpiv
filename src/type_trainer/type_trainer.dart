@@ -2,6 +2,7 @@
 
 #import('dart:html');
 #import('dart:math');
+#import('dart:coreimpl');
 
 class TypeTrainer {
     MarqueeElement marquee;
@@ -16,6 +17,11 @@ class TypeTrainer {
     static final comparableIdx = 1;
     int totalChars;
     int mistakeCount = 0;
+    InputElement number;
+    int scrollAmount = 5;
+    int scrollDelay = 1;
+    DivElement container;
+    boolean active = true;
 
     void buildControls() {
     //    https://upload.wikimedia.org/wikipedia/commons/0/04/Keyboard_layout_ru%28typewriter%29.svg
@@ -28,58 +34,77 @@ class TypeTrainer {
         """);
         document.body.elements.add(tenFingerLayout);
 
-        ButtonElement restart = new Element.html("""
+        ButtonElement restartButton = new Element.html("""
             <button>Restart</button>
         """);
-        restart.on.click.add((ClickEvent event) { marquee.text = generateText();
-        marquee.stop();
-        marquee.start();
-        marquee.blur();
-        marquee.contentEditable = 'true';
+        restartButton.on.click.add((ClickEvent event) {
+            restart();
         });
-        document.body.elements.add(restart);
+        document.body.elements.add(restartButton);
+    }
+
+    void restart() {
+        active = true;
+        marquee.remove();
+        int totalChars = number.valueAsNumber;
+        print(totalChars);
+                    marquee.text = generateText(totalChars: totalChars);
+                    marquee.scrollAmount = scrollAmount;
+                    marquee.scrollDelay = scrollDelay;
+//                    bindHandlers();
+                    container.elements.add(marquee);
     }
 
 //                                          accomponement = new AudioElement('http://upload.wikimedia.org/wikipedia/commons/6/68/10_-_Vivaldi_Winter_mvt_1_Allegro_non_molto_-_John_Harrison_violin.ogg') {
 //                                          accomponement = new AudioElement('http://ia600400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3') {
-    TypeTrainer(String scrollingText) : spaceChar = new String.fromCharCodes([spaceCharCode]),
-                                          accomponement = new AudioElement('http://www.archive.org/download/TheFourSeasonsWinter/USAFB_Winter.ogg') {
+    TypeTrainer() : spaceChar = new String.fromCharCodes([spaceCharCode]),
+                                          accomponement = new AudioElement('http://www.archive.org/download/TheFourSeasonsWinter/USAFB_Winter.ogg'),
+                                           number = new InputElement('number'),
+                                            container = new DivElement() {
         bindHandlers();
-        scrollingText = generateText();
+        String scrollingText = generateText();
 
         marquee = new Element.html("""
-          <marquee style="font-size: 4em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
+          <marquee style="font-size: 4em; padding: .1em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
         """);
         marquee.behavior = 'slide';
-
-        document.body.elements.add(marquee);
-        marquee.scrollAmount = 5;
-        marquee.scrollDelay = 10;
-        marquee.loop = 1;
+        container.elements.add(marquee);
+        document.body.elements.add(container);
+        marquee.scrollAmount = scrollAmount;
+        marquee.scrollDelay = scrollDelay;
+        marquee.loop = -1;
         marquee.bgColor = '#119';
         marquee.width = '100%';
 
         buildControls();
-        accomponement.play();
+//        accomponement.play();
+        initWidget();
     }
 
     void bindHandlers() {
         keyPressHandler = (final KeyboardEvent event) {
-            final String char = new String.fromCharCodes([event.charCode]);
-            validateChar(char);
+            if(event.keyIdentifier == 'Enter') {
+                restart();
+            }
+
+            if(active) {
+                final String char = new String.fromCharCodes([event.charCode]);
+                validateChar(char);
+            }
         };
 
-        window.on.keyPress.add(keyPressHandler);
+        document.on.keyPress.add(keyPressHandler);
     }
 
     void unbindHandlers() {
-        window.on.keyPress.remove(keyPressHandler);
+        active = false;
+//        document.on.keyPress.remove(keyPressHandler);
     }
 
     void validateChar(final String keyLiteral) {
         if(typeTrainer.marquee.text[comparableIdx] == keyLiteral) {
-            typeTrainer.marquee.bgColor = '#119';
-            typeTrainer.marquee.text = cursor + typeTrainer.marquee.text.substring(comparableIdx + 1);
+            marquee.bgColor = '#119';
+            marquee.text = cursor + typeTrainer.marquee.text.substring(comparableIdx + 1);
             if(hasFinished()) finished();
         } else {
             showMistake();
@@ -88,10 +113,10 @@ class TypeTrainer {
 
     void showMistake() {
         mistakeCount++;
-        typeTrainer.marquee.bgColor = '#911';
+        marquee.bgColor = '#911';
     }
 
-    String generateText([int totalChars = 5, int spaceCharAfter = 3]) {
+    String generateText([int totalChars = 7, int spaceCharAfter = 3]) {
         this.totalChars = totalChars;
         String text = cursor;
         final Random random = new Random();
@@ -102,6 +127,16 @@ class TypeTrainer {
                 text += spaceChar;
             }
         }
+
+        return stripLastPseudoChar(text);
+    }
+
+    // avoid space as last char
+    String stripLastPseudoChar(String text) {
+        if(text[text.length-1] == spaceChar) {
+            text = text.substring(0, text.length-1);
+        }
+
         return text;
     }
 
@@ -111,24 +146,27 @@ class TypeTrainer {
 
     void finished() {
         unbindHandlers();
-                marquee.scrollAmount = 100;
-                marquee.scrollDelay = 0;
-        typeTrainer.marquee.text = 'Finished!';
+        marquee.scrollAmount = 100;
+        marquee.scrollDelay = 0;
+        marquee.text = 'Finished!';
 
         calculateStats();
     }
 
     void calculateStats() {
-        final float mistakeRate = mistakeCount / totalChars;
-        print('mistakeRate: ${mistakeRate * 100}%');
+        final double mistakeRate = mistakeCount / totalChars;
+        print('mistakeRate: ${(mistakeRate * 100).ceil()}%');
     }
 
     void initWidget() {
-        document.body.elements.add(accomponement);
+//        document.body.elements.add(accomponement);
+        document.body.elements.add(number);
+        number.defaultValue = '10';
+        number.on.change.add((ChangeEvent event) => restart());
     }
 }
 
 TypeTrainer typeTrainer;
 main() {
-    typeTrainer = new TypeTrainer('');
+    typeTrainer = new TypeTrainer();
 }
