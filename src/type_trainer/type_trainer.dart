@@ -1,3 +1,9 @@
+/*
+ * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
 #library('loxal:typetrainer');
 
 #import('dart:html');
@@ -24,23 +30,37 @@ class TypeTrainer {
     boolean active = true;
 
     void buildControls() {
-    //    https://upload.wikimedia.org/wikipedia/commons/0/04/Keyboard_layout_ru%28typewriter%29.svg
-    //Dvorak: http://upload.wikimedia.org/wikipedia/en/a/a6/KB_Programmer_Dvorak.svg
-    //English / Hebrew: https://upload.wikimedia.org/wikipedia/commons/e/e6/Touch_typing-he.svg
-    // English: http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg
-    // German: https://upload.wikimedia.org/wikipedia/commons/6/60/QWERTZ-10Finger-Layout_W.svg
-        Element tenFingerLayout = new Element.html("""
-        <img src="http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg" width=100%/>
-        """);
-        document.body.elements.add(tenFingerLayout);
+        initFingerKeyMap();
+        initRestartButton();
+        initNumberInput();
+    }
 
-        ButtonElement restartButton = new Element.html("""
-            <button>Restart</button>
-        """);
-        restartButton.on.click.add((ClickEvent event) {
-            restart();
-        });
-        document.body.elements.add(restartButton);
+    void initFingerKeyMap() {
+        //    https://upload.wikimedia.org/wikipedia/commons/0/04/Keyboard_layout_ru%28typewriter%29.svg
+        //Dvorak: http://upload.wikimedia.org/wikipedia/en/a/a6/KB_Programmer_Dvorak.svg
+        //English / Hebrew: https://upload.wikimedia.org/wikipedia/commons/e/e6/Touch_typing-he.svg
+        // English: http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg
+        // German: https://upload.wikimedia.org/wikipedia/commons/6/60/QWERTZ-10Finger-Layout_W.svg
+            Element tenFingerLayout = new Element.html("""
+            <img src="http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg" width=100%/>
+            """);
+            document.body.elements.add(tenFingerLayout);
+    }
+
+    void initRestartButton() {
+                 ButtonElement restartButton = new Element.html("""
+                     <button>Restart</button>
+                 """);
+                 restartButton.on.click.add((ClickEvent event) {
+                     restart();
+                 });
+                 document.body.elements.add(restartButton);
+    }
+
+    void initNumberInput() {
+                       number.defaultValue = '10';
+                       document.body.elements.add(number);
+                       number.on.change.add((final ChangeEvent event) => restart());
     }
 
     void restart() {
@@ -62,9 +82,6 @@ class TypeTrainer {
                                             container = new DivElement() {
         bindHandlers();
          defineMarquee();
-
-        buildControls();
-//        accomponement.play();
         initWidget();
     }
 
@@ -92,8 +109,10 @@ class TypeTrainer {
     }
     void bindHandlers() {
         keyPressHandler = (final KeyboardEvent event) {
-            if(event.keyIdentifier == 'Enter') {
-//                restart();
+            final int rCharCode = 18;
+            if(event.ctrlKey && event.altKey && event.charCode === rCharCode) {
+             restart();
+            }else if(event.keyIdentifier == 'Enter') {
                 bowlOver();
             }else if(active) {
                 final String char = new String.fromCharCodes([event.charCode]);
@@ -167,10 +186,7 @@ class TypeTrainer {
     }
 
     void initWidget() {
-//        document.body.elements.add(accomponement);
-        document.body.elements.add(number);
-        number.defaultValue = '10';
-        number.on.change.add((ChangeEvent event) => restart());
+        buildControls();
     }
 }
 
