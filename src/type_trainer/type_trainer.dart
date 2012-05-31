@@ -51,7 +51,6 @@ class TypeTrainer {
                     marquee.text = generateText(totalChars: totalChars);
                     marquee.scrollAmount = scrollAmount;
                     marquee.scrollDelay = scrollDelay;
-//                    bindHandlers();
                     container.elements.add(marquee);
     }
 
@@ -62,29 +61,40 @@ class TypeTrainer {
                                            number = new InputElement('number'),
                                             container = new DivElement() {
         bindHandlers();
-        String scrollingText = generateText();
-
-        marquee = new Element.html("""
-          <marquee style="font-size: 4em; padding: .1em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
-        """);
-        marquee.behavior = 'slide';
-        container.elements.add(marquee);
-        document.body.elements.add(container);
-        marquee.scrollAmount = scrollAmount;
-        marquee.scrollDelay = scrollDelay;
-        marquee.loop = -1;
-        marquee.bgColor = '#119';
-        marquee.width = '100%';
+         defineMarquee();
 
         buildControls();
 //        accomponement.play();
         initWidget();
     }
 
+    void defineMarquee() {
+              String scrollingText = generateText();
+
+              marquee = new Element.html("""
+                <marquee style="font-size: 4em; padding: .1em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
+              """);
+              marquee.behavior = 'slide';
+              container.elements.add(marquee);
+              document.body.elements.add(container);
+              marquee.scrollAmount = scrollAmount;
+              marquee.scrollDelay = scrollDelay;
+              marquee.loop = -1;
+              marquee.bgColor = '#119';
+              marquee.width = '100%';
+    }
+
+    void bowlOver() {
+        String tmp = marquee.text;
+        marquee.remove();
+        marquee.text = tmp;
+        container.elements.add(marquee);
+    }
     void bindHandlers() {
         keyPressHandler = (final KeyboardEvent event) {
             if(event.keyIdentifier == 'Enter') {
-                restart();
+//                restart();
+                bowlOver();
             }else if(active) {
                 final String char = new String.fromCharCodes([event.charCode]);
                 validateChar(char);
