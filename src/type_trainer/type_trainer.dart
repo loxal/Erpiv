@@ -24,6 +24,7 @@ class TypeTrainer {
     int totalChars;
     int mistakeCount = 0;
     InputElement number;
+    TextAreaElement customText;
     int scrollAmount = 5;
     int scrollDelay = 1;
     DivElement container;
@@ -31,6 +32,7 @@ class TypeTrainer {
 
     void buildControls() {
         initFingerKeyMap();
+        initCustomText();
         initRestartButton();
         initNumberInput();
     }
@@ -58,21 +60,42 @@ class TypeTrainer {
     }
 
     void initNumberInput() {
-                       number.defaultValue = '10';
-                       document.body.elements.add(number);
-                       number.on.change.add((final ChangeEvent event) => restart());
+       number.defaultValue = '22';
+       document.body.elements.add(number);
+       number.on.change.add((final ChangeEvent event) => restart());
+    }
+
+    void initCustomText() {
+        ButtonElement restartWithCustomTextButton = new ButtonElement();
+        restartWithCustomTextButton.text = 'Use this text';
+        customText = new TextAreaElement();
+        customText.cols = 55;
+        customText.rows = 9;
+        customText.defaultValue = 'My custom text...';
+        document.body.elements.add(customText);
+        document.body.elements.add(restartWithCustomTextButton);
+        restartWithCustomTextButton.on.click.add((final ChangeEvent event) => restartWithCustomText());
     }
 
     void restart() {
         active = true;
         marquee.remove();
         int totalChars = number.valueAsNumber;
-        print(totalChars);
-                    marquee.text = generateText(totalChars: totalChars);
-                    marquee.scrollAmount = scrollAmount;
-                    marquee.scrollDelay = scrollDelay;
-                    container.elements.add(marquee);
+        marquee.text = generateText(totalChars: totalChars);
+        marquee.scrollAmount = scrollAmount;
+        marquee.scrollDelay = scrollDelay;
+        container.elements.add(marquee);
     }
+
+        void restartWithCustomText() {
+            active = true;
+            marquee.remove();
+            int totalChars = number.valueAsNumber;
+            marquee.text = '|'+customText.text;
+            marquee.scrollAmount = scrollAmount;
+            marquee.scrollDelay = scrollDelay;
+            container.elements.add(marquee);
+        }
 
 //                                          accomponement = new AudioElement('http://upload.wikimedia.org/wikipedia/commons/6/68/10_-_Vivaldi_Winter_mvt_1_Allegro_non_molto_-_John_Harrison_violin.ogg') {
 //                                          accomponement = new AudioElement('http://ia600400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3') {
@@ -110,8 +133,11 @@ class TypeTrainer {
     void bindHandlers() {
         keyPressHandler = (final KeyboardEvent event) {
             final int rCharCode = 18;
+            final int nCharCode = 14;
             if(event.ctrlKey && event.altKey && event.charCode === rCharCode) {
              restart();
+            }else if(event.ctrlKey && event.altKey && event.charCode === nCharCode) {
+                number.focus();
             }else if(event.keyIdentifier == 'Enter') {
                 bowlOver();
             }else if(active) {
@@ -178,6 +204,24 @@ class TypeTrainer {
         marquee.text = 'Finished!';
 
         calculateStats();
+        showStats();
+    }
+
+    void showStats() {
+        final double mistakeRate = mistakeCount / totalChars;
+        DivElement statsPanel = new Element.html("""
+            <div>
+                <dl>
+                    <dt>Total Characters</dt>
+                    <dd>$totalChars</dd>
+                    <dt>Errors</dt>
+                    <dd>$mistakeCount</dd>
+                </dl>
+                Error rate: ${(mistakeRate * 100).round()}
+            </div>
+        """);
+
+        document.body.elements.add(statsPanel);
     }
 
     void calculateStats() {
