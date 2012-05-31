@@ -66,14 +66,17 @@ class TypeTrainer {
     }
 
     void initCustomText() {
+        DivElement localContainer = new DivElement();
         ButtonElement restartWithCustomTextButton = new ButtonElement();
         restartWithCustomTextButton.text = 'Use this text';
         customText = new TextAreaElement();
-        customText.cols = 55;
+        customText.cols = 99;
         customText.rows = 9;
         customText.defaultValue = 'My custom text...';
-        document.body.elements.add(customText);
-        document.body.elements.add(restartWithCustomTextButton);
+
+        localContainer.elements.add(customText);
+        localContainer.elements.add(restartWithCustomTextButton);
+        document.body.elements.add(localContainer);
         restartWithCustomTextButton.on.click.add((final ChangeEvent event) => restartWithCustomText());
     }
 
