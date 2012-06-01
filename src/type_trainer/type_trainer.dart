@@ -206,7 +206,6 @@ class TypeTrainer {
         marquee.scrollDelay = 0;
         marquee.text = 'Finished!';
 
-        calculateStats();
         showStats();
     }
 
@@ -232,7 +231,16 @@ class TypeTrainer {
         print('mistakeRate: ${(mistakeRate * 100).ceil()}%');
     }
 
+    void buildMarquee() {
+        CanvasElement canvas = new CanvasElement(100, 700);
+        CanvasRenderingContext2D c2d = canvas.getContext('2d');
+        c2d .fillStyle   = '#00f'; // blue
+        c2d.fillRect(0, 0, 800, 500);
+        document.body.elements.add(canvas);
+    }
+
     void initWidget() {
+        buildMarquee();
         buildControls();
     }
 }
