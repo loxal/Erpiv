@@ -33,8 +33,8 @@ class TypeTrainer {
     void buildControls() {
         initFingerKeyMap();
         initCustomText();
-        initRestartButton();
         initNumberInput();
+        initRestartButton();
     }
 
     void initFingerKeyMap() {
@@ -60,8 +60,12 @@ class TypeTrainer {
     }
 
     void initNumberInput() {
+        DivElement localContainer = new DivElement();
+        localContainer.style.cssText = 'border: solid';
+        localContainer.elements.add(number);
+       document.body.elements.add(localContainer);
+
        number.defaultValue = '22';
-       document.body.elements.add(number);
        number.on.change.add((final ChangeEvent event) => restart());
     }
 
@@ -73,6 +77,10 @@ class TypeTrainer {
         customText.cols = 99;
         customText.rows = 9;
         customText.defaultValue = 'My custom text...';
+
+        localContainer.style.cssText = 'border: solid;';
+        restartWithCustomTextButton.style.cssText = 'display: block;';
+//        customText.style.cssText = 'display: block;';
 
         localContainer.elements.add(customText);
         localContainer.elements.add(restartWithCustomTextButton);
@@ -232,15 +240,18 @@ class TypeTrainer {
     }
 
     void buildMarquee() {
-        CanvasElement canvas = new CanvasElement(100, 700);
-        CanvasRenderingContext2D c2d = canvas.getContext('2d');
-        c2d .fillStyle   = '#00f'; // blue
-        c2d.fillRect(0, 0, 800, 500);
+        int x = 600,
+            y = 100;
+        CanvasElement canvas = new CanvasElement(y, x);
         document.body.elements.add(canvas);
+        CanvasRenderingContext2D context = canvas.getContext('2d');
+
+        context.fillStyle = "navy";
+        context.fillText("Hello World!", 30, 50, 100);
     }
 
     void initWidget() {
-        buildMarquee();
+//        buildMarquee();
         buildControls();
     }
 }
