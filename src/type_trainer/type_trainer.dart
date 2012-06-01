@@ -28,7 +28,9 @@ class TypeTrainer {
     int scrollAmount = 5;
     int scrollDelay = 1;
     DivElement container;
-    boolean active = true;
+    DivElement statsPanel;
+    bool active = true;
+
 
     void buildControls() {
         initFingerKeyMap();
@@ -53,7 +55,7 @@ class TypeTrainer {
                  ButtonElement restartButton = new Element.html("""
                      <button>Restart</button>
                  """);
-                 restartButton.on.click.add((ClickEvent event) {
+                 restartButton.on.click.add((Event event) {
                      restart();
                  });
                  document.body.elements.add(restartButton);
@@ -90,6 +92,7 @@ class TypeTrainer {
 
     void restart() {
         active = true;
+        statsPanel.remove();
         marquee.remove();
         int totalChars = number.valueAsNumber;
         marquee.text = generateText(totalChars: totalChars);
@@ -100,6 +103,7 @@ class TypeTrainer {
 
         void restartWithCustomText() {
             active = true;
+            statsPanel.remove();
             marquee.remove();
             int totalChars = number.valueAsNumber;
             marquee.text = '|'+customText.text;
@@ -204,7 +208,7 @@ class TypeTrainer {
         return text;
     }
 
-    boolean hasFinished() {
+    bool hasFinished() {
       return typeTrainer.marquee.text.length === 1;
     }
 
@@ -219,7 +223,7 @@ class TypeTrainer {
 
     void showStats() {
         final double mistakeRate = mistakeCount / totalChars;
-        DivElement statsPanel = new Element.html("""
+        statsPanel = new Element.html("""
             <div>
                 <dl>
                     <dt>Total Characters</dt>
