@@ -1,9 +1,16 @@
+/*
+ * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
 #library('loxal:BMI_calculator');
 
 #import('dart:html');
 #import('dart:math');
+#source('view.dart');
 
-class BMICalculator {
+class BMICalculator implements View {
     DivElement container;
     SpanElement lengthLabel;
     InputElement length;
@@ -12,6 +19,10 @@ class BMICalculator {
     ButtonElement calculateBMIButton;
     DocumentFragment fragment;
     OutputElement output;
+    InputElement metric;
+    InputElement imperial;
+    SpanElement measureSystemLabel;
+    DivElement measureSystmGroup;
 
     BMICalculator() {
         initWidget();
@@ -21,6 +32,24 @@ class BMICalculator {
         initElements();
         attachElements();
         attachToRoot();
+
+        attachShortcuts();
+    }
+
+    void attachShortcuts() {
+        window.on.keyUp.add((final KeyboardEvent e) {
+            if(e.keyIdentifier == 'Enter') {
+                calculateBMI();
+            } else if (e.keyIdentifier == 'U+001B') { // Esc key
+                resetUi();
+            }
+        });
+    }
+
+    void resetUi() {
+        length.value = length.defaultValue;
+        weight.value = weight.defaultValue;
+        length.select();
     }
 
     void attachToRoot() {
@@ -30,6 +59,8 @@ class BMICalculator {
 
     void attachElements() {
         container = new DivElement();
+        container.elements.add(measureSystemLabel);
+        container.elements.add(measureSystmGroup);
         container.elements.add(lengthLabel);
         container.elements.add(length);
         container.elements.add(weightLabel);
@@ -39,6 +70,7 @@ class BMICalculator {
     }
 
     void initElements() {
+        initMeasureSystemChoice();
         initLengthLabel();
         initLengthInput();
         initWeightLabel();
@@ -47,9 +79,27 @@ class BMICalculator {
         initOutput();
     }
 
+    void initMeasureSystemChoice() {
+        measureSystemLabel = new SpanElement();
+        measureSystemLabel.text = 'Measure System';
+
+        measureSystmGroup = new DivElement();
+        metric = new InputElement('radio');
+        metric.name = 'measureSystem';
+        metric.defaultChecked = true;
+        metric.value = 'true';
+        metric.text = 'true';
+
+        imperial = new InputElement('radio');
+        imperial.name = 'measureSystem';
+
+        measureSystmGroup.elements.add(metric);
+        measureSystmGroup.elements.add(imperial);
+    }
+
     void calculateBMI() {
-      num bmi = weight.valueAsNumber / Math.pow(length.valueAsNumber, 2) * 1e4;
-      output.value = bmi.toStringAsFixed(2);
+        num bmi = weight.valueAsNumber / Math.pow(length.valueAsNumber, 2) * 1e4;
+        output.value = bmi.toStringAsFixed(2);
     }
 
     void initLengthLabel() {
@@ -70,7 +120,7 @@ class BMICalculator {
 
     void initLengthInput(){
         length = new InputElement('number');
-        length.valueAsNumber = 185;
+        length.defaultValue = '185';
         length.required = true;
 
         length.style.cssText = 'display: block';
@@ -78,9 +128,13 @@ class BMICalculator {
         length.on.change.add((final Event e) => calculateBMI());
     }
 
+    void initLengthChoice() {
+
+    }
+
     void initWeightInput(){
         weight = new InputElement('number');
-        weight.valueAsNumber = 85;
+        weight.defaultValue = '85';
         weight.required = true;
 
         weight.style.cssText = 'display: block';

@@ -1,3 +1,9 @@
+/*
+ * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
 #library('loxal:initDb');
 #import('/Users/alex/my/src/mongo-dart/lib/mongo.dart');
 #import('/Users/alex/my/src/mongo-dart/lib/bson/bson.dart');

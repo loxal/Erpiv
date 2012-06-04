@@ -3,5 +3,6 @@ src/db/populate_db.dart
 src/db/data.dart
 src/dingbats/dingbat_overview.dart
 src/dingbats/ui_test.dart
-src/json-XHR-for-REST_learning-by-example-series/main.dart
+src/lbe/main.dart
 src/websockets/server.dart
+src/bmi_calculator/main.dart
