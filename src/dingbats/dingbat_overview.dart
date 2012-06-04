@@ -184,15 +184,15 @@ class EntityViewer {
 
 
 
-  void displaySymbol() {
-    final List<Element> a = document.queryAll('.viewBox');
-    final InputElement symbolId = document.query('#symbolId');
-    for(final InputElement e in a) {
-      e.innerHTML = '&#' + symbolId.value + ';';
+    void displaySymbol() {
+        final List<Element> a = document.queryAll('.viewBox');
+        final InputElement symbolId = document.query('#symbolId');
+        for(final InputElement e in a) {
+          e.innerHTML = '&#' + symbolId.value + ';';
+        }
     }
-}
 
-  Element get root() => _fragment;
+    Element get root() => _fragment;
 }
 
 
@@ -204,11 +204,11 @@ class Layout {
     css.href="css/font-awesome.css";
 
     return css;
-}
+  }
 
   void declareBase() {
     base = new Element.tag('base');
-    base.href = "/Users/alex/my/project/Erpiv/src/static/theme/icon/";
+    base.href = "../static/theme/icon/";
     document.head.elements.add(base);
   }
 
@@ -229,7 +229,6 @@ class Layout {
     init();
 
     _fragment = new DocumentFragment();
-
 
     final DingbatContainer entityContainer = new DingbatContainer(entities);
     _fragment.elements.add(entityContainer.root);

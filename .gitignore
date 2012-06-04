@@ -1,21 +1,5 @@
 .DS_Store
-*.pyc
-
 /\.idea/workspace\.xml
 
-# Go
-*.[568ao]
-*.ao
-*.so
-._*
-.nfs.*
-[568a].out
-*.orig
-core
-_obj
-_test
-_testmain.go
-*.out
-
-/src/static/module
-/target
+# Dart
+out.js
