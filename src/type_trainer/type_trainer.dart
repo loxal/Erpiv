@@ -119,7 +119,7 @@ class TypeTrainer {
                                            number = new InputElement('number'),
                                             container = new DivElement() {
         bindHandlers();
-         defineMarquee();
+        defineMarquee();
         initWidget();
     }
 
