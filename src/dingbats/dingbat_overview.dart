@@ -119,7 +119,6 @@ class DingbatContainer {
 
          void initWidget() {
           final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
-             entityRangeSelector.autofocus = true;
              entityRangeSelector.on.change.add((e) {
                  final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
                  symFrom.value = rangeMap[rangeKey][0].toString();

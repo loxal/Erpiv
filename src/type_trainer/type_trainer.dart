@@ -68,7 +68,7 @@ class TypeTrainer {
        document.body.elements.add(localContainer);
 
        number.defaultValue = '22';
-       number.on.change.add((final ChangeEvent event) => restart());
+       number.on.change.add((final Event event) => restart());
     }
 
     void initCustomText() {
@@ -87,14 +87,14 @@ class TypeTrainer {
         localContainer.elements.add(customText);
         localContainer.elements.add(restartWithCustomTextButton);
         document.body.elements.add(localContainer);
-        restartWithCustomTextButton.on.click.add((final ChangeEvent event) => restartWithCustomText());
+        restartWithCustomTextButton.on.click.add((final Event event) => restartWithCustomText());
     }
 
     void restart() {
         active = true;
         statsPanel.remove();
         marquee.remove();
-        int totalChars = number.valueAsNumber;
+        totalChars = number.valueAsNumber;
         marquee.text = generateText(totalChars: totalChars);
         marquee.scrollAmount = scrollAmount;
         marquee.scrollDelay = scrollDelay;
@@ -105,7 +105,7 @@ class TypeTrainer {
             active = true;
             statsPanel.remove();
             marquee.remove();
-            int totalChars = number.valueAsNumber;
+            totalChars = number.valueAsNumber;
             marquee.text = '|'+customText.text;
             marquee.scrollAmount = scrollAmount;
             marquee.scrollDelay = scrollDelay;

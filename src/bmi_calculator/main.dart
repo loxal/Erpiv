@@ -22,7 +22,8 @@ class BMICalculator implements View {
     InputElement metric;
     InputElement imperial;
     SpanElement measureSystemLabel;
-    DivElement measureSystmGroup;
+    DivElement measureSystemGroup;
+    final double lbsInKg = 0.45359237;
 
     BMICalculator() {
         initWidget();
@@ -60,7 +61,7 @@ class BMICalculator implements View {
     void attachElements() {
         container = new DivElement();
         container.elements.add(measureSystemLabel);
-        container.elements.add(measureSystmGroup);
+        container.elements.add(measureSystemGroup);
         container.elements.add(lengthLabel);
         container.elements.add(length);
         container.elements.add(weightLabel);
@@ -83,18 +84,25 @@ class BMICalculator implements View {
         measureSystemLabel = new SpanElement();
         measureSystemLabel.text = 'Measure System';
 
-        measureSystmGroup = new DivElement();
+        measureSystemGroup = new DivElement();
         metric = new InputElement('radio');
         metric.name = 'measureSystem';
         metric.defaultChecked = true;
-        metric.value = 'true';
-        metric.text = 'true';
+        metric.value = 'kg';
+        metric.text = 'kage';
+        measureSystemGroup.elements.add(metric);
+        SpanElement metricContainer = new SpanElement();
+        metricContainer.text = 'Metric (kg)';
+        measureSystemGroup.elements.add(metricContainer);
 
         imperial = new InputElement('radio');
         imperial.name = 'measureSystem';
-
-        measureSystmGroup.elements.add(metric);
-        measureSystmGroup.elements.add(imperial);
+        imperial.value = 'lbs';
+        imperial.text = 'elbes';
+        measureSystemGroup.elements.add(imperial);
+        SpanElement imperialContainer = new SpanElement();
+        imperialContainer.text = 'Imperial (lbs)';
+        measureSystemGroup.elements.add(imperialContainer);
     }
 
     void calculateBMI() {
