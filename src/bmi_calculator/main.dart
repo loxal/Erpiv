@@ -30,10 +30,18 @@ class BMICalculator implements View {
     final double lbInKg = 0.45359237;
     final double inInCm = 2.54;
     bool isMetricMeasurement = true;
+    DivElement descriptionContainer;
+    ImageElement description;
 
     BMICalculator() {
         initWidget();
-        calculateBMI();
+        calculateBMI();  // include it into the Start Activity
+
+        void positionBMIMarker() {
+            initDescriptionOverlay(100, 100);
+        }
+
+        positionBMIMarker();
     }
 
     void initWidget() {
@@ -56,12 +64,12 @@ class BMICalculator implements View {
         window.on.keyPress.add((final KeyboardEvent e) {
         final String char = new String.fromCharCodes([e.charCode]);
             if(char == 'm') {
-                if(!isMetricMeasurement) { // attach this to radiobutton change events so this check won't be necessary
+                if(!isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToMetric();
                     calculateBMI();
                 }
             } else if (char == 'i') {
-                if(isMetricMeasurement) { // attach this to radiobutton change events so this check won't be necessary
+                if(isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToImperial();
                     calculateBMI();
                 }
@@ -69,7 +77,6 @@ class BMICalculator implements View {
         });
     }
 
-    // http://en.wikipedia.org/wiki/File:Body_mass_index_chart.svg
     void changeToMetric() {
         metric.checked = true;
         isMetricMeasurement = true;
@@ -112,6 +119,7 @@ class BMICalculator implements View {
         container.elements.add(weightUnitLabel);
         container.elements.add(weight);
         container.elements.add(output);
+        container.elements.add(descriptionContainer);
     }
 
     void initElements() {
@@ -121,6 +129,52 @@ class BMICalculator implements View {
         initWeightLabel();
         initWeightInput();
         initOutput();
+        initDescription();
+        initDescriptionOverlay();
+    }
+
+    void initDescriptionOverlay(final double xBMIMarker, final double yBMIMarker) {
+        final int maxY = 480;
+        final int maxX = 590;
+
+        SVGGElement svgGroup = new SVGElement.tag("g");
+        svgGroup.attributes["transform"] = "translate(0, $maxY) scale(1,-1)";
+
+        SVGRectElement rect = new SVGElement.tag("rect");
+        svgGroup.elements.add(rect);
+        rect.attributes = {
+           "cx":0, "cy":0, "fill":"white", "stroke":"green", "fill-opacity":.1, "width": maxX, "height": maxY
+        };
+
+        SVGCircleElement bmiMarker = new SVGElement.tag("circle");
+        svgGroup.elements.add(bmiMarker);
+        bmiMarker.attributes = {
+           "cx":.0*49.15, "cy":.0*92.2, "fill":"#191", "stroke":"blue", "fill-opacity":.5, "r": 5
+        };
+
+        final double xPerKg = 4.4915;
+        final double yPerCm = 9.22;
+        final double cmStart = 148;
+        final double kgStart = 40;
+
+
+        SVGElement descriptionOverlay = new SVGElement.tag("svg");
+        descriptionOverlay.elements.add(svgGroup);
+        descriptionOverlay.attributes = {
+           "height": maxY,
+           "width": maxX,
+           "version": "1.1"
+        };
+
+        descriptionContainer.elements.add(descriptionOverlay);
+        descriptionOverlay.style.cssText = 'top: 202px; left: 58px; position: absolute;';
+    }
+
+    void initDescription() {
+        descriptionContainer = new DivElement();
+        description = new ImageElement('http://upload.wikimedia.org/wikipedia/commons/e/e9/Body_mass_index_chart.svg');
+//        description = new ImageElement('http://upload.wikimedia.org/wikipedia/commons/e/e9/Body_mass_index_chart.svg', 690, 575);
+        descriptionContainer.elements.add(description);
     }
 
     void initmeasurementSystemChoice() {
@@ -131,11 +185,11 @@ class BMICalculator implements View {
         metric = new InputElement('radio');
         metric.name = 'measurementSystem';
         metric.defaultChecked = true;
-        metric.on.select.add((final Event e) => prine(e));
 
         measurementSystemGroup.elements.add(metric);
         SpanElement metricContainer = new SpanElement();
         metricContainer.text = 'Metric (cm / kg)';
+        metricContainer.title = 'm';
         measurementSystemGroup.elements.add(metricContainer);
 
         imperial = new InputElement('radio');
@@ -143,6 +197,7 @@ class BMICalculator implements View {
         measurementSystemGroup.elements.add(imperial);
         SpanElement imperialContainer = new SpanElement();
         imperialContainer.text = 'Imperial (in / lb)';
+        imperialContainer.title = 'i';
         measurementSystemGroup.elements.add(imperialContainer);
     }
 
@@ -150,7 +205,7 @@ class BMICalculator implements View {
         setMetaValues();
 
         double bmi = weightInKg / Math.pow(lengthInCm, 2) * 1e4;
-        output.value = 'BMI: ' + bmi.toStringAsFixed(2) + ' = ' + bmi.toStringAsPrecision(2) + ' = ' + bmi.toStringAsExponential(2)  + ' = ' + bmi.toRadixString(2);
+        output.value = 'BMI: ' + bmi.toStringAsFixed(2);
     }
 
     void setMetaValues() {
