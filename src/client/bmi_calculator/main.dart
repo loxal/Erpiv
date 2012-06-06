@@ -32,16 +32,16 @@ class BMICalculator implements View {
     bool isMetricMeasurement = true;
     DivElement descriptionContainer;
     ImageElement description;
+    SVGCircleElement bmiMarker;
 
     BMICalculator() {
         initWidget();
+        showBMI();
+    }
+
+    void showBMI() {
         calculateBMI();  // include it into the Start Activity
-
-        void positionBMIMarker() {
-            initDescriptionOverlay(100, 100);
-        }
-
-        positionBMIMarker();
+        positionBMIMarker(weightInKg, lengthInCm);
     }
 
     void initWidget() {
@@ -55,7 +55,7 @@ class BMICalculator implements View {
     void attachShortcuts() {
         window.on.keyUp.add((final KeyboardEvent e) {
             if(e.keyIdentifier == 'Enter') {
-                calculateBMI();
+                showBMI();
             } else if (e.keyIdentifier == 'U+001B') { // Esc key
                 resetUi();
             }
@@ -66,12 +66,12 @@ class BMICalculator implements View {
             if(char == 'm') {
                 if(!isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToMetric();
-                    calculateBMI();
+                    showBMI();
                 }
             } else if (char == 'i') {
                 if(isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToImperial();
-                    calculateBMI();
+                    showBMI();
                 }
             }
         });
@@ -133,32 +133,43 @@ class BMICalculator implements View {
         initDescriptionOverlay();
     }
 
-    void initDescriptionOverlay(final double xBMIMarker, final double yBMIMarker) {
+    double kgToXscale(final double kg) {
+        final double kgStart = 40;
+        final double xPerKg = 4.915;
+        final double visibleWeight = kg - kgStart;
+
+        return visibleWeight * xPerKg;
+    }
+
+    double cmToYscale(final double cm) {
+        final double cmStart = 148;
+        final double yPerCm = 9.22;
+        final double visibleHeight = cm - cmStart;
+
+        return visibleHeight * yPerCm;
+    }
+
+    void positionBMIMarker(final double kg, final double cm) {
+        final double x = kgToXscale(kg);
+        final double y = cmToYscale(cm);
+
+        bmiMarker.attributes = {
+           "cx": x, "cy": y, "fill":"#191", "stroke": '#119', "fill-opacity":.5, "r": 5
+        };
+    }
+
+    void initDescriptionOverlay() {
         final int maxY = 480;
         final int maxX = 590;
 
-        SVGGElement svgGroup = new SVGElement.tag("g");
+        final SVGGElement svgGroup = new SVGElement.tag("g");
         svgGroup.attributes["transform"] = "translate(0, $maxY) scale(1,-1)";
 
-        SVGRectElement rect = new SVGElement.tag("rect");
-        svgGroup.elements.add(rect);
-        rect.attributes = {
-           "cx":0, "cy":0, "fill":"white", "stroke":"green", "fill-opacity":.1, "width": maxX, "height": maxY
-        };
-
-        SVGCircleElement bmiMarker = new SVGElement.tag("circle");
+        bmiMarker = new SVGElement.tag("circle");
         svgGroup.elements.add(bmiMarker);
-        bmiMarker.attributes = {
-           "cx":.0*49.15, "cy":.0*92.2, "fill":"#191", "stroke":"blue", "fill-opacity":.5, "r": 5
-        };
-
-        final double xPerKg = 4.4915;
-        final double yPerCm = 9.22;
-        final double cmStart = 148;
-        final double kgStart = 40;
 
 
-        SVGElement descriptionOverlay = new SVGElement.tag("svg");
+        final SVGElement descriptionOverlay = new SVGElement.tag("svg");
         descriptionOverlay.elements.add(svgGroup);
         descriptionOverlay.attributes = {
            "height": maxY,
@@ -266,7 +277,7 @@ class BMICalculator implements View {
 
         length.style.cssText = 'display: block';
 
-        length.on.change.add((final Event e) => calculateBMI());
+        length.on.change.add((final Event e) => showBMI());
     }
 
     void initLengthChoice() {
@@ -280,7 +291,7 @@ class BMICalculator implements View {
 
         weight.style.cssText = 'display: block';
 
-        weight.on.change.add((final Event e) => calculateBMI());
+        weight.on.change.add((final Event e) => showBMI());
     }
 
     DocumentFragment get root() => fragment;

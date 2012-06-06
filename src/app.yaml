@@ -12,6 +12,9 @@ inbound_services:
 
 handlers:
 # should precede ".*" (main URL handler)
+- url: /
+  static_dir: client
+# should precede ".*" (main URL handler)
 - url: /static
   static_dir: static
 # should precede ".*" (main URL handler)
