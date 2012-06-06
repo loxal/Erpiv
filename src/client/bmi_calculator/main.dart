@@ -154,27 +154,26 @@ class BMICalculator implements View {
         final double y = cmToYscale(cm);
 
         bmiMarker.attributes = {
-           "cx": x, "cy": y, "fill":"#191", "stroke": '#119', "fill-opacity":.5, "r": 5
+           'cx': x, 'cy': y, 'fill': '#191', 'stroke': '#119', 'fill-opacity': .5, 'r': 5,
         };
     }
 
     void initDescriptionOverlay() {
-        final int maxY = 480;
-        final int maxX = 590;
+        final int yMax = 480;
+        final int xMax = 590;
 
-        final SVGGElement svgGroup = new SVGElement.tag("g");
-        svgGroup.attributes["transform"] = "translate(0, $maxY) scale(1,-1)";
+        final SVGGElement svgGroup = new SVGElement.tag('g');
+        svgGroup.attributes['transform'] = 'translate(0, $yMax) scale(1,-1)';
 
-        bmiMarker = new SVGElement.tag("circle");
+        bmiMarker = new SVGElement.tag('circle');
         svgGroup.elements.add(bmiMarker);
 
-
-        final SVGElement descriptionOverlay = new SVGElement.tag("svg");
+        final SVGElement descriptionOverlay = new SVGElement.tag('svg');
         descriptionOverlay.elements.add(svgGroup);
         descriptionOverlay.attributes = {
-           "height": maxY,
-           "width": maxX,
-           "version": "1.1"
+           'height': yMax,
+           'width': xMax,
+           'version': '1.1',
         };
 
         descriptionContainer.elements.add(descriptionOverlay);
@@ -184,7 +183,6 @@ class BMICalculator implements View {
     void initDescription() {
         descriptionContainer = new DivElement();
         description = new ImageElement('http://upload.wikimedia.org/wikipedia/commons/e/e9/Body_mass_index_chart.svg');
-//        description = new ImageElement('http://upload.wikimedia.org/wikipedia/commons/e/e9/Body_mass_index_chart.svg', 690, 575);
         descriptionContainer.elements.add(description);
     }
 

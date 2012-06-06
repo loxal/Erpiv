@@ -13,6 +13,6 @@
         <Locale messages="ALL_ALL.xml"/>
     </ModulePrefs>
 
-    <Content href="http://erpiv.loxal.net/src/bmi_calculator/main.html?channel=web" type="url"/>
+    <Content href="http://erpiv.loxal.net/bmi_calculator/main.html?channel=web" type="url"/>
 </Module>
         
