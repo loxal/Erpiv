@@ -93,7 +93,7 @@ class TypeTrainer {
     void restart() {
         active = true;
         statsPanel.remove();
-        marquee.remove(); // TODO this one makes problems?!
+        marquee.remove();
         totalChars = number.valueAsNumber;
         marquee.text = generateText(totalChars: totalChars);
         marquee.scrollAmount = scrollAmount;
@@ -103,10 +103,10 @@ class TypeTrainer {
 
     void restartWithCustomText() {
         active = true;
-        statsPanel.remove();
         marquee.remove();
-        totalChars = number.valueAsNumber;
-        marquee.text = '|' + customText.text; // changed to value
+        if (statsPanel != null) statsPanel.remove();
+        totalChars = Math.parseInt(number.value);
+        marquee.text = '|' + customText.value;
         print(customText.value);
         marquee.scrollAmount = scrollAmount;
         marquee.scrollDelay = scrollDelay;
@@ -194,7 +194,7 @@ class TypeTrainer {
         this.totalChars = totalChars;
         String text = cursor;
         final Random random = new Random();
-        for (var i = 1; i < totalChars; i++) {
+        for (int i = 1; i < totalChars; i++) {
             int letterCode = random.nextInt(26) + 97;
             text += new String.fromCharCodes([letterCode]);
             if (i % spaceCharAfter === 0) {
