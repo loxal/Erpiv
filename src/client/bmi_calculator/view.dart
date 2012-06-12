@@ -6,6 +6,7 @@
 
 interface View {
     void attachShortcuts();
-    void initElements();
+
+    voidDDD initElements();
 }
 

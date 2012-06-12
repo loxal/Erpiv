@@ -139,7 +139,7 @@ class BMICalculator implements View {
     }
 
     double kgToXscale(final double kg) {
-        final double kgStart = 40;
+        final double kgStart = 40.0;
         final double xPerKg = 4.915;
         final double visibleWeight = kg - kgStart;
 
@@ -147,7 +147,7 @@ class BMICalculator implements View {
     }
 
     double cmToYscale(final double cm) {
-        final double cmStart = 148;
+        final double cmStart = 148.0;
         final double yPerCm = 9.22;
         final double visibleHeight = cm - cmStart;
 
@@ -293,7 +293,7 @@ class BMICalculator implements View {
         length.defaultValue = '185';
         length.required = true;
         length.style.cssText = 'color: red';
-//        length.classes = ['icon-list'];
+        length.classes = ['icon-list'];
 
         length.style.cssText = 'display: block';
 
@@ -320,5 +320,6 @@ class BMICalculator implements View {
 void main() {
     final BMICalculator bmiCalculator = new BMICalculator();
 
-    document.body.elements.add(bmiCalculator.root);
+    document.body.nodes.add(bmiCalculator.root);
+//    document.body.elements.add(bmiCalculator.root);
 }

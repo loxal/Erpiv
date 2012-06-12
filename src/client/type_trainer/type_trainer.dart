@@ -82,7 +82,6 @@ class TypeTrainer {
 
         localContainer.style.cssText = 'border: solid;';
         restartWithCustomTextButton.style.cssText = 'display: block;';
-//        customText.style.cssText = 'display: block;';
 
         localContainer.elements.add(customText);
         localContainer.elements.add(restartWithCustomTextButton);
@@ -90,40 +89,38 @@ class TypeTrainer {
         restartWithCustomTextButton.on.click.add((final Event event) => restartWithCustomText());
     }
 
-    void restart() {
-        active = true;
-        statsPanel.remove();
-        marquee.remove();
-        totalChars = number.valueAsNumber;
-        marquee.text = generateText(totalChars: totalChars);
-        marquee.scrollAmount = scrollAmount;
-        marquee.scrollDelay = scrollDelay;
-        container.elements.add(marquee);
-    }
 
-    void restartWithCustomText() {
+    void restartMarquee() {
         active = true;
         marquee.remove();
         if (statsPanel != null) statsPanel.remove();
         totalChars = Math.parseInt(number.value);
-        marquee.text = '|' + customText.value;
-        print(customText.value);
         marquee.scrollAmount = scrollAmount;
         marquee.scrollDelay = scrollDelay;
         container.elements.add(marquee);
     }
 
-//                                          accomponement = new AudioElement('http://upload.wikimedia.org/wikipedia/commons/6/68/10_-_Vivaldi_Winter_mvt_1_Allegro_non_molto_-_John_Harrison_violin.ogg') {
-//                                          accomponement = new AudioElement('http://ia600400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3') {
+    void restart() {
+        restartMarquee();
+
+        marquee.text = generateText(totalChars: totalChars);
+    }
+
+    void restartWithCustomText() {
+        restartMarquee();
+
+        marquee.text = '|' + customText.value;
+    }
+
 
     TypeTrainer() : spaceChar = new String.fromCharCodes([spaceCharCode]),
-    accomponement = new AudioElement('http://www.archive.org/download/TheFourSeasonsWinter/USAFB_Winter.ogg'),
+//        accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3'),
+    accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.ogg'),
     number = new InputElement('number'),
     container = new DivElement() {
-        bindHandlers();
-        defineMarquee();
+
         initWidget();
-        accomponement.play();
+        bindHandlers();
     }
 
     void defineMarquee() {
@@ -167,7 +164,11 @@ class TypeTrainer {
             }
         };
 
-        document.on.keyPress.add(keyPressHandler);
+
+//        container.on.keyPress.add(keyPressHandler);
+        window.on.keyPress.add(keyPressHandler);
+//        marquee.on.keyPress.add(keyPressHandler);
+//        marquee.on.keyUp.add(keyPressHandler);
     }
 
     void unbindHandlers() {
@@ -261,9 +262,14 @@ class TypeTrainer {
         context.fillText("Hello World!", 30, 50, 100);
     }
 
+    void playAudio() {
+//        accomponement.play();
+    }
+
     void initWidget() {
-//        buildMarquee();
+        defineMarquee();
         buildControls();
+        playAudio();
     }
 }
 

@@ -44,9 +44,9 @@ handlers:
   static_files: static/client/site/main.html
   upload: /static/client/.*
 
-#- url: /static/module/CV/cache.mf
-#  static_files: static/module/CV/cache.mf
-#  upload: static/module/CV/cache.mf
+#- url: /static/module/CV/main.appcache
+#  static_files: static/module/CV/main.appcache
+#  upload: static/module/CV/main.appcache
 #  mime_type: text/cache-manifest
 
 #- url: /mystaticdir/(.*\.appcache)
