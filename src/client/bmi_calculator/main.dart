@@ -33,6 +33,7 @@ class BMICalculator implements View {
     DivElement descriptionContainer;
     ImageElement description;
     SVGCircleElement bmiMarker;
+    BaseElement base;
 
     BMICalculator() {
         initWidget();
@@ -40,7 +41,7 @@ class BMICalculator implements View {
     }
 
     void showBMI() {
-        calculateBMI();  // include it into the Start Activity
+        calculateBMI(); // include it into the Start Activity
         positionBMIMarker(weightInKg, lengthInCm);
     }
 
@@ -54,7 +55,7 @@ class BMICalculator implements View {
 
     void attachShortcuts() {
         window.on.keyUp.add((final KeyboardEvent e) {
-            if(e.keyIdentifier == 'Enter') {
+            if (e.keyIdentifier == 'Enter') {
                 showBMI();
             } else if (e.keyIdentifier == 'U+001B') { // Esc key
                 resetUi();
@@ -62,14 +63,14 @@ class BMICalculator implements View {
         });
 
         window.on.keyPress.add((final KeyboardEvent e) {
-        final String char = new String.fromCharCodes([e.charCode]);
-            if(char == 'm') {
-                if(!isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
+            final String char = new String.fromCharCodes([e.charCode]);
+            if (char == 'm') {
+                if (!isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToMetric();
                     showBMI();
                 }
             } else if (char == 'i') {
-                if(isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
+                if (isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
                     changeToImperial();
                     showBMI();
                 }
@@ -123,6 +124,10 @@ class BMICalculator implements View {
     }
 
     void initElements() {
+        initBase();
+
+        document.head.nodes.add(getCss());
+
         initmeasurementSystemChoice();
         initLengthLabel();
         initLengthInput();
@@ -154,8 +159,23 @@ class BMICalculator implements View {
         final double y = cmToYscale(cm);
 
         bmiMarker.attributes = {
-           'cx': x, 'cy': y, 'fill': '#191', 'stroke': '#119', 'fill-opacity': .5, 'r': 5,
+        'cx': x, 'cy': y, 'fill': '#191', 'stroke': '#119', 'fill-opacity': .5, 'r': 5,
         };
+    }
+
+    void initBase() {
+        base = new Element.tag('base');
+        base.href = "../../static/theme/icon/";
+        document.head.elements.add(base);
+    }
+
+    LinkElement getCss() {
+        final LinkElement css = new Element.tag("link");
+        css.rel = "stylesheet";
+        css.type = "text/css";
+        css.href = "css/font-awesome.css";
+
+        return css;
     }
 
     void initDescriptionOverlay() {
@@ -171,9 +191,9 @@ class BMICalculator implements View {
         final SVGElement descriptionOverlay = new SVGElement.tag('svg');
         descriptionOverlay.elements.add(svgGroup);
         descriptionOverlay.attributes = {
-           'height': yMax,
-           'width': xMax,
-           'version': '1.1',
+        'height': yMax,
+        'width': xMax,
+        'version': '1.1',
         };
 
         descriptionContainer.elements.add(descriptionOverlay);
@@ -203,6 +223,7 @@ class BMICalculator implements View {
 
         imperial = new InputElement('radio');
         imperial.name = 'measurementSystem';
+        imperial.on.change.add((final Event e) => prine(e));
         measurementSystemGroup.elements.add(imperial);
         SpanElement imperialContainer = new SpanElement();
         imperialContainer.text = 'Imperial (in / lb)';
@@ -218,7 +239,7 @@ class BMICalculator implements View {
     }
 
     void setMetaValues() {
-        if(isMetricMeasurement) {
+        if (isMetricMeasurement) {
             lengthInCm = length.valueAsNumber;
             weightInKg = weight.valueAsNumber;
         } else {
@@ -227,9 +248,9 @@ class BMICalculator implements View {
     }
 
     double convertCmToIn(double cm) {
-        return cm / inInCm; 
+        return cm / inInCm;
     }
-    
+
     double convertKgToLb(double kg) {
         return kg / lbInKg;
     }
@@ -267,11 +288,12 @@ class BMICalculator implements View {
         output.defaultValue = 'BMI';
     }
 
-    void initLengthInput(){
+    void initLengthInput() {
         length = new InputElement('number');
         length.defaultValue = '185';
         length.required = true;
         length.style.cssText = 'color: red';
+//        length.classes = ['icon-list'];
 
         length.style.cssText = 'display: block';
 
@@ -282,7 +304,7 @@ class BMICalculator implements View {
 
     }
 
-    void initWeightInput(){
+    void initWeightInput() {
         weight = new InputElement('number');
         weight.defaultValue = '85';
         weight.required = true;
