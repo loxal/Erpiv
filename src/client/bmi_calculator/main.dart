@@ -38,6 +38,10 @@ class BMICalculator implements View {
     BMICalculator() {
         initWidget();
         showBMI();
+
+//        todo code that contains static theme url
+//        todo isolate-driven app with receiving port
+//        todo baselink
     }
 
     void showBMI() {
@@ -66,16 +70,24 @@ class BMICalculator implements View {
             final String char = new String.fromCharCodes([e.charCode]);
             if (char == 'm') {
                 if (!isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
-                    changeToMetric();
-                    showBMI();
+                    calculateMetricBMI();
                 }
             } else if (char == 'i') {
                 if (isMetricMeasurement) { // replace by on.change Event on the radio button, once supported
-                    changeToImperial();
-                    showBMI();
+                    calculateImperialBMI();
                 }
             }
         });
+    }
+
+    void calculateMetricBMI() {
+        changeToMetric();
+        showBMI();
+    }
+
+    void calculateImperialBMI() {
+        changeToImperial();
+        showBMI();
     }
 
     void changeToMetric() {
@@ -128,7 +140,7 @@ class BMICalculator implements View {
 
         document.head.nodes.add(getCss());
 
-        initmeasurementSystemChoice();
+        initMeasurementSystemChoice();
         initLengthLabel();
         initLengthInput();
         initWeightLabel();
@@ -165,7 +177,7 @@ class BMICalculator implements View {
 
     void initBase() {
         base = new Element.tag('base');
-        base.href = "../../static/theme/icon/";
+        base.href = "../theme/icon/";
         document.head.elements.add(base);
     }
 
@@ -206,14 +218,16 @@ class BMICalculator implements View {
         descriptionContainer.elements.add(description);
     }
 
-    void initmeasurementSystemChoice() {
+    void initMeasurementSystemChoice() {
         measurementSystemLabel = new SpanElement();
         measurementSystemLabel.text = 'Measurement System';
+        measurementSystemLabel.classes = ['icon-move'];
 
         measurementSystemGroup = new DivElement();
         metric = new InputElement('radio');
         metric.name = 'measurementSystem';
         metric.defaultChecked = true;
+        metric.on.change.add((final Event e) => calculateMetricBMI());
 
         measurementSystemGroup.elements.add(metric);
         SpanElement metricContainer = new SpanElement();
@@ -223,7 +237,8 @@ class BMICalculator implements View {
 
         imperial = new InputElement('radio');
         imperial.name = 'measurementSystem';
-        imperial.on.change.add((final Event e) => prine(e));
+        imperial.on.change.add((final Event e) => calculateImperialBMI());
+
         measurementSystemGroup.elements.add(imperial);
         SpanElement imperialContainer = new SpanElement();
         imperialContainer.text = 'Imperial (in / lb)';
@@ -273,6 +288,7 @@ class BMICalculator implements View {
         lengthLabel.text = 'Length ';
         lengthUnitLabel = new SpanElement();
         lengthUnitLabel.text = 'in cm:';
+        lengthLabel.classes = ['icon-resize-vertical'];
     }
 
     void initWeightLabel() {
@@ -280,20 +296,20 @@ class BMICalculator implements View {
         weightLabel.text = 'Weight ';
         weightUnitLabel = new SpanElement();
         weightUnitLabel.text = 'in kg:';
+        weightLabel.classes = ['icon-dashboard'];
     }
 
     void initOutput() {
         output = new OutputElement();
         output.style.cssText = 'display: block';
         output.defaultValue = 'BMI';
+        output.classes = ['icon-bar-chart'];
     }
 
     void initLengthInput() {
         length = new InputElement('number');
         length.defaultValue = '185';
         length.required = true;
-        length.style.cssText = 'color: red';
-        length.classes = ['icon-list'];
 
         length.style.cssText = 'display: block';
 
