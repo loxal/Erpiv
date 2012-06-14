@@ -8,6 +8,7 @@
 
 #import('dart:html');
 #import('dart:math');
+#import('../core/core.dart');
 #source('view.dart');
 
 class BMICalculator implements View {
@@ -38,6 +39,7 @@ class BMICalculator implements View {
     BMICalculator() {
         initWidget();
         showBMI();
+        print(Core.basePath);
 
 //        todo code that contains static theme url
 //        todo isolate-driven app with receiving port
@@ -176,16 +178,16 @@ class BMICalculator implements View {
     }
 
     void initBase() {
-        base = new Element.tag('base');
-        base.href = "../theme/icon/";
+        base = new BaseElement();
+        base.href = Core.basePath;
         document.head.elements.add(base);
     }
 
     LinkElement getCss() {
-        final LinkElement css = new Element.tag("link");
-        css.rel = "stylesheet";
-        css.type = "text/css";
-        css.href = "css/font-awesome.css";
+        final LinkElement css = new LinkElement();
+        css.rel = 'stylesheet';
+        css.type = 'text/css';
+        css.href = Core.iconCssLocation;
 
         return css;
     }

@@ -6,6 +6,7 @@
 
 #library('loxal:DingbatOverview');
 #import('dart:html');
+#import('../core/core.dart');
 
 class DingbatContainer {
     InputElement symFrom;
@@ -195,17 +196,17 @@ class EntityViewer {
 
 class Layout {
     LinkElement getCss() {
-        final LinkElement css = new Element.tag("link");
-        css.rel = "stylesheet";
-        css.type = "text/css";
-        css.href = "css/font-awesome.css";
+        final LinkElement css = new LinkElement();
+        css.rel = 'stylesheet';
+        css.type = 'text/css';
+        css.href = Core.iconCssLocation;
 
         return css;
     }
 
     void declareBase() {
-        base = new Element.tag('base');
-        base.href = "../../static/theme/icon/";
+        base = new BaseElement();
+        base.href = Core.basePath;
         document.head.elements.add(base);
     }
 
