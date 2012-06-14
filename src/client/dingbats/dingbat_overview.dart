@@ -60,7 +60,7 @@ class DingbatContainer implements View {
         document.head.nodes.add(title);
 
         Element controls = new Element.html("""
-    <fieldset style="width: 22em; height: 19em;">
+    <fieldset style="width: 22em;">
       <legend>Range</legend>
       <label>From:</label>
       <input type=text value="9985" id="symbolFrom"/>
@@ -167,7 +167,7 @@ class EntityViewer {
         _fragment = new DocumentFragment();
 
         Element viewer = new Element.html('''
-        <fieldset>
+        <fieldset style='width: 30em;'>
             <legend id="my">Symbol Display</legend>
             <span class="viewBox" style="font-size: 1em;">&#x2724;</span>
             <span class="viewBox" style="font-size: 2em;">&#x2658;</span>
