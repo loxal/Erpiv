@@ -40,8 +40,6 @@ class BMICalculator implements View {
     BMICalculator() {
         initWidget();
         showBMI();
-
-//        todo isolate-driven app with receiving port
     }
 
     void showBMI() {
@@ -230,7 +228,7 @@ class BMICalculator implements View {
         metric.on.change.add((final Event e) => calculateMetricBMI());
 
         measurementSystemGroup.elements.add(metric);
-        SpanElement metricContainer = new SpanElement();
+        final SpanElement metricContainer = new SpanElement();
         metricContainer.text = 'Metric (cm / kg)';
         metricContainer.title = 'm';
         measurementSystemGroup.elements.add(metricContainer);

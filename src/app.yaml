@@ -16,8 +16,8 @@ handlers:
   static_dir: client
 # should precede ".*" (main URL handler)
 - url: /favicon.ico
-  static_files: static/theme/favicon.ico
-  upload: static/theme/favicon.ico
+  static_files: client/core/theme/favicon.ico
+  upload: client/core/theme/favicon.ico
 - url: /robots.txt
   static_files: static/robots.txt
   upload: static/robots.txt

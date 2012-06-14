@@ -72,12 +72,12 @@ class TypeTrainer {
     }
 
     void initCustomText() {
-        DivElement localContainer = new DivElement();
-        ButtonElement restartWithCustomTextButton = new ButtonElement();
+        final DivElement localContainer = new DivElement();
+        final ButtonElement restartWithCustomTextButton = new ButtonElement();
         restartWithCustomTextButton.text = 'Use this text';
         customText = new TextAreaElement();
         customText.cols = 99;
-        customText.rows = 9;
+        customText.rows = 8;
         customText.defaultValue = 'My custom text...';
 
         localContainer.style.cssText = 'border: solid;';
@@ -109,7 +109,7 @@ class TypeTrainer {
     void restartWithCustomText() {
         restartMarquee();
 
-        marquee.text = '| ${customText.value}';
+        marquee.text = '|${customText.value}';
     }
 
 
@@ -179,7 +179,7 @@ class TypeTrainer {
     void validateChar(final String keyLiteral) {
         if (typeTrainer.marquee.text[comparableIdx] == keyLiteral) {
             marquee.bgColor = '#119';
-            marquee.text = '$cursor ${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
+            marquee.text = '$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
             if (hasFinished()) finished();
         } else {
             showMistake();

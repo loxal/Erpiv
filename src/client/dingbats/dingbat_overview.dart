@@ -38,7 +38,7 @@ class DingbatContainer implements View {
         int code = 1;
         for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
             final symbol = new Element.html('''
-              <tr><td> $code++ </td><td> ${new String.fromCharCodes([idx])} </td><td> 
+              <tr><td>${code++}</td><td>${new String.fromCharCodes([idx])}</td><td>
               $idx
               </td></tr>''');
 
@@ -193,9 +193,9 @@ class EntityViewer {
 
 
     void displaySymbol() {
-        final List<Node> a = document.queryAll('.viewBox');
+        final List<Node> nodes = document.queryAll('.viewBox');
         final InputElement symbolId = document.query('#symbolId');
-        for (final InputElement e in a) {
+        for (final Element e in nodes) {
             e.innerHTML = '&#${symbolId.value};';
         }
     }
@@ -260,7 +260,6 @@ class EntityOverview {
 
 void main() {
     final Layout layout = new Layout(null);
-
 
     new EntityOverview();
 }
