@@ -165,10 +165,7 @@ class TypeTrainer {
         };
 
 
-//        container.on.keyPress.add(keyPressHandler);
         window.on.keyPress.add(keyPressHandler);
-//        marquee.on.keyPress.add(keyPressHandler);
-//        marquee.on.keyUp.add(keyPressHandler);
     }
 
     void unbindHandlers() {
@@ -178,12 +175,16 @@ class TypeTrainer {
 
     void validateChar(final String keyLiteral) {
         if (typeTrainer.marquee.text[comparableIdx] == keyLiteral) {
-            marquee.bgColor = '#119';
-            marquee.text = '$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
-            if (hasFinished()) finished();
+            continueAsRight();
         } else {
             showMistake();
         }
+    }
+
+    void continueAsRight() {
+        marquee.bgColor = '#119';
+        marquee.text = '$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
+        if (hasFinished()) finished();
     }
 
     void showMistake() {
@@ -196,10 +197,10 @@ class TypeTrainer {
         final StringBuffer text = new StringBuffer();
         text.add(cursor);
         final Random random = new Random();
-        for (int i = 1; i < totalCharsLocal; i++) {
+        for (int idx = 1; idx < totalCharsLocal; idx++) {
             int letterCode = random.nextInt(26) + 97;
             text.add(new String.fromCharCodes([letterCode]));
-            if (i % spaceCharAfter === 0) {
+            if (idx % spaceCharAfter === 0) {
                 text.add(spaceChar);
             }
         }
@@ -255,12 +256,12 @@ class TypeTrainer {
     void buildMarquee() {
         int x = 600,
         y = 100;
-        CanvasElement canvas = new CanvasElement(y, x);
+        final CanvasElement canvas = new CanvasElement(y, x);
         document.body.elements.add(canvas);
-        CanvasRenderingContext2D context = canvas.getContext('2d');
+        final CanvasRenderingContext2D context = canvas.getContext('2d');
 
         context.fillStyle = "navy";
-        context.fillText("Hello World!", 30, 50, 100);
+        context.fillText("Hello World!", 20, 70, 50);
     }
 
     void playAudio() {
@@ -271,6 +272,8 @@ class TypeTrainer {
         defineMarquee();
         buildControls();
         playAudio();
+
+        buildMarquee();
     }
 }
 
