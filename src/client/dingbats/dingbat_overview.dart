@@ -7,8 +7,9 @@
 #library('loxal:DingbatOverview');
 #import('dart:html');
 #import('../core/core.dart');
+#source('../core/view.dart');
 
-class DingbatContainer {
+class DingbatContainer implements View {
     InputElement symFrom;
     InputElement symTo;
     LabelElement symbolToLabel;
@@ -28,9 +29,10 @@ class DingbatContainer {
         tbody.nodes.clear();
         int code = 1;
         for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
-            final symbol = new Element.html('<tr><td>' + code++ + '</td><td>' + new String.fromCharCodes([idx]) + '</td><td>' +
-            idx
-            + '</td></tr>');
+            final symbol = new Element.html('''
+              <tr><td> $code++ </td><td> ${new String.fromCharCodes([idx])} </td><td> 
+              $idx
+              </td></tr>''');
 
             tbody.elements.add(symbol);
 
@@ -38,7 +40,7 @@ class DingbatContainer {
             totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
 
             decimalRange = document.body.query('#decimalRange');
-            decimalRange.innerHTML = symbolFromNum.toString() + ' - ' + symbolToNum.toString();
+            decimalRange.innerHTML = '${symbolFromNum.toString()} - ${symbolToNum.toString()}';
         }
     }
 
@@ -120,7 +122,7 @@ class DingbatContainer {
         void initWidget() {
             final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
             entityRangeSelector.on.change.add((e) {
-                final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
+                final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).text;
                 symFrom.value = rangeMap[rangeKey][0].toString();
                 symTo.value = rangeMap[rangeKey][1].toString();
                 refreshSymbolList();
@@ -174,7 +176,7 @@ class EntityViewer {
 
 
         void initWidget() {
-            final ButtonElement display = document.body.query('#symbol-display');
+            final ButtonElement display = document.query('#symbol-display');
             display.on.click.add((e) => displaySymbol());
         }
 
@@ -183,10 +185,10 @@ class EntityViewer {
 
 
     void displaySymbol() {
-        final List<Element> a = document.queryAll('.viewBox');
+        final List<Node> a = document.queryAll('.viewBox');
         final InputElement symbolId = document.query('#symbolId');
         for (final InputElement e in a) {
-            e.innerHTML = '&#' + symbolId.value + ';';
+            e.innerHTML = '&#${symbolId.value};';
         }
     }
 
@@ -234,12 +236,12 @@ class Layout {
         final EntityViewer entityViewer = new EntityViewer(entities);
         _fragment.elements.add(entityViewer.root);
 
-        document.body.elements.add(_fragment);
+        document.body.nodes.add(_fragment);
 
         entityContainer.refreshSymbolList();
     }
 
-    Element get root() => _fragment;
+    DocumentFragment get root() => _fragment;
 }
 
 class EntityOverview {

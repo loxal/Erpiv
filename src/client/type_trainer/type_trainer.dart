@@ -103,13 +103,13 @@ class TypeTrainer {
     void restart() {
         restartMarquee();
 
-        marquee.text = generateText(totalChars: totalChars);
+        marquee.text = generateText(totalCharsLocal: totalChars);
     }
 
     void restartWithCustomText() {
         restartMarquee();
 
-        marquee.text = '|' + customText.value;
+        marquee.text = '| ${customText.value}';
     }
 
 
@@ -179,7 +179,7 @@ class TypeTrainer {
     void validateChar(final String keyLiteral) {
         if (typeTrainer.marquee.text[comparableIdx] == keyLiteral) {
             marquee.bgColor = '#119';
-            marquee.text = cursor + typeTrainer.marquee.text.substring(comparableIdx + 1);
+            marquee.text = '$cursor ${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
             if (hasFinished()) finished();
         } else {
             showMistake();
@@ -191,19 +191,20 @@ class TypeTrainer {
         marquee.bgColor = '#911';
     }
 
-    String generateText([int totalChars = 7, int spaceCharAfter = 3]) {
-        this.totalChars = totalChars;
-        String text = cursor;
+    String generateText([int totalCharsLocal = 7, int spaceCharAfter = 3]) {
+        this.totalChars = totalCharsLocal;
+        final StringBuffer text;
+        text.add(cursor);
         final Random random = new Random();
-        for (int i = 1; i < totalChars; i++) {
+        for (int i = 1; i < totalCharsLocal; i++) {
             int letterCode = random.nextInt(26) + 97;
-            text += new String.fromCharCodes([letterCode]);
+            text.add(new String.fromCharCodes([letterCode]));
             if (i % spaceCharAfter === 0) {
-                text += spaceChar;
+                text.add(spaceChar);
             }
         }
 
-        return stripLastPseudoChar(text);
+        return stripLastPseudoChar(text.toString());
     }
 
 // avoid space as last char

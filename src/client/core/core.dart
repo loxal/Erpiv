@@ -5,7 +5,6 @@
  */
 
 #library('loxal:Core');
-#import('dart:html');
 
 class Core {
     static String basePath = '../core/theme/icon/';

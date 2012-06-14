@@ -7,9 +7,10 @@
 #library('loxal:BMI_calculator');
 
 #import('dart:html');
+#import('dart:isolate');
 #import('dart:math');
 #import('../core/core.dart');
-#source('view.dart');
+#source('../core/view.dart');
 
 class BMICalculator implements View {
     double lengthInCm;
@@ -39,11 +40,8 @@ class BMICalculator implements View {
     BMICalculator() {
         initWidget();
         showBMI();
-        print(Core.basePath);
 
-//        todo code that contains static theme url
 //        todo isolate-driven app with receiving port
-//        todo baselink
     }
 
     void showBMI() {
@@ -252,7 +250,7 @@ class BMICalculator implements View {
         setMetaValues();
 
         double bmi = weightInKg / Math.pow(lengthInCm, 2) * 1e4;
-        output.value = 'BMI: ' + bmi.toStringAsFixed(2);
+        output.value = 'BMI: ${bmi.toStringAsFixed(2)}';
     }
 
     void setMetaValues() {
@@ -335,9 +333,11 @@ class BMICalculator implements View {
     DocumentFragment get root() => fragment;
 }
 
-void main() {
+void initApp() {
     final BMICalculator bmiCalculator = new BMICalculator();
-
     document.body.nodes.add(bmiCalculator.root);
-//    document.body.elements.add(bmiCalculator.root);
+}
+
+void main() {
+    initApp();
 }

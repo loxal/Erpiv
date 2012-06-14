@@ -1,0 +1,3 @@
+dependencies:
+  awesome:
+    git: git://github.com/munificent/awesome.git

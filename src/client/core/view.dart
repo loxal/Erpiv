@@ -7,6 +7,10 @@
 interface View {
     void attachShortcuts();
 
-    voidDDD initElements();
+    void initElements();
+
+    best();
+
+    void best1();
 }
 
