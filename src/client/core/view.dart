@@ -9,8 +9,5 @@ interface View {
 
     void initElements();
 
-    best();
-
-    void best1();
 }
 

@@ -18,6 +18,14 @@ class DingbatContainer implements View {
     TableCellElement totalSymbols;
     TableCellElement decimalRange;
 
+    attachShortcuts() {
+
+    }
+
+    void initElements() {
+
+    }
+
     void refreshSymbolList() {
         symFrom = document.body.query('#symbolFrom');
         symTo = document.body.query('#symbolTo');

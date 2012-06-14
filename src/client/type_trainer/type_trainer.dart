@@ -193,7 +193,7 @@ class TypeTrainer {
 
     String generateText([int totalCharsLocal = 7, int spaceCharAfter = 3]) {
         this.totalChars = totalCharsLocal;
-        final StringBuffer text;
+        final StringBuffer text = new StringBuffer();
         text.add(cursor);
         final Random random = new Random();
         for (int i = 1; i < totalCharsLocal; i++) {
