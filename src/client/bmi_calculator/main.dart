@@ -8,9 +8,9 @@
 
 #import('dart:html');
 #import('dart:isolate');
-#import('dart:math');
 #import('../core/core.dart');
 #source('../core/view.dart');
+#resource('../core/theme/icon/css/font-awesome.css');
 
 class BMICalculator implements View {
     double lengthInCm;

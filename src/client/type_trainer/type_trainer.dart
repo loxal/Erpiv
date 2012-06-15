@@ -273,7 +273,23 @@ class TypeTrainer {
         buildControls();
         playAudio();
 
-        buildMarquee();
+        Storage
+
+//        buildMarquee();
+        DOMApplicationCache dac = window.applicationCache;
+        print(dac.status);
+//        dac.abort();
+//        dac.update();
+        dac.on.cached.add((e) => print('blub'));
+        dac.on.checking.add((e) => print('blub'));
+        dac.on.downloading.add((e) => print('blub'));
+        dac.on.error.add((e) => print('blub'));
+        dac.on.noUpdate.add((e) => print('blub'));
+        dac.on.obsolete.add((e) => print('blub'));
+        dac.on.progress.add((e) => print('blub'));
+        dac.on.updateReady.add((e) => print('blub'));
+//        dac.update();
+        dac.swapCache();
     }
 }
 
