@@ -63,9 +63,9 @@ class DingbatContainer implements View {
     <fieldset style="width: 22em;">
       <legend>Range</legend>
       <label>From:</label>
-      <input type=text value="9985" id="symbolFrom"/>
+      <input type=text value=9985 id=symbolFrom/>
       <label>To:</label>
-      <input type=text value="9999" id="symbolTo"/>
+      <input type=text value=9999 id=symbolTo/>
       <select id=entityRangeSelector>
         <option value=arrow>Arrows</option>
          <option value=star>Stars</option>
@@ -128,9 +128,9 @@ class DingbatContainer implements View {
         _fragment.elements.add(entityOverviewContainer);
 
         void initWidget() {
-            final SelectElement entityRangeSelector = document.body.query('#entityRangeSelector');
+            final SelectElement entityRangeSelector = document.query('#entityRangeSelector');
             entityRangeSelector.on.change.add((e) {
-                final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).text;
+                final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
                 symFrom.value = rangeMap[rangeKey][0].toString();
                 symTo.value = rangeMap[rangeKey][1].toString();
                 refreshSymbolList();

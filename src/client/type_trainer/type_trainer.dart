@@ -30,6 +30,8 @@ class TypeTrainer {
     DivElement container;
     DivElement statsPanel;
     bool active = true;
+    final Storage storage;
+    final String customTextKey = 'customText';
 
 
     void buildControls() {
@@ -78,7 +80,7 @@ class TypeTrainer {
         customText = new TextAreaElement();
         customText.cols = 99;
         customText.rows = 8;
-        customText.defaultValue = 'My custom text...';
+        customText.defaultValue = getCustomText();
 
         localContainer.style.cssText = 'border: solid;';
         restartWithCustomTextButton.style.cssText = 'display: block;';
@@ -89,6 +91,13 @@ class TypeTrainer {
         restartWithCustomTextButton.on.click.add((final Event event) => restartWithCustomText());
     }
 
+    String getCustomText() {
+        if (storage.$dom_getItem(customTextKey) == null) {
+            return 'My custom text...';
+        } else {
+            return storage.$dom_getItem(customTextKey);
+        }
+    }
 
     void restartMarquee() {
         active = true;
@@ -108,8 +117,13 @@ class TypeTrainer {
 
     void restartWithCustomText() {
         restartMarquee();
+        storeCustomText();
 
         marquee.text = '|${customText.value}';
+    }
+
+    void storeCustomText() {
+        storage.$dom_setItem('customText', customText.value);
     }
 
 
@@ -117,6 +131,7 @@ class TypeTrainer {
 //        accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3'),
     accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.ogg'),
     number = new InputElement('number'),
+    storage = window.localStorage,
     container = new DivElement() {
 
         initWidget();
@@ -268,18 +283,9 @@ class TypeTrainer {
 //        accomponement.play();
     }
 
-    void initWidget() {
-        defineMarquee();
-        buildControls();
-        playAudio();
-
-        Storage
-
-//        buildMarquee();
+    void initAppCache() {
         DOMApplicationCache dac = window.applicationCache;
         print(dac.status);
-//        dac.abort();
-//        dac.update();
         dac.on.cached.add((e) => print('blub'));
         dac.on.checking.add((e) => print('blub'));
         dac.on.downloading.add((e) => print('blub'));
@@ -288,8 +294,17 @@ class TypeTrainer {
         dac.on.obsolete.add((e) => print('blub'));
         dac.on.progress.add((e) => print('blub'));
         dac.on.updateReady.add((e) => print('blub'));
-//        dac.update();
-        dac.swapCache();
+        dac.update();
+    }
+
+    void initWidget() {
+        defineMarquee();
+        buildControls();
+        playAudio();
+//        initAppCache();
+
+//        buildMarquee();
+
     }
 }
 
