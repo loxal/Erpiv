@@ -33,13 +33,35 @@ class TypeTrainer extends Core {
     bool active = true;
     final Storage storage;
     final String customTextKey = 'customText';
-
+    ButtonElement mute;
 
     void buildControls() {
         initFingerKeyMap();
         initCustomText();
         initNumberInput();
         initRestartButton();
+        initMuteButton();
+    }
+
+    void initMuteButton() {
+        mute = new ButtonElement();
+        mute.style.cssText = 'font-size: 3em;';
+        mute.classes = ['icon-play'];
+        document.body.elements.add(mute);
+
+        mute.on.click.add((Event e) {
+            toggleMusic();
+        });
+    }
+
+    void toggleMusic() {
+        if (mute.classes.contains('icon-play')) {
+            mute.classes = ['icon-stop'];
+            accomponement.play();
+        } else {
+            mute.classes = ['icon-play'];
+            accomponement.pause();
+        }
     }
 
     void initFingerKeyMap() {
@@ -281,10 +303,6 @@ class TypeTrainer extends Core {
         context.fillText("Hello World!", 20, 70, 50);
     }
 
-    void playAudio() {
-//        accomponement.play();
-    }
-
     void initAppCache() {
         DOMApplicationCache dac = window.applicationCache;
         print(dac.status);
@@ -302,7 +320,7 @@ class TypeTrainer extends Core {
     void initWidget() {
         defineMarquee();
         buildControls();
-        playAudio();
+//        playAudio();
 //        initAppCache();
 
 //        buildMarquee();

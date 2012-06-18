@@ -60,20 +60,20 @@ class DingbatContainer extends Core implements View {
         document.head.nodes.add(title);
 
         Element controls = new Element.html("""
-    <fieldset style="width: 22em;">
-      <legend>Range</legend>
-      <label>From:</label>
-      <input type=text value=9985 id="symbolFrom"/>
-      <label>To:</label>
-      <input type=text value=9999 id="symbolTo"/>
-      <select id=entityRangeSelector>
-        <option value=arrow>Arrows</option>
-         <option value=star>Stars</option>
-         <option value=other>Other</option>
-      </select>
-      <button class=icon-refresh id=refresh>Refresh</button>
-    </fieldset>
-    """);
+            <fieldset style="width: 22em;">
+              <legend>Range</legend>
+              <label>From:</label>
+              <input type=text value=9985 id="symbolFrom"/>
+              <label>To:</label>
+              <input type=text value=9999 id="symbolTo"/>
+              <select id=entityRangeSelector>
+                <option value=arrow>Arrows</option>
+                 <option value=star>Stars</option>
+                 <option value=other>Other</option>
+              </select>
+              <button class=icon-refresh id=refresh>Refresh</button>
+            </fieldset>
+        """);
 
         entityOverviewContainer.elements.add(h1);
         entityOverviewContainer.elements.add(controls);
@@ -103,24 +103,24 @@ class DingbatContainer extends Core implements View {
         entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
 
         Element containerTable = new Element.html("""
-<div>
-        <table>
-          <caption>Overview</caption>
-          <thead>
-            <tr>
-              <td>#</td>
-              <td>Dingbat</td>
-              <td>Code</td>
-            </tr>
-          </thead>
-          <tbody id='tbody'>
-          </tbody>
-          <tfoot>
-            <tr><td id='totalSymbols'></td><td id='decimalRange'></td></tr>
-          </tfoot>
-        </table>
-</div>
-    """);
+            <div>
+                <table>
+                  <caption>Overview</caption>
+                  <thead>
+                    <tr>
+                      <td>#</td>
+                      <td>Dingbat</td>
+                      <td>Code</td>
+                    </tr>
+                  </thead>
+                  <tbody id='tbody'>
+                  </tbody>
+                  <tfoot>
+                    <tr><td id='totalSymbols'></td><td id='decimalRange'></td></tr>
+                  </tfoot>
+                </table>
+            </div>
+        """);
 
         createControlPanel();
 
@@ -154,15 +154,17 @@ class EntityViewer {
     int number;
 
     EntityViewer(this.number) : _scopes = new Map<String, Object>() {
-        document.head.elements.add(new Element.html("""<style>
-         .viewBox {
-           padding: .1em;
-           margin: 0 .1em 0 .1em;
-           float: right;
-           border-radius: .2em;
-           border: 1px solid hsl(33, 55%, 55%);
-         }
-    </style>"""));
+        document.head.elements.add(new Element.html("""
+        <style>
+             .viewBox {
+               padding: .1em;
+               margin: 0 .1em 0 .1em;
+               float: right;
+               border-radius: .2em;
+               border: 1px solid hsl(33, 55%, 55%);
+             }
+        </style>
+        """));
 
         _fragment = new DocumentFragment();
 
@@ -184,7 +186,7 @@ class EntityViewer {
 
 
         void initWidget() {
-            final ButtonElement display = document.query('#symbol-display');
+            final ButtonElement display = query('#symbol-display');
             display.on.click.add((e) => displaySymbol());
         }
 
@@ -211,7 +213,7 @@ class Layout {
     var content;
     var entities;
 
-    Layout(this.entities) : _scopes = new Map<String, Object>() {
+    Layout() : _scopes = new Map<String, Object>() {
         _fragment = new DocumentFragment();
 
         final DingbatContainer entityContainer = new DingbatContainer(entities);
@@ -232,8 +234,7 @@ class EntityOverview {
 }
 
 void main() {
-    final Layout layout = new Layout(null);
-
+    final Layout layout = new Layout();
     new EntityOverview();
 }
 

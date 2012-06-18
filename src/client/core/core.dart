@@ -8,13 +8,13 @@
 #import('dart:html');
 
 class Core {
-    static String basePath = '../core/theme/icon/';
-    static String iconCssLocation = 'css/font-awesome.css';
+    static String basePath = '../core/';
+    static String iconCssLocation = 'theme/icon/css/font-awesome.css';
     BaseElement base;
 
     void initBase() {
         base = new BaseElement();
-        base.href = Core.basePath;
+        base.href = basePath;
         document.head.elements.add(base);
     }
 
@@ -22,7 +22,7 @@ class Core {
         final LinkElement css = new LinkElement();
         css.rel = 'stylesheet';
         css.type = 'text/css';
-        css.href = Core.iconCssLocation;
+        css.href = iconCssLocation;
 
         return css;
     }
