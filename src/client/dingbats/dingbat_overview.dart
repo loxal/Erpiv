@@ -9,7 +9,7 @@
 #import('../core/core.dart');
 #source('../core/view.dart');
 
-class DingbatContainer implements View {
+class DingbatContainer extends Core implements View {
     InputElement symFrom;
     InputElement symTo;
     LabelElement symbolToLabel;
@@ -27,8 +27,8 @@ class DingbatContainer implements View {
     }
 
     void refreshSymbolList() {
-        symFrom = document.body.query('#symbolFrom');
-        symTo = document.body.query('#symbolTo');
+        symFrom = query('#symbolFrom');
+        symTo = query('#symbolTo');
 
         final int symbolFromNum = Math.parseInt(symFrom.value);
         final int symbolToNum = Math.parseInt(symTo.value);
@@ -63,9 +63,9 @@ class DingbatContainer implements View {
     <fieldset style="width: 22em;">
       <legend>Range</legend>
       <label>From:</label>
-      <input type=text value=9985 id=symbolFrom/>
+      <input type=text value=9985 id="symbolFrom"/>
       <label>To:</label>
-      <input type=text value=9999 id=symbolTo/>
+      <input type=text value=9999 id="symbolTo"/>
       <select id=entityRangeSelector>
         <option value=arrow>Arrows</option>
          <option value=star>Stars</option>
@@ -94,7 +94,7 @@ class DingbatContainer implements View {
         "arrow" : [8582, 8705],
         "equality" : [8764, 9193],
         "corners" : [9472, 9908],
-        "other" : [0, 10000],
+        "other" : [9000, 10000],
         "star" : [9900, 9985],
         "ascii": [33, 128],
         };
@@ -128,7 +128,7 @@ class DingbatContainer implements View {
         _fragment.elements.add(entityOverviewContainer);
 
         void initWidget() {
-            final SelectElement entityRangeSelector = document.query('#entityRangeSelector');
+            final SelectElement entityRangeSelector = query('#entityRangeSelector');
             entityRangeSelector.on.change.add((e) {
                 final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
                 symFrom.value = rangeMap[rangeKey][0].toString();
@@ -205,28 +205,6 @@ class EntityViewer {
 
 
 class Layout {
-    LinkElement getCss() {
-        final LinkElement css = new LinkElement();
-        css.rel = 'stylesheet';
-        css.type = 'text/css';
-        css.href = Core.iconCssLocation;
-
-        return css;
-    }
-
-    void declareBase() {
-        base = new BaseElement();
-        base.href = Core.basePath;
-        document.head.elements.add(base);
-    }
-
-    void init() {
-        declareBase();
-
-        document.head.nodes.add(getCss());
-    }
-
-    BaseElement base;
     Map<String, Object> _scopes;
     DocumentFragment _fragment;
 
@@ -234,8 +212,6 @@ class Layout {
     var entities;
 
     Layout(this.entities) : _scopes = new Map<String, Object>() {
-        init();
-
         _fragment = new DocumentFragment();
 
         final DingbatContainer entityContainer = new DingbatContainer(entities);
@@ -253,9 +229,6 @@ class Layout {
 }
 
 class EntityOverview {
-    EntityOverview() {
-
-    }
 }
 
 void main() {

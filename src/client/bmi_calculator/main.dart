@@ -12,7 +12,7 @@
 #source('../core/view.dart');
 #resource('../core/theme/icon/css/font-awesome.css');
 
-class BMICalculator implements View {
+class BMICalculator extends Core implements View {
     double lengthInCm;
     double weightInKg;
 
@@ -35,7 +35,7 @@ class BMICalculator implements View {
     DivElement descriptionContainer;
     ImageElement description;
     SVGCircleElement bmiMarker;
-    BaseElement base;
+//    BaseElement base;
 
     BMICalculator() {
         initWidget();
@@ -134,9 +134,8 @@ class BMICalculator implements View {
     }
 
     void initElements() {
-        initBase();
-
-        document.head.nodes.add(getCss());
+//        initBase();
+//        document.head.nodes.add(getCss());
 
         initMeasurementSystemChoice();
         initLengthLabel();
@@ -173,20 +172,20 @@ class BMICalculator implements View {
         };
     }
 
-    void initBase() {
-        base = new BaseElement();
-        base.href = Core.basePath;
-        document.head.elements.add(base);
-    }
-
-    LinkElement getCss() {
-        final LinkElement css = new LinkElement();
-        css.rel = 'stylesheet';
-        css.type = 'text/css';
-        css.href = Core.iconCssLocation;
-
-        return css;
-    }
+//    void initBase() {
+//        base = new BaseElement();
+//        base.href = Core.basePath;
+//        document.head.elements.add(base);
+//    }
+//
+//    LinkElement getCss() {
+//        final LinkElement css = new LinkElement();
+//        css.rel = 'stylesheet';
+//        css.type = 'text/css';
+//        css.href = Core.iconCssLocation;
+//
+//        return css;
+//    }
 
     void initDescriptionOverlay() {
         final int yMax = 480;

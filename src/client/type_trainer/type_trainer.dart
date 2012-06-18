@@ -9,8 +9,9 @@
 #import('dart:html');
 #import('dart:math');
 #import('dart:coreimpl');
+#import('../core/core.dart');
 
-class TypeTrainer {
+class TypeTrainer extends Core {
     MarqueeElement marquee;
     AudioElement accomponement;
 //    http://upload.wikimedia.org/wikipedia/commons/b/b1/11_-_Vivaldi_Winter_mvt_2_Largo_-_John_Harrison_violin.ogg
@@ -55,7 +56,7 @@ class TypeTrainer {
 
     void initRestartButton() {
         ButtonElement restartButton = new Element.html("""
-                     <button>Restart</button>
+                     <button class=icon-refresh>Restart</button>
                  """);
         restartButton.on.click.add((Event event) {
             restart();
@@ -77,6 +78,7 @@ class TypeTrainer {
         final DivElement localContainer = new DivElement();
         final ButtonElement restartWithCustomTextButton = new ButtonElement();
         restartWithCustomTextButton.text = 'Use this text';
+        restartWithCustomTextButton.classes = ['icon-list'];
         customText = new TextAreaElement();
         customText.cols = 99;
         customText.rows = 8;
