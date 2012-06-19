@@ -10,6 +10,7 @@
 #import('dart:math');
 #import('dart:coreimpl');
 #import('../core/core.dart');
+#source('MarqueeCanvas.dart');
 
 class TypeTrainer extends Core {
     MarqueeElement marquee;
@@ -292,20 +293,6 @@ class TypeTrainer extends Core {
         print('mistakeRate: ${(mistakeRate * 100).ceil()}%');
     }
 
-    void buildMarquee() {
-        int x = 600, y = 100;
-        final CanvasElement canvas = new CanvasElement(x, y);
-        document.body.elements.add(canvas);
-        final CanvasRenderingContext2D context = canvas.getContext('2d');
-
-        context.strokeStyle = "red";
-        context.strokeRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = "navy";
-        context.fillText("Hello World!", 0, 5);
-        context.fill();
-//        context.clearRect(0, 0, canvas.width, canvas.height);
-    }
-
     void initAppCache() {
         DOMApplicationCache dac = window.applicationCache;
         print(dac.status);
@@ -323,11 +310,8 @@ class TypeTrainer extends Core {
     void initWidget() {
         defineMarquee();
         buildControls();
-//        playAudio();
 //        initAppCache();
-
-        buildMarquee();
-
+        MarqueeCanvas mc = new MarqueeCanvas();
     }
 }
 
