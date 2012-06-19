@@ -293,14 +293,17 @@ class TypeTrainer extends Core {
     }
 
     void buildMarquee() {
-        int x = 600,
-        y = 100;
-        final CanvasElement canvas = new CanvasElement(y, x);
+        int x = 600, y = 100;
+        final CanvasElement canvas = new CanvasElement(x, y);
         document.body.elements.add(canvas);
         final CanvasRenderingContext2D context = canvas.getContext('2d');
 
+        context.strokeStyle = "red";
+        context.strokeRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = "navy";
-        context.fillText("Hello World!", 20, 70, 50);
+        context.fillText("Hello World!", 0, 5);
+        context.fill();
+//        context.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     void initAppCache() {
@@ -323,7 +326,7 @@ class TypeTrainer extends Core {
 //        playAudio();
 //        initAppCache();
 
-//        buildMarquee();
+        buildMarquee();
 
     }
 }
