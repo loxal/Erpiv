@@ -7,45 +7,58 @@
 class MarqueeCanvas {
     CanvasElement canvas;
     CanvasRenderingContext2D context;
+    num renderTime;
+    int width = 800, height = 100;
+    int xPos;
+    int yPos = 80;
+    String text;
 
-    void animate([int frame]) {
-//        context.beginPath();
-//        context.fill();
-//        context.stroke();
-//        context.clearRect(0, 0, canvas.width, canvas.height);
-
-
-// update
-
-// clear
-
-// draw
-        context.strokeStyle = "#ee1";
-        context.fillStyle = "orange";
-        context.strokeRect(0, 0, canvas.width, canvas.height, 5);
-//        context.fillText("Hello World!", 10 * frame, 5 * frame);
-        context.fillText("Hello World!", 10, 5);
-//        context.clearRect(0, 0, canvas.width, canvas.height);
-
-// request new frame
-
+    bool draw(int time) {
+        renderTime = time;
+        clear();
+        drawOnCanvas();
+        if (yPos < height) redraw();
     }
 
     void initMarquee() {
-        int x = 800, y = 100;
-        canvas = new CanvasElement(x, y);
+        canvas = new CanvasElement(width, height);
         canvas.style.cssText = 'display: block;';
         context = canvas.getContext('2d');
+        context.font = '66px serif';
+
         document.body.elements.add(canvas);
     }
 
-    void requestRedraw() {
+    void drawTextContainer() {
+        context.strokeStyle = "#ee1";
+        context.fillStyle = "#119";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.strokeRect(0, 0, canvas.width, canvas.height, 5);
+    }
+
+    void drawOnCanvas() {
+        drawTextContainer();
+        context.fillStyle = "#ee1";
+        context.fillText(text, xPos, yPos, width);
+//        context.strokeText(text, xPos, yPos, 13);
+
+        xPos -= 1;
+    }
+
+    void redraw() {
         window.requestAnimationFrame(draw);
     }
 
-    MarqueeCanvas() {
+    void clear() {
+        context.clearRect(0, 0, canvas.width, canvas.height); // alternative
+    }
+
+    MarqueeCanvas(this.text) {
+        xPos = width;
         initMarquee();
-        animate(1);
+        redraw();
+// TODO specific frame rate problem
+    // TODO dynamic width/height initialization
     }
 
 }

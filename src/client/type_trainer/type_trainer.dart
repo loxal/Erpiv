@@ -35,6 +35,7 @@ class TypeTrainer extends Core {
     final Storage storage;
     final String customTextKey = 'customText';
     ButtonElement mute;
+    MarqueeCanvas marqueeCanvas;
 
     void buildControls() {
         initFingerKeyMap();
@@ -223,8 +224,13 @@ class TypeTrainer extends Core {
 
     void continueAsRight() {
         marquee.bgColor = '#119';
-        marquee.text = '$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}';
+        updateText('$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}');
         if (hasFinished()) finished();
+    }
+
+    void updateText(String text) {
+        marquee.text = text;
+        marqueeCanvas.text = text;
     }
 
     void showMistake() {
@@ -266,7 +272,7 @@ class TypeTrainer extends Core {
         unbindHandlers();
         marquee.scrollAmount = 100;
         marquee.scrollDelay = 0;
-        marquee.text = 'Finished!';
+        updateText('Finished!');
 
         showStats();
     }
@@ -308,10 +314,12 @@ class TypeTrainer extends Core {
     }
 
     void initWidget() {
+        marqueeCanvas = new MarqueeCanvas('This is a custom Text.');
         defineMarquee();
         buildControls();
+
 //        initAppCache();
-        MarqueeCanvas mc = new MarqueeCanvas();
+//        marqueeCanvas.text = 'Blub';
     }
 }
 
