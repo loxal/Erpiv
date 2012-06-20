@@ -39,6 +39,10 @@ class MarqueeCanvas {
         document.body.elements.add(canvas);
     }
 
+    void requestRedraw() {
+        window.requestAnimationFrame(draw);
+    }
+
     MarqueeCanvas() {
         initMarquee();
         animate(1);
