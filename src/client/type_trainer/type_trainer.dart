@@ -145,7 +145,8 @@ class TypeTrainer extends Core {
         restartMarquee();
         storeCustomText();
 
-        marquee.text = '|${customText.value}';
+        updateText('|${customText.value}');
+//        marquee.text = '|${customText.value}';
     }
 
     void storeCustomText() {
@@ -164,8 +165,8 @@ class TypeTrainer extends Core {
         bindHandlers();
     }
 
-    void defineMarquee() {
-        String scrollingText = generateText();
+    void defineMarquee(String text) {
+        String scrollingText = text;
 
         marquee = new Element.html("""
                 <marquee style="font-size: 4em; padding: .1em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
@@ -176,7 +177,7 @@ class TypeTrainer extends Core {
         marquee.scrollAmount = scrollAmount;
         marquee.scrollDelay = scrollDelay;
         marquee.loop = -1;
-        marquee.bgColor = '#119';
+        marquee.bgColor = Core.standardColor;
         marquee.width = '100%';
     }
 
@@ -223,7 +224,8 @@ class TypeTrainer extends Core {
     }
 
     void continueAsRight() {
-        marquee.bgColor = '#119';
+        marquee.bgColor = Core.standardColor;
+        marqueeCanvas.continueAsRight();
         updateText('$cursor${typeTrainer.marquee.text.substring(comparableIdx + 1)}');
         if (hasFinished()) finished();
     }
@@ -235,7 +237,8 @@ class TypeTrainer extends Core {
 
     void showMistake() {
         mistakeCount++;
-        marquee.bgColor = '#911';
+        marquee.bgColor = Core.errorColor;
+        marqueeCanvas.showMistake();
     }
 
     String generateText([int totalCharsLocal = 7, int spaceCharAfter = 3]) {
@@ -253,8 +256,6 @@ class TypeTrainer extends Core {
 
         return stripLastPseudoChar(text.toString());
     }
-
-// avoid space as last char
 
     String stripLastPseudoChar(String text) {
         if (text[text.length - 1] == spaceChar) {
@@ -314,12 +315,13 @@ class TypeTrainer extends Core {
     }
 
     void initWidget() {
-        marqueeCanvas = new MarqueeCanvas('This is a custom Text.');
-        defineMarquee();
+        String scrollingText = generateText();
+        marqueeCanvas = new MarqueeCanvas(scrollingText);
+        defineMarquee(scrollingText);
+
         buildControls();
 
 //        initAppCache();
-//        marqueeCanvas.text = 'Blub';
     }
 }
 

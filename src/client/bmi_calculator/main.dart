@@ -168,7 +168,7 @@ class BMICalculator extends Core implements View {
         final double y = cmToYscale(cm);
 
         bmiMarker.attributes = {
-        'cx': x, 'cy': y, 'fill': '#191', 'stroke': '#119', 'fill-opacity': .5, 'r': 5,
+        'cx': x, 'cy': y, 'fill': '#191', 'stroke': Core.standardColor, 'fill-opacity': .5, 'r': 5,
         };
     }
 

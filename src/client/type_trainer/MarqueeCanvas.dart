@@ -8,10 +8,12 @@ class MarqueeCanvas {
     CanvasElement canvas;
     CanvasRenderingContext2D context;
     num renderTime;
-    int width = 800, height = 100;
+    int width, height = 100;
+//    int width = 800, height = 100;
     int xPos;
     int yPos = 80;
     String text;
+    bool errorStatus = false;
 
     bool draw(int time) {
         renderTime = time;
@@ -25,15 +27,25 @@ class MarqueeCanvas {
         canvas.style.cssText = 'display: block;';
         context = canvas.getContext('2d');
         context.font = '66px serif';
-
-        document.body.elements.add(canvas);
     }
 
     void drawTextContainer() {
-        context.strokeStyle = "#ee1";
-        context.fillStyle = "#119";
+        if (errorStatus) {
+            context.fillStyle = Core.errorColor;
+        } else {
+            context.fillStyle = Core.standardColor;
+        }
         context.fillRect(0, 0, canvas.width, canvas.height);
+        context.strokeStyle = "#ee1";
         context.strokeRect(0, 0, canvas.width, canvas.height, 5);
+    }
+
+    void showMistake() {
+        errorStatus = true;
+    }
+
+    void continueAsRight() {
+        errorStatus = false;
     }
 
     void drawOnCanvas() {
@@ -53,12 +65,21 @@ class MarqueeCanvas {
         context.clearRect(0, 0, canvas.width, canvas.height); // alternative
     }
 
+    void attachHandler() {
+        window.on.resize.add((Event e) {
+            print('resized');
+            width = window.innerWidth;
+        });
+    }
+
     MarqueeCanvas(this.text) {
+        width = window.innerWidth;
         xPos = width;
+
+        attachHandler();
         initMarquee();
+        document.body.elements.add(canvas);
         redraw();
-// TODO specific frame rate problem
-    // TODO dynamic width/height initialization
     }
 
 }

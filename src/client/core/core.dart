@@ -8,6 +8,9 @@
 #import('dart:html');
 
 class Core {
+    static final String errorColor = '#911';
+    static final String standardColor = '#119';
+
     static String basePath = '../core/';
     static String iconCssLocation = 'theme/icon/css/font-awesome.css';
     BaseElement base;

@@ -5,6 +5,7 @@
  */
 
 interface View {
+
     void attachShortcuts();
 
     void initElements();
