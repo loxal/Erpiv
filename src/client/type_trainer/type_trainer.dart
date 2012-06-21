@@ -322,6 +322,9 @@ class TypeTrainer extends Core {
         buildControls();
 
 //        initAppCache();
+
+
+// todo externalize MarqueeElem as a class
     }
 }
 
