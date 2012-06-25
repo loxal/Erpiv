@@ -36,6 +36,7 @@ class MarqueeCanvas {
 
     void restart() {
         xPos = width;
+        errorStatus = false;
     }
 
     void drawTextContainer() {
