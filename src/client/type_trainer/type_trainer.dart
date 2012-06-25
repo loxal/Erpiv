@@ -125,20 +125,16 @@ class TypeTrainer extends Core {
     }
 
     void restartMarquee() {
+        marqueeCanvas.restart();
         active = true;
-//        marquee.remove();
         if (statsPanel != null) statsPanel.remove();
         totalChars = Math.parseInt(number.value);
-//        marquee.scrollAmount = scrollAmount;
-//        marquee.scrollDelay = scrollDelay;
-//        container.elements.add(marquee);
     }
 
     void restart() {
         restartMarquee();
 
         final String text = generateText(totalCharsLocal: totalChars);
-//        marquee.text = text;
         updateText(text);
     }
 
@@ -147,7 +143,6 @@ class TypeTrainer extends Core {
         storeCustomText();
 
         updateText('|${customText.value}');
-//        marquee.text = '|${customText.value}';
     }
 
     void storeCustomText() {
@@ -166,29 +161,6 @@ class TypeTrainer extends Core {
         bindHandlers();
 
     }
-
-//    void defineMarquee(String text) {
-//        String scrollingText = text;
-//
-//        marquee = new Element.html("""
-//                <marquee style="font-size: 4em; padding: .1em; border: solid; color: yellow; height: 1.3em;">$scrollingText</marquee>
-//              """);
-//        marquee.behavior = 'slide';
-//        container.elements.add(marquee);
-
-//        marquee.scrollAmount = scrollAmount;
-//        marquee.scrollDelay = scrollDelay;
-//        marquee.loop = -1;
-//        marquee.bgColor = Core.standardColor;
-//        marquee.width = '100%';
-//    }
-
-//    void bowlOver() {
-//        String tmp = marquee.text;
-//        marquee.remove();
-//        marquee.text = tmp;
-//        container.elements.add(marquee);
-//    }
 
     void bindHandlers() {
         keyPressHandler =
@@ -214,11 +186,9 @@ class TypeTrainer extends Core {
 
     void unbindHandlers() {
         active = false;
-//        document.on.keyPress.remove(keyPressHandler);
     }
 
     void validateChar(final String keyLiteral) {
-//        if (typeTrainer.marquee.text[comparableIdx] == keyLiteral) {
         if (marqueeCanvas.text[comparableIdx] == keyLiteral) {
             continueAsRight();
         } else {
@@ -227,7 +197,6 @@ class TypeTrainer extends Core {
     }
 
     void continueAsRight() {
-//        marquee.bgColor = Core.standardColor;
         marqueeCanvas.continueAsRight();
         updateText('$cursor${marqueeCanvas.text.substring(comparableIdx + 1)}');
         marqueeCanvas.goBack();
@@ -235,13 +204,11 @@ class TypeTrainer extends Core {
     }
 
     void updateText(String text) {
-//        marquee.text = text;
         marqueeCanvas.text = text;
     }
 
     void showMistake() {
         mistakeCount++;
-//        marquee.bgColor = Core.errorColor;
         marqueeCanvas.showMistake();
     }
 
@@ -271,13 +238,10 @@ class TypeTrainer extends Core {
 
     bool hasFinished() {
         return marqueeCanvas.text.length === 1;
-//        return typeTrainer.marquee.text.length === 1;
     }
 
     void finished() {
         unbindHandlers();
-//        marquee.scrollAmount = 100;
-//        marquee.scrollDelay = 0;
         updateText('Finished!');
 
         showStats();
@@ -322,15 +286,11 @@ class TypeTrainer extends Core {
     void initWidget() {
         String scrollingText = generateText();
         marqueeCanvas = new MarqueeCanvas(scrollingText);
-//        defineMarquee(scrollingText);
         document.body.elements.add(container);
 
         buildControls();
 
 //        initAppCache();
-
-
-// todo externalize MarqueeElem as a class
     }
 }
 

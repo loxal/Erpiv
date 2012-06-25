@@ -7,20 +7,24 @@
 class MarqueeCanvas {
     CanvasElement canvas;
     CanvasRenderingContext2D context;
+
     num renderTime;
     int width, height = 100;
     num xPos;
     int yPos = 70;
     String text;
     bool errorStatus = false;
-    num steppingSpeed = 1.9;
+    num steppingProgressPerFrame = 1.9;
     num goBackStepping = 20;
 
     bool draw(int time) {
         renderTime = time;
         clear();
         drawOnCanvas();
-        if (xPos > 0) redraw();
+        if (xPos < 0) {
+            xPos += steppingProgressPerFrame;
+        }
+        redraw();
     }
 
     void initMarquee() {
@@ -28,6 +32,10 @@ class MarqueeCanvas {
         canvas.style.cssText = 'display: block;';
         context = canvas.getContext('2d');
         context.font = '66px serif';
+    }
+
+    void restart() {
+        xPos = width;
     }
 
     void drawTextContainer() {
@@ -54,7 +62,7 @@ class MarqueeCanvas {
         context.fillStyle = "#ee1";
         context.fillText(text, xPos, yPos, width);
 
-        xPos -= steppingSpeed;
+        xPos -= steppingProgressPerFrame;
     }
 
     void redraw() {
@@ -73,7 +81,7 @@ class MarqueeCanvas {
     }
 
     void goBack() {
-        xPos += goBackStepping * steppingSpeed;
+        xPos += goBackStepping * steppingProgressPerFrame;
     }
 
     void makeProgressivelySlower() {
