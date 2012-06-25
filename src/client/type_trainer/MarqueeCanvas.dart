@@ -14,6 +14,7 @@ class MarqueeCanvas {
     String text;
     bool errorStatus = false;
     num steppingSpeed = 1.9;
+    num goBackStepping = 20;
 
     bool draw(int time) {
         renderTime = time;
@@ -50,8 +51,8 @@ class MarqueeCanvas {
 
     void drawOnCanvas() {
         drawTextContainer();
-        context.strokeStyle = "#ee1";
-        context.strokeText(text, xPos, yPos, width);
+        context.fillStyle = "#ee1";
+        context.fillText(text, xPos, yPos, width);
 
         xPos -= steppingSpeed;
     }
@@ -67,14 +68,17 @@ class MarqueeCanvas {
 
     void attachHandler() {
         window.on.resize.add((Event e) {
-            print('resized');
             width = window.innerWidth;
         });
     }
 
+    void goBack() {
+        xPos += goBackStepping * steppingSpeed;
+    }
+
     void makeProgressivelySlower() {
-        print(width / xPos);
-        print(1 - (1 * (xPos / width)));
+//        print(width / xPos);
+//        print(1 - (1 * (xPos / width)));
 
 //        steppingSpeed = 0.01;
 
@@ -90,8 +94,7 @@ class MarqueeCanvas {
         document.body.elements.add(canvas);
         redraw();
 
-// todo make the draf function a typedef
-// TODO test true speed of the native MarqueeElement and if is comparable to the behavior of MarqueeCanvas
+// todo make the draw function a typedef
     }
 
 }
