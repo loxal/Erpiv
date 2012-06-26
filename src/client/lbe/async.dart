@@ -1,6 +1,8 @@
 #import('dart:html');
-#import("/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart");
-#import("/Users/alex/my/src/dart/dart/lib/unittest/html_config.dart");
+//#import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
+#import('http://dart.googlecode.com/svn/branches/bleeding_edge/dart/lib/unittest/unittest.dart');
+//#import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
+#import('http://dart.googlecode.com/svn/branches/bleeding_edge/dart/lib/unittest/html_config.dart');
 
 
 void main() {
