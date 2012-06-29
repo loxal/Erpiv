@@ -1,7 +1,7 @@
-#library('loxal:LBE');
+#library('loxal:Incubator');
 
 #import('dart:html');
-#import('/Users/alex/my/src/DartJSONP/DartJSONP.dart');
+#import('https://raw.github.com/chrisbu/DartJSONP/master/DartJSONP.dart');
 
 void showTweets() {
     var callbackMethod = "callbackMethod";
@@ -18,26 +18,5 @@ void showTweets() {
 }
 
 void main() { // here is where the app execution starts
-//  showTweets();
-    var emp = new Employee.fromJson({});
-
-
-}
-
-class Person {
-    Person.fromJson(Map data) {
-        print('in Person');
-    }
-
-    Person() {
-        print('blub');
-    }
-}
-
-class Employee extends Person {
-// Person does not have a default constructor
-// you must call super.fromJson(data)
-    Employee.fromJson(Map data) {
-        print('in Employee');
-    }
+    showTweets();
 }
