@@ -4,6 +4,8 @@
 #import('http://dart.googlecode.com/svn/branches/bleeding_edge/dart/lib/web/web.dart');
 #import('http://dart.googlecode.com/svn/branches/bleeding_edge/dart/lib/uri/uri.dart');
 #import('https://raw.github.com/chrisbu/DartJSONP/master/DartJSONP.dart');
+#import('../schemas/TaskLists.dart');
+#import('dart:json');
 
 void main() {
     useHtmlConfiguration();
@@ -77,12 +79,11 @@ void main() {
                 final String retrieveTaskLists ='https://www.googleapis.com/tasks/v1/users/@me/lists';
                 print(retrieveTaskLists);
 
-                String authFragment = window.location.hash;
-                List<String> subFragmnets = authFragment.substring(1).split('&').map((e) => e.split('='));
+                final String authFragment = window.location.hash;
+                final List<String> subFragmnets = authFragment.substring(1).split('&').map((final String subFragment) => subFragment.split('='));
                 Map<String, String> param = {};
                 subFragmnets.forEach((piece) => param[piece[0]] = piece[1]);
                 print(param);
-
                 final String accessToken = param['access_token'];
 
                 final XMLHttpRequest req = new XMLHttpRequest();
@@ -90,7 +91,15 @@ void main() {
                 req.overrideMimeType('application/json; charset=UTF-8');
                 req.setRequestHeader('Authorization', 'OAuth $accessToken');
                 req.on.load.add((Event e) {
-                    print(req.responseText);
+//                    TaskLists response = JSON.parse(req.responseText);
+                    TaskLists response = new TaskLists.to(req.responseText);
+                    print(response.etag);
+                    print(response.kind);
+//                    print(response.items);
+//                    final Object response = JSON.parse(req.responseText);
+//                    print(req.response);
+//                    print(response['kind']);
+
                 });
                 req.send();
 
@@ -98,7 +107,4 @@ void main() {
 
         });
     });
-
 }
-
-//    https://accounts.google.com/o/oauth2/auth?scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks.readonly&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flbe%2Foauth2callback.html&response_type=token&client_id=792391862458.apps.googleusercontent.com
