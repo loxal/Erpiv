@@ -7,7 +7,6 @@
 
 void main() {
     useHtmlConfiguration();
-
     group('foo',
 
         () {
@@ -52,30 +51,51 @@ void main() {
                     print("timout occurred");
                 }), 100);
             });
-            test('XHR',
+
+
+            test('OAuth: acquire token',
 
                 () {
-
-                final String clientId = '792391862458.apps.googleusercontent.com';
-                final String clientSecret = '58jZ538xnuIg6png7i1fcCx0';
-                final String redirectUri = 'http://localhost:8080/auth/oauthCallback.html';
-                final String authBase = 'https://accounts.google.com/o/oauth2/auth';
+                final String authEndpoint = 'https://accounts.google.com/o/oauth2/auth';
+                final String clientId = '792391862458-v4278tvojhpdmi5880navvn3u6gm4bhv.apps.googleusercontent.com';
+                final String clientSecret = 'CTmMahrGSXywQsEYimpAZGIT';
+                final String redirectUri = 'http://localhost:8080/auth/main.html';
+                final String responseType = 'token';
+                final String approvalPrompt = 'auto';
                 final String scope = 'https://www.googleapis.com/auth/tasks.readonly';
+                final String accessType = 'online';
 
-//                final String xhrReqUri ='https://accounts.google.com/o/oauth2/auth?redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flbe%2Foauth2callback&response_type=token&client_id=594158535293-12eodu1l037af8thmouoj7o3qte2bi15.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ftasks.readonly&access_type=online&approval_prompt=auto';
-                final String xhrReqUriNew ='$authBase?redirect_uri=${encodeUriComponent(redirectUri)}&response_type=code&client_id=$clientId&approval_prompt=auto&scope=${encodeUriComponent(scope)}&access_type=online';
+                final String acquireAccessTokenUrl ='$authEndpoint?redirect_uri=${encodeUriComponent(redirectUri)}&response_type=$responseType&client_id=$clientId&approval_prompt=$approvalPrompt&scope=${encodeUriComponent(scope)}&access_type=$accessType';
+                print(acquireAccessTokenUrl);
 
-                print(xhrReqUriNew);
+                if (window.location.hash == '') window.location.assign(acquireAccessTokenUrl);
+            });
 
-                XMLHttpRequest req = new XMLHttpRequest();
-                req.open('GET', xhrReqUriNew);
-//                    req.open('GET', 'http://localhost:8080/type_trainer/main.html');
-                req.on.readyStateChange.add((e) {
-                    print(req.response);
+            test('Retrieve task lists',
+
+                () {
+                final String retrieveTaskLists ='https://www.googleapis.com/tasks/v1/users/@me/lists';
+                print(retrieveTaskLists);
+
+                String authFragment = window.location.hash;
+                List<String> subFragmnets = authFragment.substring(1).split('&').map((e) => e.split('='));
+                Map<String, String> param = {};
+                subFragmnets.forEach((piece) => param[piece[0]] = piece[1]);
+                print(param);
+
+                final String accessToken = param['access_token'];
+
+                final XMLHttpRequest req = new XMLHttpRequest();
+                req.open('GET', retrieveTaskLists);
+                req.overrideMimeType('application/json; charset=UTF-8');
+                req.setRequestHeader('Authorization', 'OAuth $accessToken');
+                req.on.load.add((Event e) {
+                    print(req.responseText);
                 });
                 req.send();
 
             });
+
         });
     });
 
