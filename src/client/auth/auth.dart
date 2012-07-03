@@ -6,6 +6,8 @@
 #import('https://raw.github.com/chrisbu/DartJSONP/master/DartJSONP.dart');
 #import('../schemas/TaskLists.dart');
 #import('dart:json');
+//#source('code_gen.dart');
+//#import('code_gen.dart');
 
 void main() {
     useHtmlConfiguration();
@@ -26,6 +28,18 @@ void main() {
         if (window.location.hash == '' || enforceNewToken) window.location.assign(acquireAccessTokenUrl);
     }
 
+//    void readApiAsJson() {
+//        var config = new File('tasks-api.json');
+//        var inputStream = config.openInputStream();
+//
+//        inputStream.onError = (e) => print(e);
+//        inputStream.onClosed = () => print("file is now closed");
+//        inputStream.onData = () {
+//          List<int> bytes = inputStream.read();
+//          print("Read ${bytes.length} bytes from stream");
+//        };
+//    }
+
     group('foo',
 
         () {
@@ -39,6 +53,8 @@ void main() {
 
             () {
             print('desc');
+//                CodeGen codeGen = new CodeGen();
+//                readApiAsJson();
         });
         test('this is a test',
 
