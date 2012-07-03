@@ -10,6 +10,7 @@
 #import('dart:math');
 #import('dart:coreimpl');
 #import('../core/core.dart');
+#source('view/stats_presenter.dart');
 #source('MarqueeCanvas.dart');
 
 class TypeTrainer extends Core {
@@ -35,6 +36,7 @@ class TypeTrainer extends Core {
     final String customTextKey = 'customText';
     ButtonElement mute;
     MarqueeCanvas marqueeCanvas;
+    Stats stats;
 
     void buildControls() {
         initFingerKeyMap();
@@ -132,6 +134,7 @@ class TypeTrainer extends Core {
     }
 
     void restart() {
+        stats.remove();
         restartMarquee();
 
         final String text = generateText(totalCharsLocal: totalChars);
@@ -248,20 +251,7 @@ class TypeTrainer extends Core {
     }
 
     void showStats() {
-        final double mistakeRate = mistakeCount / totalChars;
-        statsPanel = new Element.html("""
-            <div>
-                <dl>
-                    <dt>Total Characters</dt>
-                    <dd>$totalChars</dd>
-                    <dt>Errors</dt>
-                    <dd>$mistakeCount</dd>
-                </dl>
-                Error rate: ${(mistakeRate * 100).round()}
-            </div>
-        """);
-
-        document.body.elements.add(statsPanel);
+        stats = new Stats(document.body, totalChars, mistakeCount);
     }
 
     void calculateStats() {

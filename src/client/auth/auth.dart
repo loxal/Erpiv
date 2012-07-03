@@ -9,6 +9,23 @@
 
 void main() {
     useHtmlConfiguration();
+
+    void acquireToken(bool enforceNewToken) {
+        final String authEndpoint = 'https://accounts.google.com/o/oauth2/auth';
+        final String clientId = '792391862458-v4278tvojhpdmi5880navvn3u6gm4bhv.apps.googleusercontent.com';
+        final String clientSecret = 'CTmMahrGSXywQsEYimpAZGIT';
+        final String redirectUri = 'http://localhost:8080/auth/main.html';
+        final String responseType = 'token';
+        final String approvalPrompt = 'auto';
+        final String scope = 'https://www.googleapis.com/auth/tasks.readonly';
+        final String accessType = 'online';
+
+        final String acquireAccessTokenUrl ='$authEndpoint?redirect_uri=${encodeUriComponent(redirectUri)}&response_type=$responseType&client_id=$clientId&approval_prompt=$approvalPrompt&scope=${encodeUriComponent(scope)}&access_type=$accessType';
+        print(acquireAccessTokenUrl);
+
+        if (window.location.hash == '' || enforceNewToken) window.location.assign(acquireAccessTokenUrl);
+    }
+
     group('foo',
 
         () {
@@ -58,19 +75,7 @@ void main() {
             test('OAuth: acquire token',
 
                 () {
-                final String authEndpoint = 'https://accounts.google.com/o/oauth2/auth';
-                final String clientId = '792391862458-v4278tvojhpdmi5880navvn3u6gm4bhv.apps.googleusercontent.com';
-                final String clientSecret = 'CTmMahrGSXywQsEYimpAZGIT';
-                final String redirectUri = 'http://localhost:8080/auth/main.html';
-                final String responseType = 'token';
-                final String approvalPrompt = 'auto';
-                final String scope = 'https://www.googleapis.com/auth/tasks.readonly';
-                final String accessType = 'online';
-
-                final String acquireAccessTokenUrl ='$authEndpoint?redirect_uri=${encodeUriComponent(redirectUri)}&response_type=$responseType&client_id=$clientId&approval_prompt=$approvalPrompt&scope=${encodeUriComponent(scope)}&access_type=$accessType';
-                print(acquireAccessTokenUrl);
-
-                if (window.location.hash == '') window.location.assign(acquireAccessTokenUrl);
+                acquireToken(false);
             });
 
             test('Retrieve task lists',
@@ -91,15 +96,12 @@ void main() {
                 req.overrideMimeType('application/json; charset=UTF-8');
                 req.setRequestHeader('Authorization', 'OAuth $accessToken');
                 req.on.load.add((Event e) {
-//                    TaskLists response = JSON.parse(req.responseText);
                     TaskLists response = new TaskLists.to(req.responseText);
                     print(response.etag);
                     print(response.kind);
-//                    print(response.items);
-//                    final Object response = JSON.parse(req.responseText);
-//                    print(req.response);
-//                    print(response['kind']);
-
+                    if (req.statusText == 'Unauthorized') { // status (code) 401
+                        acquireToken(true);
+                    }
                 });
                 req.send();
 
@@ -107,4 +109,6 @@ void main() {
 
         });
     });
+
+
 }
