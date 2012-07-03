@@ -1,5 +1,4 @@
 class Stats {
-    DocumentFragment fragment;
     DivElement statsPanel;
     Element host;
     int totalChars;
@@ -15,8 +14,8 @@ class Stats {
             statsPanel.query('#mistakeCount').text = mistakeCount.toStringAsFixed(0);
             statsPanel.query('#totalChars').innerHTML = totalChars.toStringAsFixed(0);
             statsPanel.query('#errorRate').innerHTML = '${(mistakeRate * 100).round()}';
+
             host.elements.add(statsPanel);
-//            host.remove();
         });
         retrieveView.send();
     }

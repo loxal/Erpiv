@@ -30,7 +30,6 @@ class TypeTrainer extends Core {
     int scrollAmount = 5;
     int scrollDelay = 1;
     DivElement container;
-    DivElement statsPanel;
     bool active = true;
     final Storage storage;
     final String customTextKey = 'customText';
@@ -129,7 +128,6 @@ class TypeTrainer extends Core {
     void restartMarquee() {
         marqueeCanvas.restart();
         active = true;
-        if (statsPanel != null) statsPanel.remove();
         totalChars = Math.parseInt(number.value);
     }
 
@@ -176,7 +174,6 @@ class TypeTrainer extends Core {
             } else if (event.ctrlKey && event.altKey && event.charCode === nCharCode) {
                 number.focus();
             } else if (event.keyIdentifier == 'Enter') {
-                bowlOver();
             } else if (active) {
                 final String char = new String.fromCharCodes([event.charCode]);
                 validateChar(char);
