@@ -1,6 +1,7 @@
+#library('code_gen');
+
 #import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
 #import('/Users/alex/my/src/dart/dart/lib/unittest/vm_config.dart');
-#import('../schemas/TaskLists.dart');
 #import('dart:io');
 #import('dart:json');
 
@@ -37,22 +38,20 @@ class CodeGen {
         fileStream.close();
     }
 
-    void blub1() {
-        File file = new File('tasks-api.json');
-//        print(file.readAsTextSync());
+    void readJsonApi() {
+        File file = new File('../tasks-api.json');
+        print(file.readAsTextSync());
 
 //        print("---");
 
-        FileInputStream input = file.openInputStream();
-//        StringInputStream strInput = new StringInputStream(input, "UTF-8");
-        StringInputStream strInput = new StringInputStream(input);
+//        FileInputStream input = file.openInputStream();
+//        StringInputStream strInput = new StringInputStream(input);
 
-        strInput.onData =
-
-            () {
-            print(strInput.read());
-            input.close();
-        };
+//        strInput.onData =
+//            () {
+//            print(strInput.read());
+//            input.close();
+//        };
     }
 
     void write() {
@@ -66,12 +65,12 @@ class CodeGen {
 //        readApiAsJson();
 //        write();
 
-        blub1();
+//        blub1();
     }
 }
 
-void main() {
-    useVmConfiguration();
-    new CodeGen();
-//    http://www.dartlang.org/docs/library-tour/#dartio---file-and-socket-io-for-command-line-apps
-}
+//void main() {
+//    useVmConfiguration();
+//    new CodeGen();
+////    http://www.dartlang.org/docs/library-tour/#dartio---file-and-socket-io-for-command-line-apps
+//}

@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# Rev. 1
+# Rev. 2
 CACHE:
 http://upload.wikimedia.org/wikipedia/commons/e/e9/Body_mass_index_chart.svg
 
 NETWORK:
+main.html
 *
