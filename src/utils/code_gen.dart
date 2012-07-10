@@ -4,9 +4,14 @@
 #import('/Users/alex/my/src/dart/dart/lib/unittest/vm_config.dart');
 #import('dart:io');
 #import('dart:json');
+#import('dart:utf');
 
 
 class CodeGen {
+    static final String tasksJsonApi = '../tasks-api.json';
+
+    static final String classesJsonKey = 'schemas';
+
     void readApiAsJson() {
         var config = new File('tasks-api.json');
         var inputStream = config.openInputStream();
@@ -38,20 +43,51 @@ class CodeGen {
         fileStream.close();
     }
 
-    void readJsonApi() {
-        File file = new File('../tasks-api.json');
-        print(file.readAsTextSync());
+    String readJsonApi() {
+        final File jsonApi = new File(tasksJsonApi);
+        final String jsonApiContent = jsonApi.readAsTextSync();
 
-//        print("---");
+        return jsonApiContent;
+    }
 
-//        FileInputStream input = file.openInputStream();
-//        StringInputStream strInput = new StringInputStream(input);
+    void parseJsonApi(final String jsonApi) {
+        final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
-//        strInput.onData =
-//            () {
-//            print(strInput.read());
-//            input.close();
-//        };
+        tasksApi[classesJsonKey].forEach((key, value){
+            print(key);
+//            print(value);
+        });
+
+        print(tasksApi['schemas']['Task']['type']);
+    }
+
+    void streamingJsonApi() {
+      var config = new File(tasksJsonApi);
+      var inputStream = config.openInputStream();
+
+      inputStream.onError = (e) => print(e);
+      inputStream.onClosed = () => print("file is now closed");
+      inputStream.onData = () {
+        List<int> bytes = inputStream.read();
+        print("Read ${bytes.length} bytes from stream");
+//          bytes.forEach( (e) => print(String.charCodeAt(e)) );
+//          print(bytes.forEach( (e) => String.charCodeAt(e) ));
+//      print(String.decodeUtf16(bytes));
+
+      print(decodeUtf8(bytes));
+      };
+    }
+
+    void writeJsonApiDartClass() {
+      var logFile = new File('log.txt');
+      var out = logFile.openOutputStream(FileMode.WRITE);
+      out.writeString('FILE ACCESSED ${new Date.now()}');
+      out.close();
+    }
+
+    void deleteJsonApiDartClass() {
+        var logFile = new File('log.txt');
+        logFile.deleteSync();
     }
 
     void write() {
@@ -60,17 +96,4 @@ class CodeGen {
         out.writeString('FILE ACCESSED ${new Date.now()}');
         out.close();
     }
-
-    CodeGen() {
-//        readApiAsJson();
-//        write();
-
-//        blub1();
-    }
 }
-
-//void main() {
-//    useVmConfiguration();
-//    new CodeGen();
-////    http://www.dartlang.org/docs/library-tour/#dartio---file-and-socket-io-for-command-line-apps
-//}
