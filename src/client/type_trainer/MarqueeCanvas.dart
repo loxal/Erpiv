@@ -61,7 +61,7 @@ class MarqueeCanvas {
     void drawOnCanvas() {
         drawTextContainer();
         context.fillStyle = "#ee1";
-        context.fillText(text, xPos, yPos, width);
+        context.fillText(text, xPos, yPos);
 
         xPos -= steppingProgressPerFrame;
     }

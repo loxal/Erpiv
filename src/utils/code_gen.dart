@@ -11,6 +11,7 @@ class CodeGen {
     static final String tasksJsonApi = '../tasks-api.json';
 
     static final String classesJsonKey = 'schemas';
+    static final String propertiesJsonKey = 'properties';
 
     void readApiAsJson() {
         var config = new File('tasks-api.json');
@@ -54,35 +55,41 @@ class CodeGen {
         final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
         tasksApi[classesJsonKey].forEach((key, value){
-            print(key);
-//            print(value);
+            print(key); // file name gen/tasks_classes.dart
+            print(value[propertiesJsonKey]);
         });
 
         print(tasksApi['schemas']['Task']['type']);
     }
 
     void streamingJsonApi() {
-      var config = new File(tasksJsonApi);
-      var inputStream = config.openInputStream();
+        var config = new File(tasksJsonApi);
+        var inputStream = config.openInputStream();
 
-      inputStream.onError = (e) => print(e);
-      inputStream.onClosed = () => print("file is now closed");
-      inputStream.onData = () {
-        List<int> bytes = inputStream.read();
-        print("Read ${bytes.length} bytes from stream");
+        inputStream.onError =
+
+            (e) => print(e);
+        inputStream.onClosed =
+
+            () => print("file is now closed");
+        inputStream.onData =
+
+            () {
+            List<int> bytes = inputStream.read();
+            print("Read ${bytes.length} bytes from stream");
 //          bytes.forEach( (e) => print(String.charCodeAt(e)) );
 //          print(bytes.forEach( (e) => String.charCodeAt(e) ));
 //      print(String.decodeUtf16(bytes));
 
-      print(decodeUtf8(bytes));
-      };
+            print(decodeUtf8(bytes));
+        };
     }
 
     void writeJsonApiDartClass() {
-      var logFile = new File('log.txt');
-      var out = logFile.openOutputStream(FileMode.WRITE);
-      out.writeString('FILE ACCESSED ${new Date.now()}');
-      out.close();
+        var logFile = new File('log.txt');
+        var out = logFile.openOutputStream(FileMode.WRITE);
+        out.writeString('FILE ACCESSED ${new Date.now()}');
+        out.close();
     }
 
     void deleteJsonApiDartClass() {
