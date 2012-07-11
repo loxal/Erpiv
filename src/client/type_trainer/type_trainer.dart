@@ -158,6 +158,8 @@ class TypeTrainer extends Core {
     storage = window.localStorage,
     container = new DivElement() {
 
+        stats = new Stats.placeholder();
+
         initWidget();
         bindHandlers();
 

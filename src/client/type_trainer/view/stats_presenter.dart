@@ -21,10 +21,13 @@ class Stats {
     }
 
     void remove() {
-        statsPanel.remove();
+//        statsPanel.remove();
     }
 
     Stats(this.host, this.totalChars, this.mistakeCount) {
         show();
+    }
+
+    Stats.placeholder(){
     }
 }
