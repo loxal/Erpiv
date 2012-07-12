@@ -12,6 +12,9 @@ class CodeGen {
 
     static final String classesJsonKey = 'schemas';
     static final String propertiesJsonKey = 'properties';
+    static final String typeJsonKey = 'type';
+    static final String descriptionJsonKey = 'type';
+    final String tasksClassesFilePath = 'tasks_classes.dart';
 
     void readApiAsJson() {
         var config = new File('tasks-api.json');
@@ -52,14 +55,23 @@ class CodeGen {
     }
 
     void parseJsonApi(final String jsonApi) {
+        final File tasksClasses = new File(tasksClassesFilePath);
+        tasksClasses.deleteSync();
+        final OutputStream tasksClassesStream = tasksClasses.openOutputStream(FileMode.APPEND);
         final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
         tasksApi[classesJsonKey].forEach((key, value){
             print(key); // file name gen/tasks_classes.dart
-            print(value[propertiesJsonKey]);
+            final Map<String, Object> fields = value[propertiesJsonKey];
+            tasksClassesStream.writeString('$key\n');
+            fields.forEach((key, value) {
+                print(key);
+                print(value[typeJsonKey]);
+                print(value[descriptionJsonKey]);
+            });
         });
 
-        print(tasksApi['schemas']['Task']['type']);
+        tasksClassesStream.close();
     }
 
     void streamingJsonApi() {
@@ -83,24 +95,5 @@ class CodeGen {
 
             print(decodeUtf8(bytes));
         };
-    }
-
-    void writeJsonApiDartClass() {
-        var logFile = new File('log.txt');
-        var out = logFile.openOutputStream(FileMode.WRITE);
-        out.writeString('FILE ACCESSED ${new Date.now()}');
-        out.close();
-    }
-
-    void deleteJsonApiDartClass() {
-        var logFile = new File('log.txt');
-        logFile.deleteSync();
-    }
-
-    void write() {
-        var logFile = new File('log.txt');
-        var out = logFile.openOutputStream(FileMode.WRITE);
-        out.writeString('FILE ACCESSED ${new Date.now()}');
-        out.close();
     }
 }
