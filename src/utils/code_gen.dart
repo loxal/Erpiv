@@ -13,8 +13,13 @@ class CodeGen {
     static final String classesJsonKey = 'schemas';
     static final String propertiesJsonKey = 'properties';
     static final String typeJsonKey = 'type';
-    static final String descriptionJsonKey = 'type';
-    final String tasksClassesFilePath = 'tasks_classes.dart';
+    static final String descriptionJsonKey = 'description';
+    static final String tasksClassesFilePath = 'tasks_classes.dart';
+
+    static Map<String, String> typeMap = const {
+    'string': 'String',
+    'boolean': 'bool',
+    };
 
     void readApiAsJson() {
         var config = new File('tasks-api.json');
@@ -55,22 +60,35 @@ class CodeGen {
     }
 
     void parseJsonApi(final String jsonApi) {
-        final File tasksClasses = new File(tasksClassesFilePath);
+        final File tasksClasses = new File(CodeGen.tasksClassesFilePath);
+
         tasksClasses.deleteSync();
         final OutputStream tasksClassesStream = tasksClasses.openOutputStream(FileMode.APPEND);
         final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
-        tasksApi[classesJsonKey].forEach((key, value){
-            print(key); // file name gen/tasks_classes.dart
+        final StringBuffer sb = new StringBuffer();
+
+        var t = tasksApi[classesJsonKey].forEach((final String key, final String value){
             final Map<String, Object> fields = value[propertiesJsonKey];
-            tasksClassesStream.writeString('$key\n');
+            sb.add('''
+class $key {
+'''); // file name gen/tasks_classes.dart
             fields.forEach((key, value) {
-                print(key);
-                print(value[typeJsonKey]);
-                print(value[descriptionJsonKey]);
+                if (value[typeJsonKey] == 'array') {
+                    sb.add('ARRAY\n');
+                } else {
+                    sb.add('''
+    /** ${value[descriptionJsonKey]} */
+    ${typeMap[value[typeJsonKey]]} $key;
+''');
+                }
             });
+            sb.add('''
+}
+''');
         });
 
+        tasksClassesStream.writeString(sb.toString());
         tasksClassesStream.close();
     }
 
