@@ -37,7 +37,7 @@ class CodeGen {
             List<int> bytes = inputStream.read();
             print("Read ${bytes.length} bytes from stream");
 
-            for (byte b in bytes) {
+            for (var b in bytes) {
                 print(b);
             }
         };
@@ -46,7 +46,7 @@ class CodeGen {
 
     void blub() {
         File f = new File('tasks-api.json');
-        FileInputStream fileStream = f.openInputStream();
+        InputStream fileStream = f.openInputStream();
         StringInputStream stringStream = new StringInputStream(fileStream);
         print(stringStream.read());
         fileStream.close();
@@ -68,14 +68,14 @@ class CodeGen {
 
         final StringBuffer sb = new StringBuffer();
 
-        var t = tasksApi[classesJsonKey].forEach((final String key, final String value){
-            final Map<String, Object> fields = value[propertiesJsonKey];
+        var t = tasksApi[classesJsonKey].forEach((final String key, final Map<String, Object> value){
+            Dynamic fields = value[propertiesJsonKey];
             sb.add('''
 class $key {
 '''); // file name gen/tasks_classes.dart
             fields.forEach((key, value) {
                 if (value[typeJsonKey] == 'array') {
-                    sb.add('ARRAY\n');
+                    sb.add('// ARRAY\n');
                 } else {
                     sb.add('''
     /** ${value[descriptionJsonKey]} */

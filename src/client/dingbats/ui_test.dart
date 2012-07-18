@@ -39,7 +39,7 @@ void fireClick() {
         0
     );
 
-    document.body.queryAll('*').filter((e) => e.elements.isEmpty()).forEach((element){
+    queryAll('*').filter((e) => e.elements.isEmpty()).forEach((element){
         element.on.click.dispatch(new MouseEvent(
             "click", window, 1,
             2020, 299,

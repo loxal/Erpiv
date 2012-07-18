@@ -12,7 +12,7 @@ class TaskLists {
     }
 
     TaskLists.to(String json){
-        Object o = JSON.parse(json);
+        Dynamic o = JSON.parse(json);
         this.etag = o['etag'];
         this.kind = o['kind'];
         this.items = o['items'];

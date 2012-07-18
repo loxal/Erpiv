@@ -1,6 +1,6 @@
-src/client/auth/code_gen.dart
 src/client/core/core.dart
 src/db/populate_db.dart
+src/utils/code_gen.dart
 src/client/auth/auth.dart
 src/client/type_trainer/type_trainer.dart
 src/client/dingbats/ui_test.dart
@@ -9,5 +9,7 @@ src/db/data.dart
 src/client/auth/async.dart
 src/client/bmi_calculator/main.dart
 src/client/incubator/main.dart
+src/utils/tests/code_gen_test.dart
 src/websockets/server.dart
+src/utils/tests/tasks_classes.dart
 src/client/schemas/TaskLists.dart
