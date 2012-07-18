@@ -69,13 +69,22 @@ class CodeGen {
         final StringBuffer sb = new StringBuffer();
 
         var t = tasksApi[classesJsonKey].forEach((final String key, final Map<String, Object> value){
-            Dynamic fields = value[propertiesJsonKey];
+            Dynamic fieldsPropertiesArray = value[propertiesJsonKey];
+
             sb.add('''
 class $key {
 '''); // file name gen/tasks_classes.dart
-            fields.forEach((key, value) {
+            fieldsPropertiesArray.forEach((key, value) {
                 if (value[typeJsonKey] == 'array') {
                     sb.add('// ARRAY\n');
+                    print(value['items']);
+                    if (value['items']['properties'] != null) {
+                        print(value['items'][propertiesJsonKey]);
+                        sb.add(propertiesArray(value['items'][propertiesJsonKey]));
+                    }
+                    else {
+                        sb.add('${value['items']['\$ref']} object;');
+                    }
                 } else {
                     sb.add('''
     /** ${value[descriptionJsonKey]} */
@@ -83,13 +92,33 @@ class $key {
 ''');
                 }
             });
-            sb.add('''
-}
-''');
+            sb.add('}');
         });
 
         tasksClassesStream.writeString(sb.toString());
         tasksClassesStream.close();
+    }
+
+    String propertiesArray(Dynamic fieldsPropertiesArray) {
+        final StringBuffer sb = new StringBuffer();
+        fieldsPropertiesArray.forEach((key, value) {
+            if (value[typeJsonKey] == 'array') {
+                if (value['items']['properties'] != null) {
+                    print(value['items'][propertiesJsonKey]);
+                    sb.add(propertiesArray(value['items'][propertiesJsonKey]));
+                }
+                else {
+                    sb.add('${value['items']['\$ref']} object;');
+                }
+            } else {
+                sb.add('''
+/** ${value[descriptionJsonKey]} */
+${typeMap[value[typeJsonKey]]} $key;
+''');
+            }
+        });
+
+        return sb;
     }
 
     void streamingJsonApi() {
@@ -107,9 +136,6 @@ class $key {
             () {
             List<int> bytes = inputStream.read();
             print("Read ${bytes.length} bytes from stream");
-//          bytes.forEach( (e) => print(String.charCodeAt(e)) );
-//          print(bytes.forEach( (e) => String.charCodeAt(e) ));
-//      print(String.decodeUtf16(bytes));
 
             print(decodeUtf8(bytes));
         };
