@@ -62,7 +62,11 @@ class CodeGen {
     void parseJsonApi(final String jsonApi) {
         final File tasksClasses = new File(CodeGen.tasksClassesFilePath);
 
-        tasksClasses.deleteSync();
+        try {
+            tasksClasses.deleteSync();
+        } catch (FileIOException e) {
+            print(e);
+        }
         final OutputStream tasksClassesStream = tasksClasses.openOutputStream(FileMode.APPEND);
         final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
@@ -71,28 +75,9 @@ class CodeGen {
         var t = tasksApi[classesJsonKey].forEach((final String key, final Map<String, Object> value){
             Dynamic fieldsPropertiesArray = value[propertiesJsonKey];
 
-            sb.add('''
-class $key {
-'''); // file name gen/tasks_classes.dart
-            fieldsPropertiesArray.forEach((key, value) {
-                if (value[typeJsonKey] == 'array') {
-                    sb.add('// ARRAY\n');
-                    print(value['items']);
-                    if (value['items']['properties'] != null) {
-                        print(value['items'][propertiesJsonKey]);
-                        sb.add(propertiesArray(value['items'][propertiesJsonKey]));
-                    }
-                    else {
-                        sb.add('${value['items']['\$ref']} object;');
-                    }
-                } else {
-                    sb.add('''
-    /** ${value[descriptionJsonKey]} */
-    ${typeMap[value[typeJsonKey]]} $key;
-''');
-                }
-            });
-            sb.add('}');
+            sb.add('''class $key {\n'''); // file name gen/tasks_classes.dart
+            sb.add(propertiesArray(fieldsPropertiesArray));
+            sb.add('}\n\n');
         });
 
         tasksClassesStream.writeString(sb.toString());
@@ -103,8 +88,8 @@ class $key {
         final StringBuffer sb = new StringBuffer();
         fieldsPropertiesArray.forEach((key, value) {
             if (value[typeJsonKey] == 'array') {
+                sb.add('// ARRAY\n');
                 if (value['items']['properties'] != null) {
-                    print(value['items'][propertiesJsonKey]);
                     sb.add(propertiesArray(value['items'][propertiesJsonKey]));
                 }
                 else {
@@ -112,9 +97,9 @@ class $key {
                 }
             } else {
                 sb.add('''
-/** ${value[descriptionJsonKey]} */
-${typeMap[value[typeJsonKey]]} $key;
-''');
+                    /** ${value[descriptionJsonKey]} */
+                    ${typeMap[value[typeJsonKey]]} $key;
+                ''');
             }
         });
 
