@@ -8,123 +8,123 @@
 
 
 class CodeGen {
-    static final String tasksJsonApi = '../tasks-api.json';
+  static final String tasksJsonApi = '../tasks-api.json';
 
-    static final String classesJsonKey = 'schemas';
-    static final String propertiesJsonKey = 'properties';
-    static final String typeJsonKey = 'type';
-    static final String descriptionJsonKey = 'description';
-    static final String tasksClassesFilePath = 'tasks_classes.dart';
+  static final String classesJsonKey = 'schemas';
+  static final String propertiesJsonKey = 'properties';
+  static final String typeJsonKey = 'type';
+  static final String descriptionJsonKey = 'description';
+  static final String tasksClassesFilePath = 'tasks_classes.dart';
 
-    static Map<String, String> typeMap = const {
-    'string': 'String',
-    'boolean': 'bool',
+  static Map<String, String> typeMap = const {
+  'string': 'String',
+  'boolean': 'bool',
+  };
+
+  void readApiAsJson() {
+    var config = new File('tasks-api.json');
+    var inputStream = config.openInputStream();
+
+    inputStream.onError =
+
+        (e) => print(e);
+    inputStream.onClosed =
+
+        () => print("file is now closed");
+    inputStream.onData =
+
+        () {
+      List<int> bytes = inputStream.read();
+      print("Read ${bytes.length} bytes from stream");
+
+      for (var b in bytes) {
+        print(b);
+      }
     };
 
-    void readApiAsJson() {
-        var config = new File('tasks-api.json');
-        var inputStream = config.openInputStream();
+  }
 
-        inputStream.onError =
+  void blub() {
+    File f = new File('tasks-api.json');
+    InputStream fileStream = f.openInputStream();
+    StringInputStream stringStream = new StringInputStream(fileStream);
+    print(stringStream.read());
+    fileStream.close();
+  }
 
-            (e) => print(e);
-        inputStream.onClosed =
+  String readJsonApi() {
+    final File jsonApi = new File(tasksJsonApi);
+    final String jsonApiContent = jsonApi.readAsTextSync();
 
-            () => print("file is now closed");
-        inputStream.onData =
+    return jsonApiContent;
+  }
 
-            () {
-            List<int> bytes = inputStream.read();
-            print("Read ${bytes.length} bytes from stream");
+  void parseJsonApi(final String jsonApi) {
+    final File tasksClasses = new File(CodeGen.tasksClassesFilePath);
 
-            for (var b in bytes) {
-                print(b);
-            }
-        };
-
+    try {
+      tasksClasses.deleteSync();
+    } catch (FileIOException e) {
+      print(e);
     }
+    final OutputStream tasksClassesStream = tasksClasses.openOutputStream(FileMode.APPEND);
+    final Map<String, Object> tasksApi = JSON.parse(jsonApi);
 
-    void blub() {
-        File f = new File('tasks-api.json');
-        InputStream fileStream = f.openInputStream();
-        StringInputStream stringStream = new StringInputStream(fileStream);
-        print(stringStream.read());
-        fileStream.close();
-    }
+    final StringBuffer sb = new StringBuffer();
 
-    String readJsonApi() {
-        final File jsonApi = new File(tasksJsonApi);
-        final String jsonApiContent = jsonApi.readAsTextSync();
+    tasksApi[classesJsonKey].forEach((final String key, final Map<String, Object> value){
+      Dynamic fieldsPropertiesArray = value[propertiesJsonKey];
 
-        return jsonApiContent;
-    }
+      sb.add('''class $key {\n'''); // file name gen/tasks_classes.dart
+      sb.add(propertiesArray(fieldsPropertiesArray));
+      sb.add('}\n\n');
+    });
 
-    void parseJsonApi(final String jsonApi) {
-        final File tasksClasses = new File(CodeGen.tasksClassesFilePath);
+    tasksClassesStream.writeString(sb.toString());
+    tasksClassesStream.close();
+  }
 
-        try {
-            tasksClasses.deleteSync();
-        } catch (FileIOException e) {
-            print(e);
+  String propertiesArray(Dynamic fieldsPropertiesArray) {
+    final StringBuffer sb = new StringBuffer();
+
+    fieldsPropertiesArray.forEach((final String key, final Map<String, Object> value) {
+      if (value[typeJsonKey] == 'array') {
+        sb.add('// ARRAY\n');
+        if (value['items']['properties'] != null) {
+          sb.add(propertiesArray(value['items'][propertiesJsonKey]));
         }
-        final OutputStream tasksClassesStream = tasksClasses.openOutputStream(FileMode.APPEND);
-        final Map<String, Object> tasksApi = JSON.parse(jsonApi);
-
-        final StringBuffer sb = new StringBuffer();
-
-        var t = tasksApi[classesJsonKey].forEach((final String key, final Map<String, Object> value){
-            Dynamic fieldsPropertiesArray = value[propertiesJsonKey];
-
-            sb.add('''class $key {\n'''); // file name gen/tasks_classes.dart
-            sb.add(propertiesArray(fieldsPropertiesArray));
-            sb.add('}\n\n');
-        });
-
-        tasksClassesStream.writeString(sb.toString());
-        tasksClassesStream.close();
-    }
-
-    String propertiesArray(Dynamic fieldsPropertiesArray) {
-        final StringBuffer sb = new StringBuffer();
-
-        fieldsPropertiesArray.forEach((final String key, final Map<String, Object> value) {
-            if (value[typeJsonKey] == 'array') {
-                sb.add('// ARRAY\n');
-                if (value['items']['properties'] != null) {
-                    sb.add(propertiesArray(value['items'][propertiesJsonKey]));
-                }
-                else {
-                    sb.add('${value['items']['\$ref']} object;');
-                }
-            } else if (value[typeJsonKey] == 'object' && value['id'] == 'array') {
-            } else {
-                sb.add('''
+        else {
+          sb.add('${value['items']['\$ref']} object;');
+        }
+      } else if (value[typeJsonKey] == 'object' && value['id'] == 'array') {
+      } else {
+        sb.add('''
                     /** ${value[descriptionJsonKey]} */
                     ${typeMap[value[typeJsonKey]]} $key;
                 ''');
-            }
-        });
+      }
+    });
 
-        return sb;
-    }
+    return sb;
+  }
 
-    void streamingJsonApi() {
-        var config = new File(tasksJsonApi);
-        var inputStream = config.openInputStream();
+  void streamingJsonApi() {
+    var config = new File(tasksJsonApi);
+    var inputStream = config.openInputStream();
 
-        inputStream.onError =
+    inputStream.onError =
 
-            (e) => print(e);
-        inputStream.onClosed =
+        (e) => print(e);
+    inputStream.onClosed =
 
-            () => print("file is now closed");
-        inputStream.onData =
+        () => print("file is now closed");
+    inputStream.onData =
 
-            () {
-            List<int> bytes = inputStream.read();
-            print("Read ${bytes.length} bytes from stream");
+        () {
+      List<int> bytes = inputStream.read();
+      print("Read ${bytes.length} bytes from stream");
 
-            print(decodeUtf8(bytes));
-        };
-    }
+      print(decodeUtf8(bytes));
+    };
+  }
 }
