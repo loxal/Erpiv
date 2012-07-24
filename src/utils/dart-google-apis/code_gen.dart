@@ -86,7 +86,8 @@ class CodeGen {
 
     String propertiesArray(Dynamic fieldsPropertiesArray) {
         final StringBuffer sb = new StringBuffer();
-        fieldsPropertiesArray.forEach((key, value) {
+
+        fieldsPropertiesArray.forEach((final String key, final Map<String, Object> value) {
             if (value[typeJsonKey] == 'array') {
                 sb.add('// ARRAY\n');
                 if (value['items']['properties'] != null) {
@@ -95,6 +96,7 @@ class CodeGen {
                 else {
                     sb.add('${value['items']['\$ref']} object;');
                 }
+            } else if (value[typeJsonKey] == 'object' && value['id'] == 'array') {
             } else {
                 sb.add('''
                     /** ${value[descriptionJsonKey]} */
