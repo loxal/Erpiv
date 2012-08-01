@@ -1,22 +1,45 @@
 #library('loxal:Incubator');
 
 #import('dart:html');
-#import('https://raw.github.com/chrisbu/DartJSONP/master/DartJSONP.dart');
 
-void showTweets() {
-  var callbackMethod = "callbackMethod";
-  final JsonpCallback twitterCallback = new JsonpCallback(callbackMethod);
+void main() {
 
-  twitterCallback.onDataReceived =
+  Dynamic d =
 
-      (Map data) {
-    print(data);
+  void myFunc() {
+    print('void');
   };
 
-  var twitterUrl = "http://search.twitter.com/search.json?q=dartlangg&callback=$callbackMethod";
-  twitterCallback.doCallback(twitterUrl);
-}
+//  d();
 
-void main() { // here is where the app execution starts
-//    showTweets();
+  var d1 =
+
+  void myFunc() {
+    print('another void');
+  };
+
+//  d1();
+
+  d1;
+  d;
+
+  int lineCount;
+//  assert(lineCount == null); // Variables (even numbers) are initially null.
+//  assert(lineCount != null); // Variables (even numbers) are initially null.
+
+  var sqr =
+
+      (x) => x * x;
+  print(sqr(5));
+
+  print((
+
+          (x) => x * x)(10));
+
+  ImageElement image = new ImageElement();
+  image.src = 'http://upload.wikimedia.org/wikipedia/commons/c/c4/Blackeyegalaxy.jpg';
+  image.on.load.add((event) {
+    window.console.log(image.height); // Will always print 0.
+  });
+
 }
