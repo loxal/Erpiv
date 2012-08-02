@@ -1,8 +1,4 @@
-#library('loxal:Incubator');
-
 #import('dart:html');
-//#import('dart:uri');
-
 
 Map<String, String> getUriParams(String uriSearch) {
   if (uriSearch != '') {
@@ -21,15 +17,19 @@ Map<String, String> getUriParams(String uriSearch) {
   }
 }
 
-void main() {
-  final IFrameElement moduleContainer = query('#module');
+void init() {
+  final ScriptElement moduleContainer = query('#module');
 
   final uriSearch = window.location.search;
   final paramMapping = getUriParams(uriSearch);
 
-  final moduleFqn = paramMapping['module'];
-  final moduleSrc = '$moduleFqn/$moduleFqn.nocache.js';
+  final defaultModuleFqn = 'loxal.epvin.manager.Manager';
+  final moduleFqn = paramMapping['module'] == null ? defaultModuleFqn : paramMapping['module'];
+  final moduleSrc = '/$moduleFqn/$moduleFqn.nocache.js';
 
   moduleContainer.src = moduleSrc;
+}
 
+void main() {
+  init();
 }
