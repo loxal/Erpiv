@@ -1,41 +1,78 @@
-//#library('sort_test');
+#library('sort_test');
 
 #import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
-//#import('/Users/alex/my/src/dart/dart/lib/unittest/html_config.dart');
 #import('../main.dart');
 
-void main() {
-//  useHtmlConfiguration();
+final List<int> sortedList = const[0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+List<int> unsortedList = const[8, 4, 1, 3, 9, 0, 5, 7, 2, 6];
 
-  List<int> unsortedList = [8, 4, 1, 3, 9, 0, 5, 7, 2, 6];
-  List<int> sortedList = const[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ];
+void isUnsorted(List<int> list) {
+  test('assure that the unsortedList is actually unsorted',
 
-  group('Algorithm',
       () {
-//        final CodeGen codeGen = new CodeGen();
+    expect(unsortedList, unorderedEquals(sortedList));
+    expect(unsortedList, isNot(orderedEquals(sortedList)));
+  });
+}
 
-    test('sorts',
-        () {
-      unsortedList.sort((a, b) => compare(a, b));
+void main() {
+  group('Algorithm',
 
-      expect([1, 2, 3], equals(const[1, 2, 3, ]));
-      expect(unsortedList, equals(unsortedList));
-      expect(sortedList, equals(unsortedList));
+      () {
+    final Stopwatch stopwatch= new Stopwatch();
 
+    setUp(() {
+      isUnsorted(unsortedList);
+      unsortedList = [8, 4, 1, 3, 9, 0, 5, 7, 2, 6];
 
-//            final String jsonApiContent = codeGen.readJsonApi();
+      stopwatch.start();
+    });
+    tearDown(() {
+      print('Time elapsed: ${stopwatch.elapsed()}');
+      stopwatch.reset();
 
-//            final int tasksApiJsonLengthV1 = 29623;
-//            expect(jsonApiContent.length, equals(tasksApiJsonLengthV1));
-//            expect(jsonApiContent.length, isNotNull);
-//            expect(jsonApiContent.length, isNonZero);
-//            expect(jsonApiContent.length, isPositive);
+      unsortedList = const[8, 4, 1, 3, 9, 0, 5, 7, 2, 6];
     });
 
-    test('sorts using another alogirhtm',
+
+    expect(sortedList, unorderedEquals(unsortedList));
+
+    test('assure unsortedList is actually unsorted',
 
         () {
-//            codeGen.parseJsonApi(codeGen.readJsonApi());
+      expect(genericSort(unsortedList), orderedEquals(sortedList));
     });
+
+    test('genericSort fails',
+
+        () {
+      expect(unsortedList, unorderedEquals(sortedList));
+      expect(unsortedList, isNot(orderedEquals(sortedList)));
+    });
+
+    test('quickSort works',
+
+        () {
+      expect(quickSort(unsortedList), orderedEquals(sortedList));
+    });
+
+    test('wikipedia Quicksort',
+
+        () {
+      expect(wikipediaQuickSort(unsortedList), orderedEquals(sortedList));
+    });
+
+//    test('wikipedia Quicksort using partitions',
+//
+//        () {
+//      expect(wikipediaQuicksortPartitionResult(unsortedList,0,0), orderedEquals(sortedList));
+//    });
+
+    test('mergeSort works',
+
+        () {
+      expect(mergeSort(unsortedList), orderedEquals(sortedList));
+    });
+
   });
 }
