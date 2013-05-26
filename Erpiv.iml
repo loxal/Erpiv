@@ -6,8 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
-    <orderEntry type="library" name="Dart SDK" level="application" />
+    <orderEntry type="jdk" jdkName="Dart NA" jdkType="Dart SDK" />
+    <orderEntry type="library" name="dart" level="application" />
   </component>
 </module>
 
