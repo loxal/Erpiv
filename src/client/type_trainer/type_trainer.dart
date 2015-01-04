@@ -1,20 +1,21 @@
 /*
- * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 
-#library('loxal:typetrainer');
+library net.loxal.typetrainer;
 
-#import('dart:html');
-#import('dart:math');
-#import('dart:coreimpl');
-#import('../core/core.dart');
-#source('view/stats_presenter.dart');
-#source('marquee_canvas.dart');
+import 'dart:html';
+import 'dart:math';
+import 'dart:core';
+import '../core/core.dart';
+import 'view/stats_presenter.dart';
+import 'marquee_canvas.dart';
 
 class TypeTrainer extends Core {
   AudioElement accomponement;
+
 //    http://upload.wikimedia.org/wikipedia/commons/b/b1/11_-_Vivaldi_Winter_mvt_2_Largo_-_John_Harrison_violin.ogg
 //    http://upload.wikimedia.org/wikipedia/commons/2/21/12_-_Vivaldi_Winter_mvt_3_Allegro_-_John_Harrison_violin.ogg
 
@@ -49,9 +50,9 @@ class TypeTrainer extends Core {
     mute = new ButtonElement();
     mute.style.cssText = 'font-size: 3em;';
     mute.classes = ['icon-play'];
-    document.body.elements.add(mute);
+    document.body.append(mute);
 
-    mute.on.click.add((Event e) {
+    mute.onClick.listen((Event e) {
       toggleMusic();
     });
   }
@@ -67,35 +68,33 @@ class TypeTrainer extends Core {
   }
 
   void initFingerKeyMap() {
-//    https://upload.wikimedia.org/wikipedia/commons/0/04/Keyboard_layout_ru%28typewriter%29.svg
+//https://upload.wikimedia.org/wikipedia/commons/0/04/Keyboard_layout_ru%28typewriter%29.svg
 //Dvorak: http://upload.wikimedia.org/wikipedia/en/a/a6/KB_Programmer_Dvorak.svg
 //English / Hebrew: https://upload.wikimedia.org/wikipedia/commons/e/e6/Touch_typing-he.svg
-// English: http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg
-// German: https://upload.wikimedia.org/wikipedia/commons/6/60/QWERTZ-10Finger-Layout_W.svg
-    Element tenFingerLayout = new Element.html("""
-            <img src="http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg" width=100%/>
-            """);
-    document.body.elements.add(tenFingerLayout);
+//English: http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg
+//German: https://upload.wikimedia.org/wikipedia/commons/6/60/QWERTZ-10Finger-Layout_W.svg
+    Element tenFingerLayout = new ImageElement(src: "http://upload.wikimedia.org/wikipedia/commons/2/29/Touch_typing.svg");
+    document.body.append(tenFingerLayout);
   }
 
   void initRestartButton() {
     ButtonElement restartButton = new Element.html("""
                      <button class=icon-refresh>Restart</button>
                  """);
-    restartButton.on.click.add((Event event) {
+    restartButton.onClick.listen((Event event) {
       restart();
     });
-    document.body.elements.add(restartButton);
+    document.body.append(restartButton);
   }
 
   void initNumberInput() {
     DivElement localContainer = new DivElement();
     localContainer.style.cssText = 'border: solid';
-    localContainer.elements.add(number);
-    document.body.elements.add(localContainer);
+    localContainer.append(number);
+    document.body.append(localContainer);
 
     number.defaultValue = '22';
-    number.on.change.add((final Event event) => restart());
+    number.onChange.listen((final Event event) => restart());
   }
 
   void initCustomText() {
@@ -111,24 +110,24 @@ class TypeTrainer extends Core {
     localContainer.style.cssText = 'border: solid;';
     restartWithCustomTextButton.style.cssText = 'display: block;';
 
-    localContainer.elements.add(customText);
-    localContainer.elements.add(restartWithCustomTextButton);
-    document.body.elements.add(localContainer);
-    restartWithCustomTextButton.on.click.add((final Event event) => restartWithCustomText());
+    localContainer.append(customText);
+    localContainer.append(restartWithCustomTextButton);
+    document.body.append(localContainer);
+    restartWithCustomTextButton.onClick.listen((final Event event) => restartWithCustomText());
   }
 
   String getCustomText() {
-    if (storage.$dom_getItem(customTextKey) == null) {
+    if (!storage.containsKey(customTextKey)) {
       return 'My custom text...';
     } else {
-      return storage.$dom_getItem(customTextKey);
+      return storage[customTextKey];
     }
   }
 
   void restartMarquee() {
     marqueeCanvas.restart();
     active = true;
-    totalChars = Math.parseInt(number.value);
+    totalChars = int.parse(number.value);
   }
 
   void restart() {
@@ -147,14 +146,14 @@ class TypeTrainer extends Core {
   }
 
   void storeCustomText() {
-    storage.$dom_setItem('customText', customText.value);
+    storage['customText'] = customText.value;
   }
 
 
   TypeTrainer() : spaceChar = new String.fromCharCodes([spaceCharCode]),
 //        accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.mp3'),
   accomponement = new AudioElement('http://ia700400.us.archive.org/21/items/TheFourSeasonsWinter/USAFB_Winter.ogg'),
-  number = new InputElement('number'),
+  number = document.createElement('input'),
   storage = window.localStorage,
   container = new DivElement() {
 
@@ -171,11 +170,11 @@ class TypeTrainer extends Core {
         (final KeyboardEvent event) {
       final int rCharCode = 18;
       final int nCharCode = 14;
-      if (event.ctrlKey && event.altKey && event.charCode === rCharCode) {
+      if (event.ctrlKey && event.altKey && event.charCode == rCharCode) {
         restart();
-      } else if (event.ctrlKey && event.altKey && event.charCode === nCharCode) {
+      } else if (event.ctrlKey && event.altKey && event.charCode == nCharCode) {
         number.focus();
-      } else if (event.keyIdentifier == 'Enter') {
+      } else if (event.keyCode == 'Enter') {
       } else if (active) {
         final String char = new String.fromCharCodes([event.charCode]);
         validateChar(char);
@@ -183,7 +182,7 @@ class TypeTrainer extends Core {
     };
 
 
-    window.on.keyPress.add(keyPressHandler);
+    window.onKeyPress.listen(keyPressHandler);
   }
 
   void unbindHandlers() {
@@ -214,16 +213,16 @@ class TypeTrainer extends Core {
     marqueeCanvas.showMistake();
   }
 
-  String generateText([int totalCharsLocal = 7, int spaceCharAfter = 3]) {
+  String generateText({int totalCharsLocal: 7, int spaceCharAfter: 3}) {
     this.totalChars = totalCharsLocal;
     final StringBuffer text = new StringBuffer();
-    text.add(cursor);
+    text.write(cursor);
     final Random random = new Random();
     for (int idx = 1; idx < totalCharsLocal; idx++) {
       int letterCode = random.nextInt(26) + 97;
-      text.add(new String.fromCharCodes([letterCode]));
-      if (idx % spaceCharAfter === 0) {
-        text.add(spaceChar);
+      text.write(new String.fromCharCodes([letterCode]));
+      if (idx % spaceCharAfter == 0) {
+        text.write(spaceChar);
       }
     }
 
@@ -239,7 +238,7 @@ class TypeTrainer extends Core {
   }
 
   bool hasFinished() {
-    return marqueeCanvas.text.length === 1;
+    return marqueeCanvas.text.length == 1;
   }
 
   void finished() {
@@ -258,28 +257,12 @@ class TypeTrainer extends Core {
     print('mistakeRate: ${(mistakeRate * 100).ceil()}%');
   }
 
-  void initAppCache() {
-    DOMApplicationCache dac = window.applicationCache;
-    print(dac.status);
-    dac.on.cached.add((e) => print('blub'));
-    dac.on.checking.add((e) => print('blub'));
-    dac.on.downloading.add((e) => print('blub'));
-    dac.on.error.add((e) => print('blub'));
-    dac.on.noUpdate.add((e) => print('blub'));
-    dac.on.obsolete.add((e) => print('blub'));
-    dac.on.progress.add((e) => print('blub'));
-    dac.on.updateReady.add((e) => print('blub'));
-    dac.update();
-  }
-
   void initWidget() {
     String scrollingText = generateText();
     marqueeCanvas = new MarqueeCanvas(scrollingText);
-    document.body.elements.add(container);
+    document.body.append(container);
 
     buildControls();
-
-//        initAppCache();
   }
 }
 
