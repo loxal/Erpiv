@@ -6,7 +6,8 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="Dart NA" jdkType="Dart SDK" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" exported="" name="Dart SDK" level="application" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">
@@ -201,4 +202,3 @@
     </option>
   </component>
 </module>
-
