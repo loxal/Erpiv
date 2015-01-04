@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  ~ Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+  ~ Use of this source code is governed by a BSD-style
+  ~ license that can be found in the LICENSE file.
+  -->
+
 <meta charset="utf-8"/>  <title>WebSocket Test</title>
 <script language="javascript" type="text/javascript">  var wsUri = "ws://localhost:8000/ws";
 var output;
@@ -42,7 +48,7 @@ function doSend(message) {
 function writeToScreen(message) {
     var pre = document.createElement("p");
     pre.style.wordWrap = "break-word";
-    pre.innerHTML = message;
+    pre.innerHtml = message;
     output.appendChild(pre);
 }
 window.addEventListener("load", init, false);  </script>  <h2>WebSocket Test</h2>
