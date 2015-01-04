@@ -1,7 +1,13 @@
-#library('code_gen_test');
+/*
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
 
-#import('/Users/alex/my/src/dart/dart/lib/unittest/unittest.dart');
-#import('../dart-google-apis/code_gen.dart');
+library code_gen_test;
+
+import '../dart-google-apis/code_gen.dart'/**/
+;
 
 void main() {
 //    http://www.dartlang.org/docs/library-tour/#dartio---file-and-socket-io-for-command-line-apps
