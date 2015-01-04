@@ -1,33 +1,43 @@
+/*
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
+library stats;
+
+import 'dart:html';
+
 class Stats {
-    DivElement statsPanel;
-    Element host;
-    int totalChars;
-    int mistakeCount;
+  DivElement statsPanel;
+  Element host;
+  int totalChars;
+  int mistakeCount;
 
-    void show() {
-        final double mistakeRate = mistakeCount / totalChars;
+  void show() {
+    final double mistakeRate = mistakeCount / totalChars;
 
-        final XMLHttpRequest retrieveView = new XMLHttpRequest();
-        retrieveView.open('GET', '../type_trainer/view/stats.html');
-        retrieveView.on.load.add((final Event e) {
-            statsPanel = new Element.html(retrieveView.responseText);
-            statsPanel.query('#mistakeCount').text = mistakeCount.toStringAsFixed(0);
-            statsPanel.query('#totalChars').innerHTML = totalChars.toStringAsFixed(0);
-            statsPanel.query('#errorRate').innerHTML = '${(mistakeRate * 100).round()}';
+    final HttpRequest retrieveView = new HttpRequest();
+    retrieveView.open('GET', '../type_trainer/view/stats.html');
+    retrieveView.onLoad.listen((final Event e) {
+      statsPanel = new Element.html(retrieveView.responseText);
+      statsPanel.querySelector('#mistakeCount').text = mistakeCount.toStringAsFixed(0);
+      statsPanel.querySelector('#totalChars').innerHtml = totalChars.toStringAsFixed(0);
+      statsPanel.querySelector('#errorRate').innerHtml = '${(mistakeRate * 100).round()}';
 
-            host.elements.add(statsPanel);
-        });
-        retrieveView.send();
-    }
+      host.append(statsPanel);
+    });
+    retrieveView.send();
+  }
 
-    void remove() {
+  void remove() {
 //        statsPanel.remove();
-    }
+  }
 
-    Stats(this.host, this.totalChars, this.mistakeCount) {
-        show();
-    }
+  Stats(this.host, this.totalChars, this.mistakeCount) {
+    show();
+  }
 
-    Stats.placeholder(){
-    }
+  Stats.placeholder(){
+  }
 }
