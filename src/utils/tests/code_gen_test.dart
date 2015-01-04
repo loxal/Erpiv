@@ -6,8 +6,7 @@
 
 library code_gen_test;
 
-import '../dart-google-apis/code_gen.dart'/**/
-;
+import '../dart-google-apis/code_gen.dart';
 
 void main() {
 //    http://www.dartlang.org/docs/library-tour/#dartio---file-and-socket-io-for-command-line-apps
