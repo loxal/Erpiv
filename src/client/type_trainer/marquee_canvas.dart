@@ -1,4 +1,12 @@
 /*
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Use of this source code is governed by a BSD-style
+ * license that can be found in the LICENSE file.
+ */
+
+import 'dart:html';
+import '../core/core.dart';
+/*
  * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
@@ -28,7 +36,7 @@ class MarqueeCanvas {
   }
 
   void initMarquee() {
-    canvas = new CanvasElement(width, height);
+    canvas = new CanvasElement(width: width, height: height);
     canvas.style.cssText = 'display: block;';
     context = canvas.getContext('2d');
     context.font = '66px serif';
@@ -47,7 +55,7 @@ class MarqueeCanvas {
     }
     context.fillRect(0, 0, canvas.width, canvas.height);
     context.strokeStyle = "#ee1";
-    context.strokeRect(0, 0, canvas.width, canvas.height, 5);
+    context.strokeRect(0, 0, canvas.width, canvas.height);
   }
 
   void showMistake() {
@@ -72,11 +80,12 @@ class MarqueeCanvas {
   }
 
   void clear() {
-    context.clearRect(0, 0, canvas.width, canvas.height); // alternative
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    // alternative
   }
 
   void attachHandler() {
-    window.on.resize.add((Event e) {
+    window.onResize.listen((Event e) {
       width = window.innerWidth;
     });
   }
@@ -100,7 +109,7 @@ class MarqueeCanvas {
 
     attachHandler();
     initMarquee();
-    document.body.elements.add(canvas);
+    document.body.append(canvas);
     redraw();
 
 // todo make the draw function a typedef
