@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 
-#library('loxal:Core');
-#import('dart:html');
+library Core;
+import 'dart:html';
 
 class Core {
     static final String errorColor = '#911';
@@ -18,7 +18,7 @@ class Core {
     void initBase() {
         base = new BaseElement();
         base.href = basePath;
-        document.head.elements.add(base);
+        document.head.append(base);
     }
 
     LinkElement getCss() {
