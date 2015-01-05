@@ -38,7 +38,7 @@ handlers:
 - url: /test/.*
   script: _go_app
 - url: .*
-  static_files: static/client/site/main.html
+  static_files: static/client/site/index.html
   upload: /static/client/.*
 
 #- url: /static/module/CV/main.appcache

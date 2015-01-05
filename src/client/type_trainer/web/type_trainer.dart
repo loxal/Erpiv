@@ -9,8 +9,8 @@ library net.loxal.typetrainer;
 import 'dart:html';
 import 'dart:math';
 import 'dart:core';
-import '../core/core.dart';
 import 'view/stats_presenter.dart';
+import 'core/core.dart';
 import 'marquee_canvas.dart';
 
 class TypeTrainer extends Core {

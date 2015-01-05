@@ -7,8 +7,8 @@
 library net.loxal.BMI_calculator;
 
 import 'dart:html';
-import '../core/core.dart';
-import '../core/view.dart';
+import 'core/core.dart';
+import 'core/view.dart';
 import 'dart:svg';
 import 'dart:svg' as svg;
 import 'dart:math';

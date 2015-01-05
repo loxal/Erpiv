@@ -18,7 +18,7 @@ class Stats {
     final double mistakeRate = mistakeCount / totalChars;
 
     final HttpRequest retrieveView = new HttpRequest();
-    retrieveView.open('GET', '../type_trainer/view/stats.html');
+    retrieveView.open('GET', '../view/stats.html');
     retrieveView.onLoad.listen((final Event e) {
       statsPanel = new Element.html(retrieveView.responseText);
       statsPanel.querySelector('#mistakeCount').text = mistakeCount.toStringAsFixed(0);
