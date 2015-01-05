@@ -1,11 +1,11 @@
 /*
- * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 
-#library('loxal:uitest');
-#import('dart:html');
+library loxal.uitest;
+import 'dart:html';
 
 class Test {
     Element v;
@@ -16,8 +16,8 @@ class Test {
 
 void testClickEvent() {
     DivElement div = new Element.html('<div style="background-color: blue; width: 10em; height: 10em;"></div>');
-    document.body.elements.add(div);
-    div.on.click.add((MouseEvent e) {
+    document.body.append(div);
+    div.onClick.listen((MouseEvent e) {
         print(e.type);
         print(e.view);
         print(e.detail);
@@ -54,8 +54,8 @@ void main() {
     Test t = new Test();
     final ButtonElement start = new Element.tag('button');
     start.text = "Start";
-    start.on.click.add((e) => testClickEvent());
-    document.body.elements.add(start);
+    start.onClick.listen((e) => testClickEvent());
+    document.body.append(start);
 
     testClickEvent();
 }

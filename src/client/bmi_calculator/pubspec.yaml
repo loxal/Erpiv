@@ -1,0 +1,4 @@
+name: bmi_calculator
+description: Calculates the Body Mass Index based on weight and height
+dependencies:
+  browser: any

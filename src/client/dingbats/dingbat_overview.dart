@@ -1,65 +1,67 @@
 /*
- * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
+ * Copyright 2015 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
  */
 
-#library('loxal:DingbatOverview');
-#import('dart:html');
-#import('../core/core.dart');
-#source('../core/view.dart');
+library net.loxal.DingbatOverview;
+import 'dart:html';
+import '../core/core.dart';
+import '../core/view.dart';
 
 class DingbatContainer extends Core implements View {
-    InputElement symFrom;
-    InputElement symTo;
-    LabelElement symbolToLabel;
+  InputElement symFrom;
+  InputElement symTo;
+  LabelElement symbolToLabel;
 
-    TableSectionElement tbody;
-    TableCellElement totalSymbols;
-    TableCellElement decimalRange;
+  TableSectionElement tbody;
+  TableCellElement totalSymbols;
+  TableCellElement decimalRange;
 
-    attachShortcuts() {
+  attachShortcuts() {
 
-    }
+  }
 
-    void initElements() {
+  void initElements() {
 
-    }
+  }
 
-    void refreshSymbolList() {
-        symFrom = query('#symbolFrom');
-        symTo = query('#symbolTo');
+  void refreshSymbolList() {
+    symFrom = querySelector('#symbolFrom');
+    symTo = querySelector('#symbolTo');
 
-        final int symbolFromNum = Math.parseInt(symFrom.value);
-        final int symbolToNum = Math.parseInt(symTo.value);
+    final int symbolFromNum = int.parse(symFrom.value);
+    final int symbolToNum = int.parse(symTo.value);
 
-        tbody = document.body.query('#tbody');
-        tbody.nodes.clear();
-        int code = 1;
-        for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
-            final symbol = new Element.html('''
+    tbody = document.body.querySelector('#tbody');
+    tbody.nodes.clear();
+    int code = 1;
+    for (int idx = symbolFromNum; idx < symbolToNum; idx++) {
+      final symbol = new DocumentFragment();
+      symbol.innerHtml =
+      '''
               <tr><td>${code++}</td><td>${new String.fromCharCodes([idx])}</td><td>
               $idx
-              </td></tr>''');
+              </td></tr>''';
 
-            tbody.elements.add(symbol);
+      tbody.append(symbol);
 
-            totalSymbols = document.body.query('#totalSymbols');
-            totalSymbols.innerHTML = (symbolToNum - symbolFromNum).toString();
+      totalSymbols = document.body.querySelector('#totalSymbols');
+      totalSymbols.innerHtml = (symbolToNum - symbolFromNum).toString();
 
-            decimalRange = document.body.query('#decimalRange');
-            decimalRange.innerHTML = '${symbolFromNum.toString()} - ${symbolToNum.toString()}';
-        }
+      decimalRange = document.body.querySelector('#decimalRange');
+      decimalRange.innerHtml = '${symbolFromNum.toString()} - ${symbolToNum.toString()}';
     }
+  }
 
-    void createControlPanel() {
-        final HeadingElement h1 = new Element.tag('h1');
-        h1.innerHTML = 'Dingbats';
-        final TitleElement title = new Element.tag('title');
-        title.innerHTML = 'Entity Overview';
-        document.head.nodes.add(title);
+  void createControlPanel() {
+    final HeadingElement h1 = new Element.tag('h1');
+    h1.innerHtml = 'Dingbats';
+    final TitleElement title = new TitleElement();
+    title.text = 'Entity Overview';
+    document.head.nodes.add(title);
 
-        Element controls = new Element.html("""
+    Element controls = new Element.html("""
             <fieldset style="width: 22em;">
               <legend>Range</legend>
               <label>From:</label>
@@ -75,34 +77,34 @@ class DingbatContainer extends Core implements View {
             </fieldset>
         """);
 
-        entityOverviewContainer.elements.add(h1);
-        entityOverviewContainer.elements.add(controls);
-    }
+    entityOverviewContainer.append(h1);
+    entityOverviewContainer.append(controls);
+  }
 
-    Map<String, List<int>> rangeMap;
-
-
-    Map<String, Object> _scopes;
-    DocumentFragment _fragment;
-
-    final List entities;
-    DivElement entityOverviewContainer;
+  Map<String, List<int>> rangeMap;
 
 
-    DingbatContainer(this.entities) : _scopes = new Map<String, Object>() {
-        rangeMap = {
+  Map<String, Object> _scopes;
+  DocumentFragment _fragment;
+
+  final List entities;
+  DivElement entityOverviewContainer;
+
+
+  DingbatContainer(this.entities) : _scopes = new Map<String, Object>() {
+    rangeMap = {
         "arrow" : [8582, 8705],
         "equality" : [8764, 9193],
         "corners" : [9472, 9908],
         "other" : [9000, 10000],
         "star" : [9900, 9985],
         "ascii": [33, 128],
-        };
+    };
 
-        _fragment = new DocumentFragment();
-        entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
+    _fragment = new DocumentFragment();
+    entityOverviewContainer = new Element.html('<div style="-webkit-column-count: 2; -webkit-column-rule: 5px solid red; -webkit-column-gap: 1em;">');
 
-        Element containerTable = new Element.html("""
+    Element containerTable = new Element.html("""
             <div>
                 <table>
                   <caption>Overview</caption>
@@ -122,53 +124,65 @@ class DingbatContainer extends Core implements View {
             </div>
         """);
 
-        createControlPanel();
+    createControlPanel();
 
-        entityOverviewContainer.elements.add(containerTable);
-        _fragment.elements.add(entityOverviewContainer);
+    entityOverviewContainer.append(containerTable);
+    _fragment.append(entityOverviewContainer);
 
-        void initWidget() {
-            final SelectElement entityRangeSelector = query('#entityRangeSelector');
-            entityRangeSelector.on.change.add((e) {
-                final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
-                symFrom.value = rangeMap[rangeKey][0].toString();
-                symTo.value = rangeMap[rangeKey][1].toString();
-                refreshSymbolList();
-            });
+    void initWidget() {
+      final SelectElement entityRangeSelector = querySelector('#entityRangeSelector');
+      entityRangeSelector.onChange.listen((e) {
+        final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
+        symFrom.value = rangeMap[rangeKey][0].toString();
+        symTo.value = rangeMap[rangeKey][1].toString();
+        refreshSymbolList();
+      });
 
-            final ButtonElement refresh = document.body.query('#refresh');
-            refresh.on.click.add((e) => refreshSymbolList());
-        }
-
-        document.on.readyStateChange.add((i) => initWidget());
+      final ButtonElement refresh = document.body.querySelector('#refresh');
+      refresh.onClick.listen((e) => refreshSymbolList());
     }
 
-    Element get root() => _fragment;
+    document.onReadyStateChange.listen((i) => initWidget());
+  }
+
+  Element get root => _fragment;
 }
 
 
 class EntityViewer {
-    final Map<String, Object> _scopes;
-    Element _fragment;
+  final Map<String, Object> _scopes;
+  Element _fragment;
 
-    int number;
+  int number;
 
-    EntityViewer(this.number) : _scopes = new Map<String, Object>() {
-        document.head.elements.add(new Element.html("""
-        <style>
-             .viewBox {
-               padding: .1em;
-               margin: 0 .1em 0 .1em;
-               float: right;
-               border-radius: .2em;
-               border: 1px solid hsl(33, 55%, 55%);
-             }
-        </style>
-        """));
+  EntityViewer(this.number) : _scopes = new Map<String, Object>() {
+    final StyleElement styleElement = new StyleElement();
+    styleElement.text =
+    """
+     .viewBox {
+       padding: .1em;
+       margin: 0 .1em 0 .1em;
+       float: right;
+       border-radius: .2em;
+       border: 1px solid hsl(33, 55%, 55%);
+     }
+    """;
+    document.head.append(styleElement);
+//        document.head.append(new Element.html("""
+//        <style>
+//             .viewBox {
+//               padding: .1em;
+//               margin: 0 .1em 0 .1em;
+//               float: right;
+//               border-radius: .2em;
+//               border: 1px solid hsl(33, 55%, 55%);
+//             }
+//        </style>
+//        """));
 
-        _fragment = new DocumentFragment();
+    _fragment = new DocumentFragment();
 
-        Element viewer = new Element.html('''
+    Element viewer = new Element.html('''
         <fieldset style='width: 30em;'>
             <legend id="my">Symbol Display</legend>
             <span class="viewBox" style="font-size: 1em;">&#x2724;</span>
@@ -182,59 +196,59 @@ class EntityViewer {
             <button id="symbol-display" class="icon-list">Display Symbol</button>
         </fieldset>
     ''');
-        _fragment.elements.add(viewer);
+    _fragment.append(viewer);
 
 
-        void initWidget() {
-            final ButtonElement display = query('#symbol-display');
-            display.on.click.add((e) => displaySymbol());
-        }
-
-        document.on.readyStateChange.add((e) => initWidget());
+    void initWidget() {
+      final ButtonElement display = querySelector('#symbol-display');
+      display.onClick.listen((e) => displaySymbol());
     }
 
+    document.onReadyStateChange.listen((e) => initWidget());
+  }
 
-    void displaySymbol() {
-        final List<Node> nodes = document.queryAll('.viewBox');
-        final InputElement symbolId = document.query('#symbolId');
-        for (final Element e in nodes) {
-            e.innerHTML = '&#${symbolId.value};';
-        }
+
+  void displaySymbol() {
+    final List<Node> nodes = document.queryAll('.viewBox');
+    final InputElement symbolId = document.querySelector('#symbolId');
+    for (final Element e in nodes) {
+      e.innerHtml = '&#${symbolId.value};';
     }
+  }
 
-    Element get root() => _fragment;
+  Element get root => _fragment;
 }
 
 
 class Layout {
-    Map<String, Object> _scopes;
-    DocumentFragment _fragment;
+  Map<String, Object> _scopes;
+  DocumentFragment _fragment;
 
-    var content;
-    var entities;
+  var content;
+  var entities;
 
-    Layout() : _scopes = new Map<String, Object>() {
-        _fragment = new DocumentFragment();
+  Layout() : _scopes = new Map<String, Object>() {
+    _fragment = new DocumentFragment();
 
-        final DingbatContainer entityContainer = new DingbatContainer(entities);
-        _fragment.elements.add(entityContainer.root);
+    final DingbatContainer entityContainer = new DingbatContainer(entities);
+    _fragment.append(entityContainer.root);
 
-        final EntityViewer entityViewer = new EntityViewer(entities);
-        _fragment.elements.add(entityViewer.root);
+    final EntityViewer entityViewer = new EntityViewer(entities);
+    _fragment.append(entityViewer.root);
 
-        document.body.nodes.add(_fragment);
+    document.body.nodes.add(_fragment);
 
-        entityContainer.refreshSymbolList();
-    }
+    entityContainer.refreshSymbolList();
+  }
 
-    DocumentFragment get root() => _fragment;
+  DocumentFragment get root => _fragment;
 }
 
 class EntityOverview {
 }
 
 void main() {
-    final Layout layout = new Layout();
-    new EntityOverview();
+  final Layout layout = new Layout();
+  new EntityOverview();
 }
 
