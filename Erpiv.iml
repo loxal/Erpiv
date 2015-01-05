@@ -4,6 +4,12 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/bmi_calculator/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/bmi_calculator/web/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/dingbats/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/dingbats/web/packages" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/type_trainer/build" />
+      <excludeFolder url="file://$MODULE_DIR$/src/client/type_trainer/web/packages" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />

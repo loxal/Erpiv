@@ -1,0 +1,4 @@
+name: type_trainer
+description: Ten Finger Type Trainer
+dependencies:
+  browser: any

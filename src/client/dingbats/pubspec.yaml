@@ -1,0 +1,4 @@
+name: dingbats
+description: Displays symbols
+dependencies:
+  browser: any
