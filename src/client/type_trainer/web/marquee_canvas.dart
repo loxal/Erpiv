@@ -5,7 +5,7 @@
  */
 
 import 'dart:html';
-import '../core/core.dart';
+import 'core/core.dart';
 /*
  * Copyright 2012 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
  * Use of this source code is governed by a BSD-style

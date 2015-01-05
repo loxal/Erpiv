@@ -6,8 +6,8 @@
 
 library net.loxal.DingbatOverview;
 import 'dart:html';
-import '../core/core.dart';
-import '../core/view.dart';
+import 'core/core.dart';
+import 'core/view.dart';
 
 class DingbatContainer extends Core implements View {
   InputElement symFrom;
@@ -132,7 +132,7 @@ class DingbatContainer extends Core implements View {
     void initWidget() {
       final SelectElement entityRangeSelector = querySelector('#entityRangeSelector');
       entityRangeSelector.onChange.listen((e) {
-        final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).value;
+        final String rangeKey = entityRangeSelector.item(entityRangeSelector.selectedIndex).nodeValue;
         symFrom.value = rangeMap[rangeKey][0].toString();
         symTo.value = rangeMap[rangeKey][1].toString();
         refreshSymbolList();
@@ -145,13 +145,13 @@ class DingbatContainer extends Core implements View {
     document.onReadyStateChange.listen((i) => initWidget());
   }
 
-  Element get root => _fragment;
+  DocumentFragment get root => _fragment;
 }
 
 
 class EntityViewer {
   final Map<String, Object> _scopes;
-  Element _fragment;
+  DocumentFragment _fragment;
 
   int number;
 
@@ -209,14 +209,14 @@ class EntityViewer {
 
 
   void displaySymbol() {
-    final List<Node> nodes = document.queryAll('.viewBox');
+    final List<Node> nodes = document.querySelectorAll('.viewBox');
     final InputElement symbolId = document.querySelector('#symbolId');
     for (final Element e in nodes) {
       e.innerHtml = '&#${symbolId.value};';
     }
   }
 
-  Element get root => _fragment;
+  DocumentFragment get root => _fragment;
 }
 
 
